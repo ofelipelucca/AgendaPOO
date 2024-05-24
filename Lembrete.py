@@ -1,4 +1,4 @@
-from interface_lembrete import Inter_Lembrete, Inter_ListaLembrete, Inter_ImprimirLembrete
+from interface_Lembrete import Inter_Lembrete, Inter_ListaLembrete, Inter_ImprimirLembrete
 import re
 from datetime import datetime, timedelta
 
@@ -45,7 +45,7 @@ class Lembrete(Inter_Lembrete):
                 raise ValueError("Formato do horário inválido")
 
             hora, minuto, segundo = map(int, novo_Horario.split(':'))
-            novo_Horario_dt = timedelta(hours=hora, minutes=minuto, seconds=segundo)
+            novo_Horario = timedelta(hours=hora, minutes=minuto, seconds=segundo)
 
             if self._data:
                 dia, mes, ano = map(int, self._data.split('/'))
