@@ -4,12 +4,12 @@ from datetime import datetime, timedelta
 
 class Lembrete(Inter_Lembrete):
     def __init__(self, data, mensagem, horario) -> None:
-        self. __data = data
+        self. _data = data
         self. __mensagem = mensagem
         self. __horario = horario
 
     def getData(self) -> str:
-        return self.__data
+        return self._data
     
     def getHorario(self) -> str:
         return self.__horario
@@ -33,7 +33,7 @@ class Lembrete(Inter_Lembrete):
             if nova_data_dt <= data_atual:
                 raise ValueError("Data no passado")
 
-            self.__data = nova_Data
+            self._data = nova_Data
         except ValueError as e:
             print("Data deve estar no formato DD/MM/AAAA")
             raise e
