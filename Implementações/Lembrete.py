@@ -1,21 +1,21 @@
-from interface_Lembrete import Inter_Lembrete, Inter_ListaLembrete, Inter_ImprimirLembrete
+from Interfaces.Inter_Lembrete import Inter_Lembrete, Inter_ListaLembrete, Inter_ImprimirLembrete
 import re
 from datetime import datetime, timedelta
 
 class Lembrete(Inter_Lembrete):
     def __init__(self, data, mensagem, horario) -> None:
-        self. _data = data
+        self. __data = data
         self. __mensagem = mensagem
         self. __horario = horario
 
     def getData(self) -> str:
-        return self._data
+        return self.__data
     
     def getHorario(self) -> str:
         return self.__horario
     
     def getMensagem(self) -> str:
-        return self.__horario
+        return self.__mensagem
     
     def setData(self, nova_Data: str):
         try:
@@ -33,7 +33,7 @@ class Lembrete(Inter_Lembrete):
             if nova_data_dt <= data_atual:
                 raise ValueError("Data no passado")
 
-            self._data = nova_Data
+            self.__data = nova_Data
         except ValueError as e:
             print("Data deve estar no formato DD/MM/AAAA")
             raise e
@@ -47,7 +47,7 @@ class Lembrete(Inter_Lembrete):
             hora, minuto, segundo = map(int, novo_Horario.split(':'))
             novo_Horario = timedelta(hours=hora, minutes=minuto, seconds=segundo)
 
-            if self._data:
+            if self.__data:
                 dia, mes, ano = map(int, self._data.split('/'))
                 data_lembrete_dt = datetime(ano, mes, dia, hora, minuto, segundo)
 
@@ -92,7 +92,7 @@ class ListaLembrete(Inter_ListaLembrete):
     
     def buscarLembrete(self, mensagem: str) -> Inter_Lembrete:
         for Lembrete in self._listadeLembretes.values():
-            if Lembrete.get_mensagem() == mensagem:
+            if Lembrete.getMensagem() == mensagem:
                 return Lembrete
         return None
 
@@ -103,7 +103,7 @@ class ImprimirLembrete(Inter_ImprimirLembrete):
     def verLembretes(self, user_email: str):
         lembrete = self._listadeLembretes.get(user_email)
         if lembrete:
-            print("Lembrete: ", lembrete.getData())
+            print("Lembrete: ", lembrete.getMensagem())
             print("Data: ", lembrete.getData())
             print("Horario: ", lembrete.getHorario())
             print("------------------------")
