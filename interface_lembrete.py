@@ -1,60 +1,51 @@
 from abc import ABC, abstractmethod
 
-class Lembrete(ABC):
+class Inter_Lembrete(ABC):
      
      @abstractmethod
-     def __init__(self, data:str, mensagem:str, horario:str) -> None:
-          pass
-    
-     @abstractmethod
-     def getData(self,):
+     def getData(self,) -> str:
           pass
      
      @abstractmethod
-     def getMensagem(self,):
+     def getMensagem(self,) -> str:
           pass
      
      @abstractmethod
-     def getHorario(self,):
+     def getHorario(self,) -> str:
         pass
      
      @abstractmethod
-     def setData(self, nova_Data):
+     def setData(self, nova_Data: str):
         pass
 
      @abstractmethod
-     def setMensagem(self, nova_mensagem):
+     def setMensagem(self, nova_mensagem: str):
          pass
 
      @abstractmethod
-     def setHorario(self, novo_Horario):
+     def setHorario(self, novo_Horario: str):
          pass
 
-
-class ListaLembrete(ABC):
+class Inter_ListaLembrete(ABC):
     @abstractmethod
-    def __init__(self, listadeLembrete ) -> None:
+    def adicionarLembrete(self, Lembrete: Inter_Lembrete, user_email: str):
         pass
 
     @abstractmethod
-    def adicionarLembrete(self, Lembrete, user_email):
+    def removerLembrete(self, Lembrete: Inter_Lembrete, user_email: str):
         pass
 
     @abstractmethod
-    def removerLembrete(self, Lembrete, user_email):
+    def buscarLembrete(self, mensagem: str) -> Inter_Lembrete :
         pass
 
     @abstractmethod
-    def buscarLembrete(self, mensagem):
+    def tamanho(self,) -> int:
         pass
 
+class Inter_ImprimirLembrete(ABC, Inter_ListaLembrete):
     @abstractmethod
-    def tamanho(self,):
-        pass
-
-class ImprimirLembrete(ABC, ListaLembrete):
-    @abstractmethod
-    def verLembretes(self, user_email):
+    def verLembretes(self, user_email: str):
         pass
 
         
