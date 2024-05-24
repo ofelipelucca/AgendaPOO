@@ -13,7 +13,7 @@ O objetivo principal desse tipo de projeto é oferecer uma plataforma intuitiva 
 
 > estamos trabalhando nisso
 
-# Autores (Grupo 5)
+# Autores 
 `Felipe Lucca Taumaturgo de Oliveira`
 `Samuel Lima Horta`
 `Roberto Júnior Cassimiro Campolina`
