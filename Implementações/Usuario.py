@@ -37,7 +37,8 @@ class Usuario(Inter_Usuario):
             print("A senha deve conter exatamente 6 números")
 
     def setEmail(self, novo_email: str):
-        if ListaUsuario.checkUsuario(novo_email):
+        lista_usuarios = ListaUsuario()
+        if lista_usuarios.checkUsuario(novo_email):
             print("O email fornecido já está em uso")
             return
         
