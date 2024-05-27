@@ -37,12 +37,10 @@ class Usuario(Inter_Usuario):
             print("A senha deve conter exatamente 6 números")
 
     def setEmail(self, novo_email: str):
-        # Verifica se o email já está em uso
         if ListaUsuario.checkUsuario(novo_email):
             print("O email fornecido já está em uso")
             return
         
-        # Valida o formato básico do email
         if not re.match(r"[^@]+@[^@]+\.[^@]+", novo_email):
             print("Email deve estar no formato: usuario@dominio.com")
             return
@@ -53,12 +51,10 @@ class Usuario(Inter_Usuario):
             print("Email deve estar no formato: usuario@dominio.com")
             return
         
-        # Verifica se o usuário e domínio não estão vazios
         if not usuario or not dominio:
             print("Email deve estar no formato: usuario@dominio.com")
             return
 
-        # Valida o domínio do email
         dominios_aceitos = ["gmail.com", "yahoo.com", "outlook.com"]
         if dominio not in dominios_aceitos:
             print("Domínios aceitos:")
@@ -66,9 +62,16 @@ class Usuario(Inter_Usuario):
                 print(f"    - '{d}'")
             return
 
-        # Se todas as validações passarem, atualiza o email
         self.__email = novo_email
         print("Email atualizado com sucesso")
+
+    def checkSenha(self, senha_informada: str) -> bool:
+        if self.__senha == senha_informada:
+            print("Senha correta")
+            return True
+        else:
+            print("Senha incorreta")
+            return False
 
 
 class ListaUsuario(Inter_ListadeUsuario):

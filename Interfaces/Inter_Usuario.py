@@ -46,6 +46,13 @@ class Inter_Usuario(ABC):
     def setSenha(self, nova_senha: str):
         pass
     
+    @abstractmethod
+    # @brief Checa se a senha está correta
+    #
+    # @param senha_informada senha fornecida pelo usuario
+    def checkSenha(self, senha_informada: str) -> bool:
+        pass
+    
 class Inter_ListadeUsuario(ABC):
     @abstractmethod
     # @brief Adiciona um Usuario a lista de Usuarios
