@@ -11,10 +11,16 @@ class ListaTarefa():
     #
     # @param user_email O email do usuario logado
     def adicionarTarefa(self, tarefa: Tarefa, user_email: str) -> None:
-        if user_email not in self._listadetarefa:
-            self._listadetarefa[user_email] = [tarefa]
+        if user_email in self._listadetarefa:
+            if tarefa not in self._listadetarefa[user_email]:
+                self._listadetarefa[user_email].append(tarefa)
+                print("Tarefa adicionada com sucesso.")
+            else:
+                print("A tarefa já existe.")
         else:
-            print("A tarefa ja existe.")
+            self._listadetarefa[user_email] = [tarefa]
+            print("Tarefa adicionada com sucesso.")
+
 
     # @brief Remove uma tarefa no sistema
     #
@@ -37,8 +43,9 @@ class ListaTarefa():
     #
     # @return A tarefa, se existir. Caso nao exista, retorna None
     def buscarTarefa(self, titulo: str) -> Tarefa:
-        for usuario in self._listadetarefa.values():
-            for tarefa in usuario:
+        for usuario in self._listadetarefa:
+            for tarefa in self._listadetarefa[usuario]:
+                print(f"titulo: {tarefa._titulo}")
                 if tarefa._titulo == titulo: 
                     return tarefa
         return None
