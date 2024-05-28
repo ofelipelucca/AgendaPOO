@@ -1,6 +1,4 @@
 from abc import ABC, abstractmethod
-from Implementações.Tarefa.Tarefa import Compromisso
-from Implementações.Lembrete import Lembrete
 
 class Inter_Notificação(ABC):
 
