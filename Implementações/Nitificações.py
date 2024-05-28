@@ -7,7 +7,7 @@ class Notificação(Inter_Notificação):
     def __init__(self, minutos, horas) -> None:
         self.__min_Antes= minutos
         self.__horas_Antes = horas
-        self.__estado 
+        self.__estado = False
     
     def notificar(self, item):
         # Obtem a hora atual do sistema

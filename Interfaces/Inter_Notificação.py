@@ -11,17 +11,17 @@ class Inter_Notificação(ABC):
     
     @abstractmethod
     # @brief Ativa uma notificação
-    def ativarNotificacao():
+    def ativarNotificacao(self):
         pass
 
     @abstractmethod
     # @brief Desativa uma notificação
-    def desativarNotificacao():
+    def desativarNotificacao(self):
         pass
 
     @abstractmethod
     # @brief Verifica o estado da notificação
     #
     # @return true (se está ativada) ou false (se está desativada)
-    def checkEstado():
+    def checkEstado(self):
         pass

@@ -100,8 +100,11 @@ class ListaLembrete(Inter_ListaLembrete):
         return len(self._listadeLembretes)
     
 class ImprimirLembrete(Inter_ImprimirLembrete):
+    def __init__(self, lista_lembrete: ListaLembrete):
+        self._lista_lembrete = lista_lembrete
+
     def verLembretes(self, user_email: str):
-        lembrete = self._listadeLembretes.get(user_email)
+        lembrete = self._lista_lembrete._listadeLembretes.get(user_email)
         if lembrete:
             print("Lembrete: ", lembrete.getMensagem())
             print("Data: ", lembrete.getData())
