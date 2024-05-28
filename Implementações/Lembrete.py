@@ -19,17 +19,17 @@ class Lembrete(Inter_Lembrete):
     
     def setData(self, nova_Data: str):
         try:
-            # Verifica o formato da nova data
+            
             if not re.match(r'\d{2}/\d{2}/\d{4}', nova_Data):
                 raise ValueError("Formato da data inválido")
 
             dia, mes, ano = map(int, nova_Data.split('/'))
             nova_data_dt = datetime(ano, mes, dia)
 
-            # Obtem a data atual do sistema
+            
             data_atual = datetime.now()
 
-            # Verifica se a nova data está no futuro
+            
             if nova_data_dt <= data_atual:
                 raise ValueError("Data no passado")
 
@@ -40,7 +40,7 @@ class Lembrete(Inter_Lembrete):
 
     def setHorario(self, novo_Horario: str):
         try:
-            # Verifica o formato do novo horário
+            
             if not re.match(r'\d{2}:\d{2}:\d{2}', novo_Horario):
                 raise ValueError("Formato do horário inválido")
 
@@ -51,10 +51,10 @@ class Lembrete(Inter_Lembrete):
                 dia, mes, ano = map(int, self.__data.split('/'))  # Corrigido aqui
                 data_lembrete_dt = datetime(ano, mes, dia, hora, minuto, segundo)
 
-                # Obtem a data atual do sistema
+                
                 data_atual = datetime.now()
 
-                # Verifica se o novo horário está no futuro
+                
                 if data_lembrete_dt <= data_atual:
                     raise ValueError("Horário no passado")
 
