@@ -81,7 +81,7 @@ class Inter_ListaLembrete(ABC):
     def tamanho(self,) -> int:
         pass
 
-class Inter_ImprimirLembrete(ABC, Inter_ListaLembrete):
+class Inter_ImprimirLembrete(Inter_ListaLembrete):
     @abstractmethod
     # @brief Imprime todos lembretes da lista 
     #

@@ -4,9 +4,9 @@ from datetime import datetime, timedelta
 
 class Lembrete(Inter_Lembrete):
     def __init__(self, data, mensagem, horario) -> None:
-        self. __data = data
-        self. __mensagem = mensagem
-        self. __horario = horario
+        self.__data = data
+        self.__mensagem = mensagem
+        self.__horario = horario
 
     def getData(self) -> str:
         return self.__data
@@ -48,7 +48,7 @@ class Lembrete(Inter_Lembrete):
             novo_Horario = timedelta(hours=hora, minutes=minuto, seconds=segundo)
 
             if self.__data:
-                dia, mes, ano = map(int, self._data.split('/'))
+                dia, mes, ano = map(int, self.__data.split('/'))  # Corrigido aqui
                 data_lembrete_dt = datetime(ano, mes, dia, hora, minuto, segundo)
 
                 # Obtem a data atual do sistema
@@ -69,7 +69,7 @@ class Lembrete(Inter_Lembrete):
 
             if len(nova_mensagem) > MAX_CARACTERES:
                 raise ValueError("Mensagem muito longa")
-            if nova_mensagem == self._mensagem:
+            if nova_mensagem == self.__mensagem:  # Corrigido aqui
                 raise ValueError("Mensagem deve ser diferente da atual")
             if not nova_mensagem:
                 raise ValueError("Mensagem não pode ser vazia")
