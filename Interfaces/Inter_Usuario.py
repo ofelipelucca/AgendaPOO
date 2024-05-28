@@ -78,13 +78,3 @@ class Inter_ListadeUsuario(ABC):
     # @return True se o nome e o email correpondem, false caso contrario
     def checkUsuario(self, email: str, nome: str) -> bool:
         pass
-
-    
-
-    
-    
-    
-
-
-
-
