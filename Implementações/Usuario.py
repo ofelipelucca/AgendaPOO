@@ -76,16 +76,17 @@ class Usuario(Inter_Usuario):
 
 
 class ListaUsuario(Inter_ListadeUsuario):
-    _listadeusuario = {}
+    def __init__(self) -> None:  
+        _listadeusuario = {}
 
-    def adicionarUsuario(cls, usuario: Usuario):
-        cls._listadeusuario[usuario.getEmail()] = usuario
+    def adicionarUsuario(self, usuario: Usuario):
+        self._listadeusuario[usuario.getEmail()] = usuario
 
-    def removerUsuario(cls, usuario: Usuario):
-        if usuario.getEmail() in cls._listadeusuario:
-            del cls._listadeusuario[usuario.getEmail()]
+    def removerUsuario(self, usuario: Usuario):
+        if usuario.getEmail() in self._listadeusuario:
+            del self._listadeusuario[usuario.getEmail()]
 
     def checkUsuario(cls, email: str, nome: str = None) -> bool:
         if nome:
-            return email in cls._listadeusuario and cls._listadeusuario[email].getNome() == nome
-        return email in cls._listadeusuario
+            return email in self._listadeusuario and cls._listadeusuario[email].getNome() == nome
+        return email in self._listadeusuario
