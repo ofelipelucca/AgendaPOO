@@ -1,5 +1,5 @@
 from Implementações.Tarefa.Tarefa import Tarefa
-from Implementações.Tarefa.ListaTarefaListaTarefa import ListaTarefa
+from Implementações.Tarefa.ListaTarefa import ListaTarefa
 
 # Criando instância de ListaTarefa
 lista_tarefas = ListaTarefa()
