@@ -1,4 +1,4 @@
-from Implementações import Usuario
+from Implementações.Usuario import Usuario, ListaUsuario
 def main():
     # Criar instância de ListaUsuario
     lista_usuarios = ListaUsuario()
