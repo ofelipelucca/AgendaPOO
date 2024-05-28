@@ -3,7 +3,7 @@ from Interfaces.Inter_Calendario import Inter_Calendario
 from typing import Dict, List
 from datetime import datetime, timedelta
 
-class Calendario:
+class Calendario(Inter_Calendario):
     def __init__(self) -> None:
         self.__mapa_Horario: Dict[str, List[str]] = {}
         self.__agenda: Dict[str, Dict[str, List[str]]] = {}
