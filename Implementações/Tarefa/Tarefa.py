@@ -1,3 +1,5 @@
+from Interfaces.Inter_Tarefa import Inter_Tarefa, Inter_Compromisso
+
 #   GUIA DE PRIORIDADES DAS TAREFAS:
 #
 #       1 - MAIS IMPORTANTE
@@ -10,7 +12,7 @@
 #         EM PROGRESSO
 #           NAO FEITO (ALERTAR)
 
-class Tarefa():
+class Tarefa(Inter_Tarefa):
     def __init__(self, titulo: str, descricao: str, data: str, prioridade: int, estado: str) -> None:
         self._titulo = titulo
         self._descricao = descricao
@@ -110,7 +112,7 @@ class Tarefa():
             for estado in estados:
                 print(f"    - '{estado}'")
 
-class Compromisso(Tarefa):
+class Compromisso(Inter_Compromisso):
 
     def __init__(self, titulo: str, descricao: str, data: str, prioridade: int, estado: str, cor: str, local: str, horario: str) -> None:
         super().__init__(titulo, descricao, data, prioridade, estado)
