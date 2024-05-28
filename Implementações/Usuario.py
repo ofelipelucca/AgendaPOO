@@ -86,7 +86,7 @@ class ListaUsuario(Inter_ListadeUsuario):
         if usuario.getEmail() in self._listadeusuario:
             del self._listadeusuario[usuario.getEmail()]
 
-    def checkUsuario(cls, email: str, nome: str = None) -> bool:
+    def checkUsuario(self, email: str, nome: str = None) -> bool:
         if nome:
-            return email in self._listadeusuario and cls._listadeusuario[email].getNome() == nome
+            return email in self._listadeusuario and self._listadeusuario[email].getNome() == nome
         return email in self._listadeusuario
