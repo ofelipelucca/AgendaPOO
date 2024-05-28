@@ -1,6 +1,7 @@
 from Tarefa import Tarefa
+from Interfaces.Inter_ListadeTarefa import Inter_listadeTarefa
 
-class ListaTarefa():
+class ListaTarefa(Inter_listadeTarefa):
 
     def __init__(self) -> None:
         self._listadetarefa = {}
