@@ -69,7 +69,7 @@ class Lembrete(Inter_Lembrete):
 
             if len(nova_mensagem) > MAX_CARACTERES:
                 raise ValueError("Mensagem muito longa")
-            if nova_mensagem == self.__mensagem:  # Corrigido aqui
+            if nova_mensagem == self.__mensagem:
                 raise ValueError("Mensagem deve ser diferente da atual")
             if not nova_mensagem:
                 raise ValueError("Mensagem não pode ser vazia")
@@ -78,33 +78,33 @@ class Lembrete(Inter_Lembrete):
         except ValueError as e:
             print("A mensagem deve ser diferente da mensagem atual e possuir no máximo 45 caracteres")
             raise e
-    
+        
 class ListaLembrete(Inter_ListaLembrete):
     def __init__(self) -> None:
-        self._listadeLembretes = {}
+        self.__listadeLembretes = {}
     
     def adicionarLembrete(self, Lembrete: Inter_Lembrete, user_email: str):
-        self._listadeLembretes[user_email] = Lembrete
+        self.__listadeLembretes[user_email] = Lembrete
     
     def removerLembrete(self, Lembrete: Inter_Lembrete, user_email: str):
-        if user_email in self._listadeLembretes and self._listadeLembretes[user_email] == Lembrete:
-            del self._listadeLembretes[user_email]
+        if user_email in self.__listadeLembretes and self.__listadeLembretes[user_email] == Lembrete:
+            del self.__listadeLembretes[user_email]
     
     def buscarLembrete(self, mensagem: str) -> Inter_Lembrete:
-        for Lembrete in self._listadeLembretes.values():
+        for Lembrete in self.__listadeLembretes.values():
             if Lembrete.getMensagem() == mensagem:
                 return Lembrete
         return None
 
     def tamanho(self) -> int:
-        return len(self._listadeLembretes)
+        return len(self.__listadeLembretes)
     
 class ImprimirLembrete(Inter_ImprimirLembrete):
     def __init__(self, lista_lembrete: ListaLembrete):
-        self._lista_lembrete = lista_lembrete
+        self.__lista_lembrete = lista_lembrete
 
     def verLembretes(self, user_email: str):
-        lembrete = self._lista_lembrete._listadeLembretes.get(user_email)
+        lembrete = self.__lista_lembrete.__listadeLembretes.get(user_email)
         if lembrete:
             print("Lembrete: ", lembrete.getMensagem())
             print("Data: ", lembrete.getData())

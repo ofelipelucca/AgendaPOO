@@ -86,7 +86,7 @@ class Inter_Tarefa(ABC):
     def setEstado(self, novo_Estado) -> None:
         pass
 
-class Inter_Compromisso(ABC, Inter_Tarefa):
+class Inter_Compromisso(Inter_Tarefa):
     @abstractmethod
     # @brief Busca pela cor do compromisso
     #

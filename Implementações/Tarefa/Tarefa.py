@@ -1,4 +1,6 @@
 from Interfaces.Inter_Tarefa import Inter_Tarefa, Inter_Compromisso
+from datetime import datetime, timedelta
+import re
 
 #   GUIA DE PRIORIDADES DAS TAREFAS:
 #
@@ -56,7 +58,7 @@ class Tarefa(Inter_Tarefa):
     def setTitulo(self, novo_Titulo: str) -> None:
         MAX_CARACTERES = 50
 
-        if novo_Titulo <= MAX_CARACTERES or not novo_Titulo:
+        if len(novo_Titulo) <= MAX_CARACTERES or not novo_Titulo:
             self._titulo = novo_Titulo
         else:
             print("Titulo invalido!")
@@ -68,7 +70,7 @@ class Tarefa(Inter_Tarefa):
     def setDescricao(self, nova_Descricao: str) -> None:
         MAX_CARACTERES = 120
 
-        if nova_Descricao <= MAX_CARACTERES or not nova_Descricao:
+        if len(nova_Descricao) <= MAX_CARACTERES or not nova_Descricao:
             self._descricao = nova_Descricao
         else:
             print("Descricao invalida!")
@@ -112,13 +114,13 @@ class Tarefa(Inter_Tarefa):
             for estado in estados:
                 print(f"    - '{estado}'")
 
-class Compromisso(Inter_Compromisso):
+class Compromisso(Tarefa):
 
-    def __init__(self, titulo: str, descricao: str, data: str, prioridade: int, estado: str, cor: str, local: str, horario: str) -> None:
+    def __init__(self, titulo, descricao, data, prioridade, estado, cor, local, hora):
         super().__init__(titulo, descricao, data, prioridade, estado)
-        self._cor = cor
-        self._local = local
-        self._horario = horario
+        self.cor = cor
+        self.local = local
+        self.hora = hora
     
     def getTitulo(self) -> str:
         return self._titulo
@@ -177,7 +179,18 @@ class Compromisso(Inter_Compromisso):
     #
     # @attention A data informada deve estar no formato: DD/MM/AAAA
     def setData(self, nova_Data: str) -> None:
-        pass
+        try:
+            if not re.match(r'\d{2}/\d{2}/\d{4}', nova_Data):
+                raise ValueError("Formato da data inválido")
+            dia, mes, ano = map(int, nova_Data.split('/'))
+            nova_data_dt = datetime(ano, mes, dia)
+            data_atual = datetime.now()
+            if nova_data_dt <= data_atual:
+                raise ValueError("Data no passado")
+            self._data = nova_Data
+        except ValueError as e:
+            print("Data deve estar no formato DD/MM/AAAA")
+            raise e
 
     # @brief Muda a prioridade de uma tarefa
     #
@@ -195,7 +208,7 @@ class Compromisso(Inter_Compromisso):
     # @brief Muda o estado de uma tarefa
     #
     # @param novo_Estado O novo estado
-    def setEstado(self, novo_Estado) -> None:
+    def setEstado(self, novo_Estado: str) -> None:
         estados = {
             "feito",
             "em progresso",
@@ -225,7 +238,7 @@ class Compromisso(Inter_Compromisso):
     #
     # @return String do horario
     def getHorario(self) -> str:
-        return self._horario
+        return self.hora
 
     # @brief Muda a cor de um compromisso
     #
@@ -266,4 +279,18 @@ class Compromisso(Inter_Compromisso):
     #
     # @attention O horario informado deve estar no formato: HH:MM:SS
     def setHorario(self, novo_Horario: str) -> None:
-        pass
+        try:
+            if not re.match(r'\d{2}:\d{2}:\d{2}', novo_Horario):
+                raise ValueError("Formato do horário inválido")
+            hora, minuto, segundo = map(int, novo_Horario.split(':'))
+            novo_Horario = timedelta(hours=hora, minutes=minuto, seconds=segundo)
+            if self._data:
+                dia, mes, ano = map(int, self._data.split('/'))
+                data_lembrete_dt = datetime(ano, mes, dia, hora, minuto, segundo)
+                data_atual = datetime.now()
+                if data_lembrete_dt <= data_atual:
+                    raise ValueError("Horário no passado")
+            self._horario = novo_Horario
+        except ValueError as e:
+            print("Horário deve estar no formato HH:MM:SS")
+            raise e

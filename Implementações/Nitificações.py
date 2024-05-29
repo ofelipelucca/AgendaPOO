@@ -28,11 +28,11 @@ class Notificação(Inter_Notificação):
         min_item = int(horario_item[3:5])
 
         # Ajusta o horário do item subtraindo os tempos antecipados
-        horario_notificacao = (hora_item * 60 + min_item) - (self._hora_antes * 60 + self._min_antes)
+        horario_notificacao = (hora_item * 60 + min_item) - (self.__horas_Antes * 60 + self.__min_Antes)
         hora_notificacao = horario_notificacao // 60
         min_notificacao = horario_notificacao % 60
 
-        if self._estado and hora_notificacao == hora_atual and min_notificacao == min_atual:
+        if self.__estado and hora_notificacao == hora_atual and min_notificacao == min_atual:
             print(f"{descricao} Daqui a: {self.__horas_Antes} horas e {self.__min_Antes} minutos")
 
     def ativarNotificacao(self):
@@ -43,4 +43,3 @@ class Notificação(Inter_Notificação):
 
     def checkEstado(self):
         return self.__estado
-    
