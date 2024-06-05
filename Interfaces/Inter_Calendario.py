@@ -4,11 +4,18 @@ from typing import List
 class Inter_Calendario(ABC):
     
     @abstractmethod
-    # @brief Insere um grupo de atividades em um determinado horário
+    # @brief - 2 parâmetros - Insere uma lista com uma ou mais atividade em um determinado horário
     #
-    # @param key O horario das atividades ou o dia se for chamada com um parâmetro só
+    # @brief - 1 parâmetro - Insere os horários, atribuídos anteriormente, na agenda em um determinado dia
+    #
+    # @param key - 2 parâmetros - O horário das atividades
+    #
+    # @param key - 1 parâmetro - O dia em que os horários serão inseridos na agenda
     #
     # @param atividades As atividades que serão inseridas
+    #
+    # @Atention Para inserir as atividades na agenda, primeiro insira em um hórario e depois insira em um dia, 
+    #         não é suficiente inserir apenas no hórario
     def inserir(self, key: str, atividades: List[str] = []) -> None:
         pass
      
