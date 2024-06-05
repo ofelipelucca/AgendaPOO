@@ -1,4 +1,4 @@
-from Implementações.Nitificações import Notificação
+from Implementações.Notificações import Notificação
 from Implementações.Tarefa.Tarefa import Compromisso
 from Implementações.Lembrete import Lembrete
 def main():
