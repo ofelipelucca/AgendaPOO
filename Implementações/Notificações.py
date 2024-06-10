@@ -4,10 +4,26 @@ from Implementações.Tarefa.Tarefa import Compromisso
 from datetime import datetime, timedelta
 
 class Notificação(Inter_Notificação):
-    def __init__(self, minutos, horas) -> None:
+    def __init__(self, minutos: int, horas: int) -> None:
         self.__min_Antes= minutos
         self.__horas_Antes = horas
         self.__estado = False
+
+    def getMinAntes(self) -> int:
+        return self.__min_Antes
+
+    def getHorasAntes(self) -> int:
+        return self.__horas_Antes
+
+    def setMinAntes(self, minutos: int):
+        if (minutos < 0 & minutos >= 60):
+            raise ValueError("Minutos de antecedência não podem ser negativos.")
+        self.__min_Antes = minutos
+
+    def setHorasAntes(self, horas: int):
+        if (horas < 0 & horas > 24 ):
+            raise ValueError("Horas de antecedência não podem ser negativas.")
+        self.__horas_Antes = horas
     
     def notificar(self, item):
         # Obtem a hora atual do sistema
