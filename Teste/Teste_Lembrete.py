@@ -1,7 +1,6 @@
 from Implementações.Lembrete import Lembrete, ListaLembrete, ImprimirLembrete
 
 def main():
-    def main():
     # Cria instâncias de Lembrete
     lembrete1 = Lembrete()
     lembrete1.setData("25/12/2024")
