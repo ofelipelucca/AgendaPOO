@@ -1,4 +1,4 @@
-from Implementações.Tarefa.Tarefa import Tarefa
+from Implementações.Tarefa.Tarefa import Tarefa, Compromisso
 from Implementações.Tarefa.ListaTarefa import ListaTarefa
 
 def main():
