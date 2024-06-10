@@ -50,3 +50,4 @@ class ListaTarefa(Inter_listadeTarefa):
                 if tarefa._titulo == titulo: 
                     return tarefa
         return None
+    
