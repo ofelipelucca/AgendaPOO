@@ -3,10 +3,10 @@ import re
 from datetime import datetime, timedelta
 
 class Lembrete(Inter_Lembrete):
-    def __init__(self, data, mensagem, horario) -> None:
-        self.__data = data
-        self.__mensagem = mensagem
-        self.__horario = horario
+    def __init__(self,) -> None:
+        self.__data: str
+        self.__mensagem: str
+        self.__horario: str
 
     def getData(self) -> str:
         return self.__data

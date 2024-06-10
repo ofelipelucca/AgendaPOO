@@ -15,12 +15,12 @@ import re
 #           NAO FEITO (ALERTAR)
 
 class Tarefa(Inter_Tarefa):
-    def __init__(self, titulo: str, descricao: str, data: str, prioridade: int, estado: str) -> None:
-        self._titulo = titulo
-        self._descricao = descricao
-        self._data = data
-        self._prioridade = prioridade
-        self._estado = estado
+    def __init__(self,) -> None:
+        self._titulo: str
+        self._descricao: str
+        self._data: str
+        self._prioridade: int
+        self._estado: str
   
     # @brief Busca pelo titulo da tarefa
     #
@@ -116,11 +116,11 @@ class Tarefa(Inter_Tarefa):
 
 class Compromisso(Tarefa):
 
-    def __init__(self, titulo, descricao, data, prioridade, estado, cor, local, hora):
+    def __init__(self,titulo, descricao, data, prioridade, estado ):
         super().__init__(titulo, descricao, data, prioridade, estado)
-        self.cor = cor
-        self.local = local
-        self.hora = hora
+        self.cor: str
+        self._local: str
+        self.hora: str
     
     def getTitulo(self) -> str:
         return self._titulo

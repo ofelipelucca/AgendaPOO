@@ -4,9 +4,9 @@ from Implementações.Tarefa.Tarefa import Compromisso
 from datetime import datetime, timedelta
 
 class Notificação(Inter_Notificação):
-    def __init__(self, minutos: int, horas: int) -> None:
-        self.__min_Antes= minutos
-        self.__horas_Antes = horas
+    def __init__(self) -> None:
+        self.__min_Antes: int
+        self.__horas_Antes: int
         self.__estado = False
 
     def getMinAntes(self) -> int:

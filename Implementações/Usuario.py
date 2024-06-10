@@ -2,11 +2,11 @@ from Interfaces.Inter_Usuario import Inter_Usuario, Inter_ListadeUsuario
 import re
 
 class Usuario(Inter_Usuario):
-    def __init__(self, nome: str, sobrenome: str, senha: str, email: str):
-        self.__nome = nome
-        self.__sobrenome = sobrenome
-        self.__senha = senha
-        self.__email = email
+    def __init__(self):
+        self.__nome: str
+        self.__sobrenome: str
+        self.__senha: str
+        self.__email: str
     
     def getNome(self) -> str:
         return f"{self.__nome} {self.__sobrenome}"
