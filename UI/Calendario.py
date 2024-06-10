@@ -24,6 +24,7 @@ class Calendario(tk.Tk):
         self.mostrar_mes(self.data_atual.year, self.data_atual.month)
 
     def criar_elementos(self):
+
         # Header frame de botoes de navegacao e texto de Mes/Ano
         self.header_frame = ttk.Frame(self, style="Background.TFrame") 
         self.header_frame.pack(pady=50)
@@ -50,23 +51,23 @@ class Calendario(tk.Tk):
         for idx, day in enumerate(dias_da_semana):
             ttk.Label(self.dias_frame, font=font.Font(family="Tahoma", size=10), text=day, background="#141414", foreground="white").grid(row=1, column=idx, padx=30, pady=30)
 
-        # Frame for days grid
+        # Frame dos dias
         self.dias_grid_frame = ttk.Frame(self, style="Background.TFrame") 
         self.dias_grid_frame.pack()
 
     def mostrar_mes(self, ano, mes):
-        # Update the month/year label
+
+        # Atualizando o texto do Mes/Ano
         self.mes_label.config(text=f"{calendar.month_name[mes].upper()} {ano}")
 
-        # Clear the current days grid
+        # Limpando o calendario
         for widget in self.dias_grid_frame.winfo_children():
             widget.destroy()
 
-        # Get the first weekday of the month and the number of days in the month
+        # Get para a primeira semana do mes e quantos dias o mes tem
         primeira_semana, total_dias_do_mes = calendar.monthrange(ano, mes)
 
-        # Fill the days grid with buttons
-
+        # Criando o estilo dos botoes e gerando os botoes de todos os dias do mes
         s = ttk.Style()
         s.configure('Custom.TButton', background="#141414", foreground="black")  
 
@@ -91,10 +92,12 @@ class Calendario(tk.Tk):
                 dia += 1
 
     def click_callback(self, dia):
+
         # O que fazer quando o dia é clicado
         print(f"Dia {dia} selecionado.")
 
     def mes_anterior(self):
+        
         if self.data_atual.month == 1:
             self.data_atual = self.data_atual.replace(year=self.data_atual.year - 1, month=12)
         else:
@@ -102,6 +105,7 @@ class Calendario(tk.Tk):
         self.mostrar_mes(self.data_atual.year, self.data_atual.month)
 
     def mes_seguinte(self):
+        
         if self.data_atual.month == 12:
             self.data_atual = self.data_atual.replace(year=self.data_atual.year + 1, month=1)
         else:
