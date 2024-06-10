@@ -3,7 +3,7 @@ import re
 from datetime import datetime, timedelta
 
 class Lembrete(Inter_Lembrete):
-    def __init__(self,) -> None:
+    def __init__(self) -> None:
         self.__data = ""
         self.__mensagem = ""
         self.__horario = ""
@@ -19,16 +19,12 @@ class Lembrete(Inter_Lembrete):
     
     def setData(self, nova_Data: str):
         try:
-            
             if not re.match(r'\d{2}/\d{2}/\d{4}', nova_Data):
                 raise ValueError("Formato da data inválido")
 
             dia, mes, ano = map(int, nova_Data.split('/'))
             nova_data_dt = datetime(ano, mes, dia)
-
-            
             data_atual = datetime.now()
-
             
             if nova_data_dt <= data_atual:
                 raise ValueError("Data no passado")
@@ -40,25 +36,21 @@ class Lembrete(Inter_Lembrete):
 
     def setHorario(self, novo_Horario: str):
         try:
-            
             if not re.match(r'\d{2}:\d{2}:\d{2}', novo_Horario):
                 raise ValueError("Formato do horário inválido")
 
             hora, minuto, segundo = map(int, novo_Horario.split(':'))
-            novo_Horario = timedelta(hours=hora, minutes=minuto, seconds=segundo)
+            novo_Horario_dt = timedelta(hours=hora, minutes=minuto, seconds=segundo)
 
             if self.__data:
-                dia, mes, ano = map(int, self.__data.split('/'))  # Corrigido aqui
+                dia, mes, ano = map(int, self.__data.split('/'))
                 data_lembrete_dt = datetime(ano, mes, dia, hora, minuto, segundo)
-
-                
                 data_atual = datetime.now()
-
                 
                 if data_lembrete_dt <= data_atual:
                     raise ValueError("Horário no passado")
 
-            self.__horario = novo_Horario
+            self.__horario = str(novo_Horario_dt)
         except ValueError as e:
             print("Horário deve estar no formato HH:MM:SS")
             raise e
@@ -78,7 +70,7 @@ class Lembrete(Inter_Lembrete):
         except ValueError as e:
             print("A mensagem deve ser diferente da mensagem atual e possuir no máximo 45 caracteres")
             raise e
-        
+
 class ListaLembrete(Inter_ListaLembrete):
     def __init__(self) -> None:
         self.__listadeLembretes = {}
@@ -98,13 +90,28 @@ class ListaLembrete(Inter_ListaLembrete):
 
     def tamanho(self) -> int:
         return len(self.__listadeLembretes)
+
+    def obterLembretes(self, user_email: str) -> Inter_Lembrete:
+        return self.__listadeLembretes.get(user_email)
     
 class ImprimirLembrete(Inter_ImprimirLembrete):
     def __init__(self, lista_lembrete: ListaLembrete):
         self.__lista_lembrete = lista_lembrete
 
+    def adicionarLembrete(self, Lembrete: Inter_Lembrete, user_email: str):
+        self.__lista_lembrete.adicionarLembrete(Lembrete, user_email)
+    
+    def removerLembrete(self, Lembrete: Inter_Lembrete, user_email: str):
+        self.__lista_lembrete.removerLembrete(Lembrete, user_email)
+    
+    def buscarLembrete(self, mensagem: str) -> Inter_Lembrete:
+        return self.__lista_lembrete.buscarLembrete(mensagem)
+    
+    def tamanho(self) -> int:
+        return self.__lista_lembrete.tamanho()
+
     def verLembretes(self, user_email: str):
-        lembrete = self.__lista_lembrete.__listadeLembretes.get(user_email)
+        lembrete = self.__lista_lembrete.obterLembretes(user_email)
         if lembrete:
             print("Lembrete: ", lembrete.getMensagem())
             print("Data: ", lembrete.getData())
