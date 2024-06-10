@@ -5,8 +5,8 @@ from datetime import datetime, timedelta
 
 class Notificação(Inter_Notificação):
     def __init__(self) -> None:
-        self.__min_Antes: int
-        self.__horas_Antes: int
+        self.__min_Antes = 0
+        self.__horas_Antes = 0
         self.__estado = False
 
     def getMinAntes(self) -> int:

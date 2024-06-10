@@ -16,11 +16,11 @@ import re
 
 class Tarefa(Inter_Tarefa):
     def __init__(self,) -> None:
-        self._titulo: str
-        self._descricao: str
-        self._data: str
-        self._prioridade: int
-        self._estado: str
+        self._titulo = ""
+        self._descricao = ""
+        self._data = ""
+        self._prioridade = ""
+        self._estado = ""
   
     # @brief Busca pelo titulo da tarefa
     #
@@ -118,9 +118,9 @@ class Compromisso(Tarefa):
 
     def __init__(self,titulo, descricao, data, prioridade, estado ):
         super().__init__(titulo, descricao, data, prioridade, estado)
-        self.cor: str
-        self._local: str
-        self.hora: str
+        self.cor = ""
+        self._local = ""
+        self.hora = ""
     
     def getTitulo(self) -> str:
         return self._titulo

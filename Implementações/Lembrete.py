@@ -4,9 +4,9 @@ from datetime import datetime, timedelta
 
 class Lembrete(Inter_Lembrete):
     def __init__(self,) -> None:
-        self.__data: str
-        self.__mensagem: str
-        self.__horario: str
+        self.__data = ""
+        self.__mensagem = ""
+        self.__horario = ""
 
     def getData(self) -> str:
         return self.__data
