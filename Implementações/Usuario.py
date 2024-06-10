@@ -3,10 +3,10 @@ import re
 
 class Usuario(Inter_Usuario):
     def __init__(self):
-        self.__nome: str
-        self.__sobrenome: str
-        self.__senha: str
-        self.__email: str
+        self.__nome = ""
+        self.__sobrenome = ""
+        self.__senha = ""
+        self.__email = ""
     
     def getNome(self) -> str:
         return f"{self.__nome} {self.__sobrenome}"
@@ -74,10 +74,9 @@ class Usuario(Inter_Usuario):
             print("Senha incorreta")
             return False
 
-
 class ListaUsuario(Inter_ListadeUsuario):
     def __init__(self) -> None:  
-        _listadeusuario = {}
+        self._listadeusuario = {}
 
     def adicionarUsuario(self, usuario: Usuario):
         self._listadeusuario[usuario.getEmail()] = usuario

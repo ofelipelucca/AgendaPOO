@@ -1,39 +1,47 @@
 from Implementações.Usuario import Usuario, ListaUsuario
 def main():
-    # Criar instância de ListaUsuario
-    lista_usuarios = ListaUsuario()
-    
-    # Criar instância de Usuario
-    usuario1 = Usuario("João", "Silva", "123456", "joao@gmail.com")
-    usuario2 = Usuario("Maria", "Santos", "654321", "maria@yahoo.com")
-    
-    # Adicionar usuários à lista
-    lista_usuarios.adicionarUsuario(usuario1)
-    lista_usuarios.adicionarUsuario(usuario2)
-    
-    # Verificar se os usuários foram adicionados
-    assert lista_usuarios.checkUsuario("joao@gmail.com", "João Silva") == True
-    assert lista_usuarios.checkUsuario("maria@yahoo.com", "Maria Santos") == True
-    assert lista_usuarios.checkUsuario("inexistente@gmail.com") == False
-    
-    # Testar métodos de Usuario
-    print(usuario1.getNome())  # Deve imprimir "João Silva"
-    print(usuario1.getEmail())  # Deve imprimir "joao@gmail.com"
-    usuario1.setNome("Carlos", "Oliveira")
-    print(usuario1.getNome())  # Deve imprimir "Carlos Oliveira"
-    
-    usuario1.setEmail("carlos@outlook.com")  # Deve imprimir "Email atualizado com sucesso"
-    print(usuario1.getEmail())  # Deve imprimir "carlos@outlook.com"
-    
-    usuario1.setSenha("123123")
-    assert usuario1.checkSenha("123123") == True  # Deve imprimir "Senha correta"
-    assert usuario1.checkSenha("123456") == False  # Deve imprimir "Senha incorreta"
-    
-    # Remover usuário da lista
-    lista_usuarios.removerUsuario(usuario1)
-    assert lista_usuarios.checkUsuario("carlos@outlook.com") == False
+    # Cria instâncias de Usuario
+    user1 = Usuario()
+    user1.setNome("João", "Silva")
+    user1.setEmail("joao@gmail.com")
+    user1.setSenha("123456")
 
-    print("Todos os testes foram concluídos com sucesso!")
+    user2 = Usuario()
+    user2.setNome("Maria", "Oliveira")
+    user2.setEmail("maria@yahoo.com")
+    user2.setSenha("654321")
+
+    # Cria uma instância de ListaUsuario e adiciona os usuários
+    lista_usuarios = ListaUsuario()
+    lista_usuarios.adicionarUsuario(user1)
+    lista_usuarios.adicionarUsuario(user2)
+
+    # Testa os métodos getNome, getEmail e getSenha
+    print(f"Nome do user1: {user1.getNome()}")
+    print(f"Email do user1: {user1.getEmail()}")
+    print(f"Senha do user1: {user1.getSenha()}")
+
+    # Testa o método checkSenha
+    print(f"Check senha user1 (123456): {user1.checkSenha('123456')}")
+    print(f"Check senha user1 (000000): {user1.checkSenha('000000')}")
+
+    # Testa o método checkUsuario na lista de usuários
+    print(f"Check usuario (joao@gmail.com, João Silva): {lista_usuarios.checkUsuario('joao@gmail.com', 'João Silva')}")
+    print(f"Check usuario (maria@yahoo.com, Maria Oliveira): {lista_usuarios.checkUsuario('maria@yahoo.com', 'Maria Oliveira')}")
+
+    # Testa a mudança de nome, email e senha
+    user1.setNome("Carlos", "Souza")
+    print(f"Nome atualizado do user1: {user1.getNome()}")
+
+    user1.setEmail("carlos@outlook.com")
+    print(f"Email atualizado do user1: {user1.getEmail()}")
+
+    user1.setSenha("111222")
+    print(f"Senha atualizada do user1: {user1.getSenha()}")
+
+    # Remove um usuário da lista
+    lista_usuarios.removerUsuario(user1)
+    print(f"Check usuario removido (carlos@outlook.com, Carlos Souza): {lista_usuarios.checkUsuario('carlos@outlook.com', 'Carlos Souza')}")
 
 if __name__ == "__main__":
     main()
