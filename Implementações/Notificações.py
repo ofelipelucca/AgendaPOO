@@ -40,16 +40,20 @@ class Notificação(Inter_Notificação):
         else:
             return
 
-        hora_item = int(horario_item[:2])
-        min_item = int(horario_item[3:5])
+        # Verifica se o horário do item não está vazio
+        if horario_item:
+            hora_item = int(horario_item[:2])
+            min_item = int(horario_item[3:5])
 
-        # Ajusta o horário do item subtraindo os tempos antecipados
-        horario_notificacao = (hora_item * 60 + min_item) - (self.__horas_Antes * 60 + self.__min_Antes)
-        hora_notificacao = horario_notificacao // 60
-        min_notificacao = horario_notificacao % 60
+            # Ajusta o horário do item subtraindo os tempos antecipados
+            horario_notificacao = (hora_item * 60 + min_item) - (self.__horas_Antes * 60 + self.__min_Antes)
+            hora_notificacao = horario_notificacao // 60
+            min_notificacao = horario_notificacao % 60
 
-        if self.__estado and hora_notificacao == hora_atual and min_notificacao == min_atual:
-            print(f"{descricao} Daqui a: {self.__horas_Antes} horas e {self.__min_Antes} minutos")
+            if self.__estado and hora_notificacao == hora_atual and min_notificacao == min_atual:
+                print(f"{descricao} Daqui a: {self.__horas_Antes} horas e {self.__min_Antes} minutos")
+        else:
+            print("Horário do item está vazio.")
 
     def ativarNotificacao(self):
         self.__estado = True
