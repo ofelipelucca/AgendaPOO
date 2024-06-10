@@ -56,14 +56,9 @@ class Tarefa(Inter_Tarefa):
     #
     # @param novo_Titulo O novo titulo 
     def setTitulo(self, novo_Titulo: str) -> None:
-        MAX_CARACTERES = 50
-
-        if len(novo_Titulo) <= MAX_CARACTERES or not novo_Titulo:
             self._titulo = novo_Titulo
-        else:
-            print("Titulo invalido!")
-            print("O titulo deve possuir entre 1 e 50 caracteres")
-
+        
+            
     # @brief Muda a descricao de uma tarefa
     #
     # @param nova_Descricao A nova descricao
@@ -116,8 +111,14 @@ class Tarefa(Inter_Tarefa):
 
 class Compromisso(Tarefa):
 
-    def __init__(self,titulo, descricao, data, prioridade, estado ):
-        super().__init__(titulo, descricao, data, prioridade, estado)
+
+    def __init__(self, titulo, descricao, data, prioridade, estado) -> None:
+        super().__init__()
+        self.setTitulo(titulo)
+        self.setDescricao(descricao)
+        self.setData(data)
+        self.setPrioridade(prioridade)
+        self.setEstado(estado)
         self.cor = ""
         self._local = ""
         self.hora = ""
@@ -153,13 +154,7 @@ class Compromisso(Tarefa):
     #
     # @param novo_Titulo O novo titulo 
     def setTitulo(self, novo_Titulo: str) -> None:
-        MAX_CARACTERES = 50
-
-        if novo_Titulo <= MAX_CARACTERES or not novo_Titulo:
             self._titulo = novo_Titulo
-        else:
-            print("Titulo invalido!")
-            print("O titulo deve possuir entre 1 e 50 caracteres")
 
     # @brief Muda a descricao de uma tarefa
     #
@@ -167,8 +162,9 @@ class Compromisso(Tarefa):
     def setDescricao(self, nova_Descricao: str) -> None:
         MAX_CARACTERES = 120
 
-        if nova_Descricao <= MAX_CARACTERES or not nova_Descricao:
+        if len(nova_Descricao) <= int(MAX_CARACTERES) or not nova_Descricao:
             self._descricao = nova_Descricao
+
         else:
             print("Descricao invalida!")
             print("A descricao deve possuir entre 1 e 120 caracteres")
@@ -267,7 +263,7 @@ class Compromisso(Tarefa):
     def setLocal(self, novo_Local: str) -> None:
         MAX_CARACTERES = 100
 
-        if novo_Local <= MAX_CARACTERES or not novo_Local:
+        if len(novo_Local) <= MAX_CARACTERES or not novo_Local:
             self._local = novo_Local
         else:
             print("Local invalido!")

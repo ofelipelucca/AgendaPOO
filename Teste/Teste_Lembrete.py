@@ -1,4 +1,4 @@
-from Implementações.Lembrete import Lembrete, ListaLembrete
+from Implementações.Lembrete import Lembrete, ListaLembrete, ImprimirLembrete
 
 def main():
     def main():
@@ -39,9 +39,6 @@ def main():
     lista_lembretes.removerLembrete(lembrete1, "user1@example.com")
     print("Lembretes do user1 após remoção:")
     imprimir_lembretes.verLembretes("user1@example.com")
-
-if __name__ == "__main__":
-    main()
 
 if __name__ == "__main__":
     main()
