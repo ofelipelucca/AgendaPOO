@@ -23,10 +23,11 @@ def main():
     assert notificacao.checkEstado() == False, "Erro na desativação de notificação"
     
     # Preparando um compromisso para teste de notificação
-    compromisso = Compromisso("-","-","16/06/2024","-","-")
-    compromisso.setTitulo("Fazer nada")
-    compromisso.setData("17/06/2024")
-    compromisso.setHorario("16:00:00")
+    compromisso = Compromisso("Reunião de trabalho", "Reunião sobre o projeto X", "15/06/2024", 2, "não feito")
+    compromisso.setCor("laranja")
+    compromisso.setLocal("Escritório")
+    compromisso.setHorario("09:00:00")
+
 
     # Testando notificar (considerando o tempo atual para fins de demonstração)
     # Devemos ativar a notificação para testar corretamente
@@ -36,9 +37,6 @@ def main():
     notificacao.setHorasAntes(0)
     notificacao.setMinAntes(0)
     notificacao.notificar(compromisso)
-
-
-
 
     # Testando notificar (considerando o tempo atual para fins de demonstração)
     # Devemos ativar a notificação para testar corretamente
