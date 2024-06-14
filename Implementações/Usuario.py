@@ -1,5 +1,6 @@
 from Interfaces.Inter_Usuario import Inter_Usuario, Inter_ListadeUsuario
 import re
+import pandas as pd
 
 class Usuario(Inter_Usuario):
     def __init__(self):
@@ -75,17 +76,33 @@ class Usuario(Inter_Usuario):
             return False
 
 class ListaUsuario(Inter_ListadeUsuario):
-    def __init__(self) -> None:  
-        self._listadeusuario = {}
+    def __init__(self) -> None:
+        self.__colunas = ['Usuário', 'E-mail']
+        self.__dataframe_usuarios = pd.DataFrame({}, columns=self.__colunas)
+        
+        self.__dataframe_usuarios.to_excel('Planilha_de_usuarios.xlsx',index=True, engine='openpyxl')
 
     def adicionarUsuario(self, usuario: Usuario):
-        self._listadeusuario[usuario.getEmail()] = usuario
+        #nova_linha = pd.Series({'Usuário': usuario.getNome(), 'E-mail': usuario.getEmail()}, name=self.__dataframe_usuarios.shape[0])
+        self.__dataframe_usuarios[self.__dataframe_usuarios.shape[0], [0]] = usuario.getNome()
+        
+        self.__dataframe_usuarios.to_excel('Planilha_de_usuarios.xlsx',index=True, engine='openpyxl')
 
     def removerUsuario(self, usuario: Usuario):
-        if usuario.getEmail() in self._listadeusuario:
-            del self._listadeusuario[usuario.getEmail()]
+        planilha = pd.read_excel('Planilha_de_usuarios.xlsx')
+        
+        if usuario.getEmail() in planilha:
+            self.__dataframe_usuarios.drop(planilha[usuario.getEmail()])
+            self.__dataframe_usuarios.to_excel('Planilha_de_usuarios.xlsx',index=True, engine='openpyxl')
 
     def checkUsuario(self, email: str, nome: str = None) -> bool:
+        try:
+            planilha = pd.read_excel('Planilha_de_usuarios.xlsx')
+            
+        except:
+            print("Arquivo não encontrado!")
+            return True
+            
         if nome:
-            return email in self._listadeusuario and self._listadeusuario[email].getNome() == nome
-        return email in self._listadeusuario
+            return email in planilha and planilha.iloc[email] == nome
+        return email in planilha
