@@ -4,9 +4,14 @@ from Implementações.Tarefa.Tarefa import Compromisso
 from datetime import datetime, timedelta
 
 class Notificação(Inter_Notificação):
-    def __init__(self) -> None:
-        self.__min_Antes = 0
-        self.__horas_Antes = 0
+    def __init__(self, horas, minutos) -> None:
+        if not self._validar_minutos(minutos):
+            raise ValueError("Minutos de antecedência devem estar entre 0 e 59.")
+        if not self._validar_horas(horas):
+            raise ValueError("Horas de antecedência devem estar entre 0 e 24.")
+        
+        self.__min_Antes = minutos
+        self.__horas_Antes = horas
         self.__estado = False
 
     def getMinAntes(self) -> int:
@@ -15,14 +20,14 @@ class Notificação(Inter_Notificação):
     def getHorasAntes(self) -> int:
         return self.__horas_Antes
 
-    def setMinAntes(self, minutos: int):
-        if (minutos < 0 & minutos >= 60):
-            raise ValueError("Minutos de antecedência não podem ser negativos.")
+    def setMinAntes(self, minutos: int) -> None:
+        if not self._validar_minutos(minutos):
+            raise ValueError("Minutos de antecedência devem estar entre 0 e 59.")
         self.__min_Antes = minutos
 
-    def setHorasAntes(self, horas: int):
-        if (horas < 0 & horas > 24 ):
-            raise ValueError("Horas de antecedência não podem ser negativas.")
+    def setHorasAntes(self, horas: int) -> None:
+        if not self._validar_horas(horas):
+            raise ValueError("Horas de antecedência devem estar entre 0 e 24.")
         self.__horas_Antes = horas
     
     def notificar(self, item):
@@ -63,3 +68,9 @@ class Notificação(Inter_Notificação):
 
     def checkEstado(self):
         return self.__estado
+    
+    def _validar_horas(horas: int) -> bool:
+        return 0 <= horas <= 24
+
+    def _validar_minutos(minutos: int) -> bool:
+        return 0 <= minutos <= 59

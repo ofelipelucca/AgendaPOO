@@ -3,10 +3,15 @@ import re
 from datetime import datetime, timedelta
 
 class Lembrete(Inter_Lembrete):
-    def __init__(self) -> None:
-        self.__data = ""
-        self.__mensagem = ""
-        self.__horario = ""
+    def __init__(self, data, horario, mensagem) -> None:
+        if not self._validar_data(data):
+            raise ValueError("O dia deve estar no formato dd/mm/aaaa")
+        if not self._validar_horario(horario):
+            raise ValueError("O horário deve estar no formato hh:mm:ss")
+        
+        self.__data = data
+        self.__mensagem = mensagem
+        self.__horario = horario
 
     def getData(self) -> str:
         return self.__data
@@ -17,43 +22,15 @@ class Lembrete(Inter_Lembrete):
     def getMensagem(self) -> str:
         return self.__mensagem
     
-    def setData(self, nova_Data: str):
-        try:
-            if not re.match(r'\d{2}/\d{2}/\d{4}', nova_Data):
-                raise ValueError("Formato da data inválido")
+    def setData(self, nova_Data: str) -> None:
+        if not self._validar_data(nova_Data):
+            raise ValueError("O dia deve estar no formato dd/mm/aaaa")
+        self.__data = nova_Data
 
-            dia, mes, ano = map(int, nova_Data.split('/'))
-            nova_data_dt = datetime(ano, mes, dia)
-            data_atual = datetime.now()
-            
-            if nova_data_dt <= data_atual:
-                raise ValueError("Data no passado")
-
-            self.__data = nova_Data
-        except ValueError as e:
-            print("Data deve estar no formato DD/MM/AAAA")
-            raise e
-
-    def setHorario(self, novo_Horario: str):
-        try:
-            if not re.match(r'\d{2}:\d{2}:\d{2}', novo_Horario):
-                raise ValueError("Formato do horário inválido")
-
-            hora, minuto, segundo = map(int, novo_Horario.split(':'))
-            novo_Horario_dt = timedelta(hours=hora, minutes=minuto, seconds=segundo)
-
-            if self.__data:
-                dia, mes, ano = map(int, self.__data.split('/'))
-                data_lembrete_dt = datetime(ano, mes, dia, hora, minuto, segundo)
-                data_atual = datetime.now()
-                
-                if data_lembrete_dt <= data_atual:
-                    raise ValueError("Horário no passado")
-
-            self.__horario = str(novo_Horario_dt)
-        except ValueError as e:
-            print("Horário deve estar no formato HH:MM:SS")
-            raise e
+    def setHorario(self, novo_Horario: str) -> None:
+        if not self._validar_horario(novo_Horario):
+            raise ValueError("O horário deve ser real e no formato hh:mm:ss")
+        self.__horario = novo_Horario
     
     def setMensagem(self, nova_mensagem: str):
         try:
@@ -70,6 +47,34 @@ class Lembrete(Inter_Lembrete):
         except ValueError as e:
             print("A mensagem deve ser diferente da mensagem atual e possuir no máximo 45 caracteres")
             raise e
+
+    def _validar_data(self, data: str) -> bool:
+        try:
+            datetime.strptime(data, '%d/%m/%Y')
+            return True
+        except ValueError:
+            return False
+
+    def _validar_horario(self, horario: str) -> bool:
+        if not self._validar_formato_horario(horario):
+            return False
+        horas, minutos, segundos = map(int, horario.split(':'))
+        if not self._validar_horas(horas):
+            return False
+        if not self._validar_minutos(minutos):
+            return False
+        if segundos < 0 or segundos > 59:
+            return False
+        return True
+    def _validar_formato_horario(self, horario: str) -> bool:
+        padrao_horario = re.compile(r'^\d{2}:\d{2}:\d{2}$')
+        return padrao_horario.match(horario) is not None
+
+    def _validar_horas(self, horas: int) -> bool:
+        return 0 <= horas <= 23
+    
+    def _validar_minutos(self, minutos: int) -> bool:
+        return 0 <= minutos <= 59
 
 class ListaLembrete(Inter_ListaLembrete):
     def __init__(self) -> None:
