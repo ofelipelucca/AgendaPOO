@@ -78,7 +78,7 @@ class Tarefa(Inter_Tarefa):
             raise ValueError("Estado invalido. (feito, em progresso, não feito)")
 
 
-class Compromisso(Tarefa):
+class Compromisso(Inter_Compromisso):
     def __init__(self, titulo, descricao, data, prioridade, estado, cor, local, horario) -> None:
         super().__init__(titulo, descricao, data, prioridade, estado)
         self.setCor(cor)
