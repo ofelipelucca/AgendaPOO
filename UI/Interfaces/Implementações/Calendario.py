@@ -39,7 +39,7 @@ class Calendario(Inter_Calendario):
             self.__agenda[dia] = sorted(self.__agenda[dia].items(), key=lambda x: datetime.strptime(x[0], "%H:%M"))
             self.__agenda[dia] = {key: valor for key, valor in self.__agenda[dia]}
     
-    def imprimirCalendario(self, dia_inicial: str) -> None:
+    def _imprimirCalendario(self, dia_inicial: str) -> None:
         data_inicial = datetime.strptime(dia_inicial, "%d/%m/%Y")
 
         for i in range(7):

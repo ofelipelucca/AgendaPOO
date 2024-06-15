@@ -42,5 +42,5 @@ class Inter_Calendario(ABC):
     # @brief Imprime o calendario de 7 dias a partir do dia escolhido (Contando com ele)
     #
     # @param dia_inicial O primero dia da sequência a ser mostrada
-    def imprimirCalendario(self, dia_inicial: str) -> None:
+    def _imprimirCalendario(self, dia_inicial: str) -> None:
         pass

@@ -53,7 +53,7 @@ class Register(tk.Frame):
         self.button_frame = ttk.Frame(self, style="Background.TFrame")
         self.button_frame.pack(pady=20)
 
-        register_button = tk.Button(self.button_frame, text="REGISTRAR-SE", command=lambda: self.check_dados(self.nome_entry.get(), self.sobrenome_entry.get(), self.email_entry.get(), self.senha_entry.get()),
+        register_button = tk.Button(self.button_frame, text="REGISTRAR-SE", command=lambda: self.check_dados(),
                                     background="#1f1f1f", foreground="white", font=font.Font(family="Tahoma", size=12, weight="normal"), 
                                     width=15, height=2, bd=0, highlightthickness=0)
         register_button.pack(side=tk.TOP)
@@ -66,22 +66,15 @@ class Register(tk.Frame):
                                      background="#141414", foreground="white")
         self.error_label.grid(row=0, column=1, padx=20)
 
-    def check_dados(self, nome, sobrenome, email, senha):
+    def check_dados(self):
+        nome = self.nome_entry.get()
+        sobrenome = self.sobrenome_entry.get()
+        email = self.email_entry.get()
+        senha = self.senha_entry.get()
 
-        self.controller.usuario = Usuario()
-
-        retornos = []
-
-        retornos.append(self.controller.usuario.setNome(nome, sobrenome))
-        retornos.append(self.controller.usuario.setEmail(email))
-        retornos.append(self.controller.usuario.setSenha(senha))
-
-        usuario_foi_registrado = True
-
-        for retorno in retornos:
-            if retorno != "Sucesso":
-                usuario_foi_registrado = False
-                self.error_label.configure(text=retorno)
-
-        if usuario_foi_registrado:
+        try:
+            self.controller.usuario = Usuario(nome, sobrenome, email, senha)
+            self.error_label.configure(text="")
             self.controller.mostrar_tela("Login")
+        except ValueError as e:
+            self.error_label.configure(text=str(e))

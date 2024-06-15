@@ -24,8 +24,10 @@ class Calendario(tk.Frame):
 
         style = ttk.Style(self)
         style.configure("Background.TFrame", background="#141414")
-        style.configure('Custom.TButton', background="#141414", foreground="black", padding=10)
-        style.map('Custom.TButton', background=[('active', '#282828')], foreground=[('active', '#282828')])
+        style.configure('Custom.TButton', background="#141414", 
+                        foreground="black", padding=10)
+        style.map('Custom.TButton', background=[('active', '#282828')], 
+                  foreground=[('active', '#282828')])
 
         self.data_atual = datetime.now()
         locale.setlocale(locale.LC_TIME, 'pt_BR.utf8')
@@ -38,13 +40,20 @@ class Calendario(tk.Frame):
         self.header_frame = ttk.Frame(self, style="Background.TFrame") 
         self.header_frame.pack(pady=50)
 
-        self.prev_button =  tk.Button(self.header_frame, text="<<", command=self.mes_anterior, background="#1f1f1f", foreground="white", font=font.Font(family="Tahoma", size=12, weight="normal"), width=15, height=2, bd=0, highlightthickness=0)
+        self.prev_button =  tk.Button(self.header_frame, text="<<", command=self.mes_anterior, 
+                                      background="#1f1f1f", foreground="white", 
+                                      font=font.Font(family="Tahoma", size=12, weight="normal"), 
+                                      width=15, height=2, bd=0, highlightthickness=0)
         self.prev_button.grid(row=0, column=0)
 
-        self.mes_label = ttk.Label(self.header_frame, font=font.Font(family="Tahoma", size=35, weight="bold"), background="#141414", foreground="white")
+        self.mes_label = ttk.Label(self.header_frame, font=font.Font(family="Tahoma", size=35, weight="bold"), 
+                                   background="#141414", foreground="white")
         self.mes_label.grid(row=0, column=1, padx=20)
 
-        self.next_button = tk.Button(self.header_frame, text=">>", command=self.mes_seguinte, background="#1f1f1f", foreground="white", font=font.Font(family="Tahoma", size=12, weight="normal"), width=15, height=2, bd=0, highlightthickness=0)
+        self.next_button = tk.Button(self.header_frame, text=">>", command=self.mes_seguinte, 
+                                     background="#1f1f1f", foreground="white", 
+                                     font=font.Font(family="Tahoma", size=12, weight="normal"), 
+                                     width=15, height=2, bd=0, highlightthickness=0)
         self.next_button.grid(row=0, column=2)
 
         self.dias_frame = ttk.Frame(self, style="Background.TFrame")  
@@ -52,7 +61,8 @@ class Calendario(tk.Frame):
 
         dias_da_semana = ["SEG", "TER", "QUA", "QUI", "SEX", "SÁB", "DOM"]
         for idx, day in enumerate(dias_da_semana):
-            ttk.Label(self.dias_frame, font=font.Font(family="Tahoma", size=10), text=day, background="#141414", foreground="white").grid(row=1, column=idx, padx=38.5, pady=7)
+            ttk.Label(self.dias_frame, font=font.Font(family="Tahoma", size=10), text=day, 
+                      background="#141414", foreground="white").grid(row=1, column=idx, padx=38.5, pady=7)
 
         self.dias_grid_frame = ttk.Frame(self, style="Background.TFrame") 
         self.dias_grid_frame.pack()
@@ -76,7 +86,9 @@ class Calendario(tk.Frame):
         for col in range(primeira_semana, 7):
             button_frame = ttk.Frame(self.dias_grid_frame, style="Background.TFrame")
             button_frame.grid(row=coluna, column=col, padx=5, pady=(0, 5))
-            button = tk.Button(button_frame, text=str(dia), command=lambda d=dia: self.click_callback(d, mes, ano), background="#1f1f1f", foreground="white", font=font.Font(family="Tahoma", size=12, weight="normal"), width=10, height=3, bd=0, highlightthickness=0)
+            button = tk.Button(button_frame, text=str(dia), command=lambda d=dia: self.click_callback(d, mes, ano), 
+                               background="#1f1f1f", foreground="white", font=font.Font(family="Tahoma", size=12, weight="normal"),
+                               width=10, height=3, bd=0, highlightthickness=0)
             button.pack(side=tk.TOP)
             self.botoes.append(button)
             self.mostrar_eventos(button_frame, dia, mes, ano)
@@ -89,7 +101,9 @@ class Calendario(tk.Frame):
                     break
                 button_frame = ttk.Frame(self.dias_grid_frame, style="Background.TFrame")
                 button_frame.grid(row=coluna, column=col, padx=5, pady=(0, 5))
-                button = tk.Button(button_frame, text=str(dia), command=lambda d=dia: self.click_callback(d, mes, ano), background="#1f1f1f", foreground="white", font=font.Font(family="Tahoma", size=12, weight="normal"), width=10, height=3, bd=0, highlightthickness=0)
+                button = tk.Button(button_frame, text=str(dia), command=lambda d=dia: self.click_callback(d, mes, ano), 
+                                   background="#1f1f1f", foreground="white", font=font.Font(family="Tahoma", size=12, weight="normal"), 
+                                   width=10, height=3, bd=0, highlightthickness=0)
                 button.pack(side=tk.TOP)
                 self.botoes.append(button)
                 self.mostrar_eventos(button_frame, dia, mes, ano)
@@ -105,7 +119,8 @@ class Calendario(tk.Frame):
             if qtd_bolinhas > 3:
                 for i, (tipo, nome, cor, descricao) in enumerate(eventos[:2]):
                     canvas.create_oval(5 + i*12, 2, 15 + i*12, 12, fill=cor, outline="black")
-                canvas.create_text(3*12 + 44, 7, text=f"+{qtd_bolinhas-2}", fill="white", font=font.Font(size=8, weight="bold"))
+                canvas.create_text(3*12 + 44, 7, text=f"+{qtd_bolinhas-2}", 
+                                   fill="white", font=font.Font(size=8, weight="bold"))
             else:
                 for i, (tipo, nome, cor, descricao) in enumerate(eventos):
                     canvas.create_oval(5 + i*12, 2, 15 + i*12, 12, fill=cor, outline="black")

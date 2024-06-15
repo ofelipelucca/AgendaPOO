@@ -6,9 +6,9 @@ from datetime import datetime, timedelta
 class Notificação(Inter_Notificação):
     def __init__(self, horas, minutos) -> None:
         if not self._validar_minutos(minutos):
-            raise ValueError("Minutos de antecedência devem estar entre 0 e 59.")
+            raise ValueError("Minutos de antecedencia devem estar entre 0 e 59.")
         if not self._validar_horas(horas):
-            raise ValueError("Horas de antecedência devem estar entre 0 e 24.")
+            raise ValueError("Horas de antecedencia devem estar entre 0 e 24.")
         
         self.__min_Antes = minutos
         self.__horas_Antes = horas
@@ -22,12 +22,12 @@ class Notificação(Inter_Notificação):
 
     def setMinAntes(self, minutos: int) -> None:
         if not self._validar_minutos(minutos):
-            raise ValueError("Minutos de antecedência devem estar entre 0 e 59.")
+            raise ValueError("Minutos de antecedencia devem estar entre 0 e 59.")
         self.__min_Antes = minutos
 
     def setHorasAntes(self, horas: int) -> None:
         if not self._validar_horas(horas):
-            raise ValueError("Horas de antecedência devem estar entre 0 e 24.")
+            raise ValueError("Horas de antecedencia devem estar entre 0 e 24.")
         self.__horas_Antes = horas
     
     def notificar(self, item):
@@ -58,7 +58,7 @@ class Notificação(Inter_Notificação):
             if self.__estado and hora_notificacao == hora_atual and min_notificacao == min_atual:
                 print(f"{descricao} Daqui a: {self.__horas_Antes} horas e {self.__min_Antes} minutos")
         else:
-            print("Horário do item está vazio.")
+            print("Horario do item está vazio.")
 
     def ativarNotificacao(self):
         self.__estado = True
