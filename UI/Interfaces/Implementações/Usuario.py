@@ -18,63 +18,55 @@ class Usuario(Inter_Usuario):
     def getSenha(self) -> str:
         return self.__senha
 
-    def setNome(self, novo_nome: str, novo_sobrenome: str):
+    def setNome(self, novo_nome: str, novo_sobrenome: str) -> str:
         MAX_CARACTERES = 40
         if 0 < len(novo_nome) <= MAX_CARACTERES:
             self.__nome = novo_nome
         else:
-            print("O nome deve possuir entre 1 e 40 caracteres")
-            return
+            return "O nome deve possuir entre 1 e 40 caracteres."
 
         if 0 < len(novo_sobrenome) <= MAX_CARACTERES:
             self.__sobrenome = novo_sobrenome
+            return "Sucesso"
         else:
-            print("O sobrenome deve possuir entre 1 e 40 caracteres")
+            return "O sobrenome deve possuir entre 1 e 40 caracteres."
     
-    def setSenha(self, nova_senha: str):
+    def setSenha(self, nova_senha: str) -> str:
         if re.match(r"^\d{6}$", nova_senha):
             self.__senha = nova_senha
+            return "Sucesso"
         else:
-            print("A senha deve conter exatamente 6 números")
+            return "A senha deve conter exatamente 6 números."
 
-    def setEmail(self, novo_email: str):
+    def setEmail(self, novo_email: str) -> str:
         lista_usuarios = ListaUsuario()
         if lista_usuarios.checkUsuario(novo_email):
-            print("O email fornecido já está em uso")
-            return
+            return "O email fornecido já está em uso."
         
         if not re.match(r"[^@]+@[^@]+\.[^@]+", novo_email):
-            print("Email deve estar no formato: usuario@dominio.com")
-            return
+            return "Email deve estar no formato: usuario@dominio.com"
         
         try:
             usuario, dominio = novo_email.split('@')
         except ValueError:
-            print("Email deve estar no formato: usuario@dominio.com")
-            return
+            return "Email deve estar no formato: usuario@dominio.com"
         
         if not usuario or not dominio:
-            print("Email deve estar no formato: usuario@dominio.com")
-            return
+            return "Email deve estar no formato: usuario@dominio.com"
 
         dominios_aceitos = ["gmail.com", "yahoo.com", "outlook.com"]
         if dominio not in dominios_aceitos:
-            print("Domínios aceitos:")
-            for d in dominios_aceitos:
-                print(f"    - '{d}'")
-            return
+            return "Dominio de email invalido."
 
         self.__email = novo_email
-        print("Email atualizado com sucesso")
+        return "Sucesso"
 
     def checkSenha(self, senha_informada: str) -> bool:
         if self.__senha == senha_informada:
-            print("Senha correta")
             return True
         else:
-            print("Senha incorreta")
             return False
-
+        
 class ListaUsuario(Inter_ListadeUsuario):
     def __init__(self) -> None:
         self.__colunas = ['Usuário', 'E-mail']

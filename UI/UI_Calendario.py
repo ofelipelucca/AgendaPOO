@@ -17,16 +17,10 @@ import calendar
 import locale
 from datetime import datetime
 
-class Calendario(tk.Tk):
-    def __init__(self):
-        super().__init__()
-
-        self.title("Agenda")
-        self.geometry("900x600")
-        self.minsize(900, 600)
-        self.resizable(True, True)
-        self.configure(bg="#141414")
-        self.iconbitmap('assets/favicon.ico')
+class Calendario(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent, bg="#141414")
+        self.controller = controller
 
         style = ttk.Style(self)
         style.configure("Background.TFrame", background="#141414")
@@ -40,6 +34,7 @@ class Calendario(tk.Tk):
         self.mostrar_mes(self.data_atual.year, self.data_atual.month)
 
     def criar_elementos(self):
+        
         self.header_frame = ttk.Frame(self, style="Background.TFrame") 
         self.header_frame.pack(pady=50)
 
@@ -57,13 +52,16 @@ class Calendario(tk.Tk):
 
         dias_da_semana = ["SEG", "TER", "QUA", "QUI", "SEX", "SÁB", "DOM"]
         for idx, day in enumerate(dias_da_semana):
-            ttk.Label(self.dias_frame, font=font.Font(family="Tahoma", size=10), text=day, background="#141414", foreground="white").grid(row=1, column=idx, padx=34.5, pady=5)
+            ttk.Label(self.dias_frame, font=font.Font(family="Tahoma", size=10), text=day, background="#141414", foreground="white").grid(row=1, column=idx, padx=38.5, pady=7)
 
         self.dias_grid_frame = ttk.Frame(self, style="Background.TFrame") 
         self.dias_grid_frame.pack()
 
     def mostrar_mes(self, ano, mes):
-        self.mes_label.config(text=f"{calendar.month_name[mes].upper()} {ano}")
+
+        mes_nome = "MARCO" if mes == 3 else calendar.month_name[mes].upper()
+        
+        self.mes_label.config(text=f"{mes_nome} {ano}")
 
         for widget in self.dias_grid_frame.winfo_children():
             widget.destroy()
@@ -78,7 +76,7 @@ class Calendario(tk.Tk):
         for col in range(primeira_semana, 7):
             button_frame = ttk.Frame(self.dias_grid_frame, style="Background.TFrame")
             button_frame.grid(row=coluna, column=col, padx=5, pady=(0, 5))
-            button = tk.Button(button_frame, text=str(dia), command=lambda d=dia: self.click_callback(d, mes, ano), background="#1f1f1f", foreground="white", font=font.Font(family="Tahoma", size=12, weight="normal"), width=10, height=2, bd=0, highlightthickness=0)
+            button = tk.Button(button_frame, text=str(dia), command=lambda d=dia: self.click_callback(d, mes, ano), background="#1f1f1f", foreground="white", font=font.Font(family="Tahoma", size=12, weight="normal"), width=10, height=3, bd=0, highlightthickness=0)
             button.pack(side=tk.TOP)
             self.botoes.append(button)
             self.mostrar_eventos(button_frame, dia, mes, ano)
@@ -91,7 +89,7 @@ class Calendario(tk.Tk):
                     break
                 button_frame = ttk.Frame(self.dias_grid_frame, style="Background.TFrame")
                 button_frame.grid(row=coluna, column=col, padx=5, pady=(0, 5))
-                button = tk.Button(button_frame, text=str(dia), command=lambda d=dia: self.click_callback(d, mes, ano), background="#1f1f1f", foreground="white", font=font.Font(family="Tahoma", size=12, weight="normal"), width=10, height=2, bd=0, highlightthickness=0)
+                button = tk.Button(button_frame, text=str(dia), command=lambda d=dia: self.click_callback(d, mes, ano), background="#1f1f1f", foreground="white", font=font.Font(family="Tahoma", size=12, weight="normal"), width=10, height=3, bd=0, highlightthickness=0)
                 button.pack(side=tk.TOP)
                 self.botoes.append(button)
                 self.mostrar_eventos(button_frame, dia, mes, ano)
@@ -99,9 +97,10 @@ class Calendario(tk.Tk):
 
     def mostrar_eventos(self, button_frame, dia, mes, ano):
         eventos = self.eventos.get(ano, {}).get(mes, {}).get(dia, [])
+        canvas = tk.Canvas(button_frame, width=100, height=15, bg="#282828", highlightthickness=0)
+        canvas.place(x=button_frame.winfo_x() // 2, y=button_frame.winfo_height() - 1)
+        
         if eventos:
-            canvas = tk.Canvas(button_frame, width=100, height=15, bg="#1f1f1f", highlightthickness=0)
-            canvas.place(x=button_frame.winfo_x() // 2, y=button_frame.winfo_height() - 1)
             qtd_bolinhas = len(eventos)
             if qtd_bolinhas > 3:
                 for i, (tipo, nome, cor, descricao) in enumerate(eventos[:2]):
