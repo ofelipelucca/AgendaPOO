@@ -20,6 +20,15 @@ class Calendario(tk.Frame):
         locale.setlocale(locale.LC_TIME, 'pt_BR.utf8')
         self.eventos = {}
         self.criar_elementos()
+        
+        # Exemplo de adição de eventos
+        self.adicionar_evento(2024, 6, 15, "Compromisso", "Reunião", "#FF6347", "Reunião importante")
+        self.adicionar_evento(2024, 6, 26, "Lembrete", "Compras", "#32CD32", "Ir ao mercado")
+        self.adicionar_evento(2024, 6, 20, "Lembrete", "Conta", "#32CD32", "Pagar contas de luz e agua")
+        self.adicionar_evento(2024, 6, 5, "Tarefa", "Relatorio", "#32CD32", "Revisar o relatorio para a reunião")
+        self.adicionar_evento(2024, 6, 5, "Compromisso", "Reunião", "#FF6347", "Reunião importante")
+        self.adicionar_evento(2024, 6, 5, "Lembrete", "Compras", "#32CD32", "Ir ao mercado")
+
         self.mostrar_mes(self.data_atual.year, self.data_atual.month)
 
     def criar_elementos(self):
@@ -123,20 +132,18 @@ class Calendario(tk.Frame):
             if dia not in self.eventos[ano][mes]:
                 self.eventos[ano][mes][dia] = []
 
-            print(f"Evento '{nome}' adicionado. {total_dias_do_mes} ({dia}/{mes})")
-
             self.eventos[ano][mes][dia].append((tipo, nome, cor, descricao))
         self.mostrar_mes(self.data_atual.year, self.data_atual.month)
 
     def click_callback(self, dia, mes, ano):
         if ano in self.eventos and mes in self.eventos[ano] and dia in self.eventos[ano][mes]:
             eventos_do_dia = self.eventos[ano][mes][dia]
-            for evento in eventos_do_dia:
-                tipo, nome, cor, descricao = evento
-                print(f"{tipo}: {nome}")
-                print(f"Descrição: {descricao}\n")
         else:
-            print(f"Nenhum evento encontrado para o dia {dia} do mês {mes} do ano {ano}.\n")
+            eventos_do_dia = {}
+
+        self.controller.passar_dados("eventos_do_dia", eventos_do_dia)
+        self.controller.passar_dados("data", {"dia": dia, "mes": mes, "ano": ano})
+        self.controller.mostrar_tela("Evento")
 
     def mes_anterior(self):
         if self.data_atual.month == 1:
@@ -151,16 +158,3 @@ class Calendario(tk.Frame):
         else:
             self.data_atual = self.data_atual.replace(month=self.data_atual.month + 1)
         self.mostrar_mes(self.data_atual.year, self.data_atual.month)
-
-if __name__ == "__main__":
-    app = Calendario()
-    # Exemplo de adição de eventos
-    app.adicionar_evento(2024, 6, 1, "Compromisso", "João", "#FF6347", "Aniversário do João")
-    app.adicionar_evento(2024, 6, 15, "Compromisso", "Reunião", "#FF6347", "Reunião importante")
-    app.adicionar_evento(2024, 6, 26, "Lembrete", "Compras", "#32CD32", "Ir ao mercado")
-    app.adicionar_evento(2024, 6, 20, "Lembrete", "Conta", "#32CD32", "Pagar contas de luz e agua")
-    app.adicionar_evento(2024, 6, 5, "Tarefa", "Relatorio", "#32CD32", "Revisar o relatorio para a reunião")
-    app.adicionar_evento(2024, 6, 5, "Compromisso", "Reunião", "#FF6347", "Reunião importante")
-    app.adicionar_evento(2024, 6, 5, "Lembrete", "Compras", "#32CD32", "Ir ao mercado")
-
-    app.mainloop()

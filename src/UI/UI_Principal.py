@@ -16,6 +16,7 @@ import tkinter as tk
 from src.UI.UI_Calendario import Calendario
 from src.UI.UI_Login import Login
 from src.UI.UI_Register import Register
+from src.UI.UI_Evento import Evento
 
 class Principal(tk.Tk):
     def __init__(self):
@@ -34,17 +35,24 @@ class Principal(tk.Tk):
         container.grid_columnconfigure(0, weight=1)
 
         self.usuario = None
-
+        self.args = {}
         self.frames = {}
-        for F in (Register, Login, Calendario):
+
+        for F in (Register, Login, Calendario, Evento):
             pagina_nome = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[pagina_nome] = frame
 
             frame.grid(row=0, column=0, sticky="nsew")
 
-        self.mostrar_tela("Register")
+        self.mostrar_tela("Login")
 
     def mostrar_tela(self, pagina_nome):
         frame = self.frames[pagina_nome]
         frame.tkraise()
+
+    def passar_dados(self, chave, valor):
+        self.args[chave] = valor
+
+    def obter_dados(self, chave):
+        return self.args.get(chave, None)
