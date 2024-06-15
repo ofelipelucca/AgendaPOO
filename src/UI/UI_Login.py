@@ -9,7 +9,6 @@ class Login(tk.Frame):
         self.criar_elementos()
 
     def criar_elementos(self):
-        
         self.header_frame = ttk.Frame(self, style="Background.TFrame")
         self.header_frame.pack(pady=50)
 

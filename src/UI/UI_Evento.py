@@ -12,7 +12,6 @@ class Evento(tk.Frame):
         self.criar_elementos()
 
     def criar_elementos(self):
-
         self.header_frame = ttk.Frame(self, style="Background.TFrame")
         self.header_frame.pack(pady=50)
 
@@ -34,12 +33,11 @@ class Evento(tk.Frame):
     def tkraise(self, *args, **kwargs):
         super().tkraise(*args, **kwargs)
         
-        # Limpar eventos anteriores
+        # Limpando eventos anteriores
         for label in self.eventos_labels:
             label.destroy()
         self.eventos_labels.clear()
 
-        # Configurar a data
         data = self.controller.obter_dados('data')
         if data:
             dia = data.get('dia', '')
@@ -48,10 +46,9 @@ class Evento(tk.Frame):
             mes_nome = "MARCO" if mes == 3 else calendar.month_name[mes].upper()     
             self.dia_label.config(text=f"{dia} DE {mes_nome}, {ano}")        
         
-        # Obter eventos do dia
         eventos_do_dia = self.controller.obter_dados('eventos_do_dia')
         
-        # Exibir eventos como uma lista dentro do eventos_frame
+        # Exibindo os eventos como uma lista dentro do eventos_frame
         if eventos_do_dia:
             for evento in eventos_do_dia:
                 tipo, nome, cor, descricao = evento
@@ -61,6 +58,6 @@ class Evento(tk.Frame):
                 eventos_label.pack(fill=tk.X)
                 self.eventos_labels.append(eventos_label)
         
-        # Garantir que todos os elementos sejam criados se não existirem
+        # Garantindo que todos os elementos sejam criados se não existirem
         if self.header_frame is None or self.dia_label is None or self.voltar_button is None:
             self.criar_elementos()

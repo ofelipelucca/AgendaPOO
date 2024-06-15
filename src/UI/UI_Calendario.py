@@ -32,7 +32,6 @@ class Calendario(tk.Frame):
         self.mostrar_mes(self.data_atual.year, self.data_atual.month)
 
     def criar_elementos(self):
-        
         self.header_frame = ttk.Frame(self, style="Background.TFrame") 
         self.header_frame.pack(pady=50)
 
@@ -64,11 +63,12 @@ class Calendario(tk.Frame):
         self.dias_grid_frame.pack()
 
     def mostrar_mes(self, ano, mes):
-
+        # O Ç não existe na fonte usada
         mes_nome = "MARCO" if mes == 3 else calendar.month_name[mes].upper()
         
         self.mes_label.config(text=f"{mes_nome} {ano}")
 
+        # Removendo os elementos existentes ao trocar de mes a ser exibido
         for widget in self.dias_grid_frame.winfo_children():
             widget.destroy()
 
@@ -77,6 +77,8 @@ class Calendario(tk.Frame):
         dia = 1
         self.botoes = []
         coluna = 2
+
+        # Preenchendo os campos vazios com uma string vazia para ficar alinhado aos nomes dos dias da semana
         for i in range(primeira_semana):
             ttk.Label(self.dias_grid_frame, text="", background="#141414").grid(row=coluna, column=i, padx=5, pady=5)
         for col in range(primeira_semana, 7):
@@ -90,6 +92,7 @@ class Calendario(tk.Frame):
             self.mostrar_eventos(button_frame, dia, mes, ano)
             dia += 1
 
+        # Criando botões para o resto dos dias do mes
         while dia <= total_dias_do_mes:
             coluna += 1
             for col in range(7):
@@ -110,6 +113,7 @@ class Calendario(tk.Frame):
         canvas = tk.Canvas(button_frame, width=100, height=15, bg="#282828", highlightthickness=0)
         canvas.place(x=button_frame.winfo_x() // 2, y=button_frame.winfo_height() - 1)
         
+        # Criando uma bolinha para cada evento no dia com sua determinada cor
         if eventos:
             qtd_bolinhas = len(eventos)
             if qtd_bolinhas > 3:
@@ -139,7 +143,7 @@ class Calendario(tk.Frame):
         if ano in self.eventos and mes in self.eventos[ano] and dia in self.eventos[ano][mes]:
             eventos_do_dia = self.eventos[ano][mes][dia]
         else:
-            eventos_do_dia = {}
+            eventos_do_dia = {} # Enviando um array vazio caso não existam eventos para esse dia
 
         self.controller.passar_dados("eventos_do_dia", eventos_do_dia)
         self.controller.passar_dados("data", {"dia": dia, "mes": mes, "ano": ano})

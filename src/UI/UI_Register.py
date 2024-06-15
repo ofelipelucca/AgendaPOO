@@ -75,6 +75,6 @@ class Register(tk.Frame):
         try:
             self.controller.usuario = Usuario(nome, sobrenome, email, senha)
             self.error_label.configure(text="")
-            self.controller.mostrar_tela("Login")
+            self.controller.mostrar_tela("Login") # Caso registrado com sucesso (objeto Usuario pôde ser criado), ir para a tela de login
         except ValueError as e:
-            self.error_label.configure(text=str(e))
+            self.error_label.configure(text=str(e)) # Caso ocorra, exibindo o erro na error_label
