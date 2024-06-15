@@ -11,7 +11,6 @@ class Evento(tk.Frame):
         self.eventos_do_dia = {}
         self.criar_elementos()
 
-
     def criar_elementos(self):
 
         self.header_frame = ttk.Frame(self, style="Background.TFrame")
