@@ -45,7 +45,7 @@ class Principal(tk.Tk):
 
             frame.grid(row=0, column=0, sticky="nsew")
 
-        self.mostrar_tela("Register")
+        self.mostrar_tela("Login")
 
     def mostrar_tela(self, pagina_nome):
         frame = self.frames[pagina_nome]

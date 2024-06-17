@@ -2,6 +2,7 @@ from src.Implementações.Tarefa.Tarefa import Tarefa
 from src.Interfaces.Inter_ListadeTarefa import Inter_listadeTarefa
 
 import pandas as pd
+from typing import Optional, Union, List, Dict
 
 class ListaTarefa(Inter_listadeTarefa):
     def __init__(self) -> None:
@@ -58,16 +59,34 @@ class ListaTarefa(Inter_listadeTarefa):
             planilha.to_excel(self.__nome_do_arquivo, index=False, engine='openpyxl')
             
 
-    # @brief Busca uma Tarefa pelo seu Título
+    # @brief Busca uma Tarefa pelo seu Título, Data ou Mês
     #
-    # @param titulo o Título da Tarefa a ser procurada
+    # @param titulo o Título da Tarefa a ser procurada (opcional)
+    # @param data a Data da Tarefa a ser procurada (opcional)
+    # @param mes o Mês da Tarefa a ser procurada (opcional)
     #
-    # @return A tarefa, se existir. Caso nao exista, retorna None
-    def buscarTarefa(self, titulo: str) -> Tarefa:
+    # @return A(s) tarefa(s), se existir(em). Caso nao exista(m), retorna None
+    def buscarTarefa(self, titulo: Optional[str] = None, data: Optional[str] = None, mes: Optional[int] = None) -> Optional[Union[Dict, List[Dict]]]:
         planilha = self._carregar_planilha()
 
-        if titulo in planilha['Título'].values:
-            linha = planilha[planilha['Título'] == titulo]
-            return linha.to_dict(orient='records')[0]  
+        if titulo:
+            if titulo in planilha['Título'].values:
+                linha = planilha[planilha['Título'] == titulo]
+                return linha.to_dict(orient='records')[0]
+            return None
+
+        if data:
+            print(f"procurando por {data}")
+            tarefas_data = planilha[planilha['Data'] == data]
+            if not tarefas_data.empty:
+                return tarefas_data.to_dict(orient='records')
+            return None
+
+        if mes:
+            planilha['Mês'] = pd.to_datetime(planilha['Data'], errors='coerce').dt.month
+            tarefas_mes = planilha[planilha['Mês'] == mes]
+            if not tarefas_mes.empty:
+                return tarefas_mes.drop(columns=['Mês']).to_dict(orient='records')
+            return None
 
         return None

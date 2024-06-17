@@ -1,8 +1,11 @@
+from src.Implementações.Tarefa.ListaTarefa import ListaTarefa
+
 import tkinter as tk
 from tkinter import ttk, font
 import calendar
 import locale
 from datetime import datetime
+import pandas as pd
 
 class Calendario(tk.Frame):
     def __init__(self, parent, controller):
@@ -20,14 +23,8 @@ class Calendario(tk.Frame):
         locale.setlocale(locale.LC_TIME, 'pt_BR.utf8')
         self.eventos = {}
         self.criar_elementos()
-        
-        # Exemplo de adição de eventos
-        self.adicionar_evento(2024, 6, 15, "Compromisso", "Reunião", "#FF6347", "Reunião importante")
-        self.adicionar_evento(2024, 6, 26, "Lembrete", "Compras", "#32CD32", "Ir ao mercado")
-        self.adicionar_evento(2024, 6, 20, "Lembrete", "Conta", "#32CD32", "Pagar contas de luz e agua")
-        self.adicionar_evento(2024, 6, 5, "Tarefa", "Relatorio", "#32CD32", "Revisar o relatorio para a reunião")
-        self.adicionar_evento(2024, 6, 5, "Compromisso", "Reunião", "#FF6347", "Reunião importante")
-        self.adicionar_evento(2024, 6, 5, "Lembrete", "Compras", "#32CD32", "Ir ao mercado")
+
+        self.lista_de_tarefas = ListaTarefa()
 
         self.mostrar_mes(self.data_atual.year, self.data_atual.month)
 
@@ -63,6 +60,8 @@ class Calendario(tk.Frame):
         self.dias_grid_frame.pack()
 
     def mostrar_mes(self, ano, mes):
+        self.eventos = self.lista_de_tarefas.buscarTarefa(mes=mes)
+
         # O Ç não existe na fonte usada
         mes_nome = "MARCO" if mes == 3 else calendar.month_name[mes].upper()
         
@@ -109,21 +108,37 @@ class Calendario(tk.Frame):
                 dia += 1
 
     def mostrar_eventos(self, button_frame, dia, mes, ano):
-        eventos = self.eventos.get(ano, {}).get(mes, {}).get(dia, [])
+        data = f"{dia}/{mes:02d}/{ano}"  # Formatar a data para DD-MM-YYYY
+
         canvas = tk.Canvas(button_frame, width=100, height=15, bg="#282828", highlightthickness=0)
         canvas.place(x=button_frame.winfo_x() // 2, y=button_frame.winfo_height() - 1)
         
         # Criando uma bolinha para cada evento no dia com sua determinada cor
-        if eventos:
-            qtd_bolinhas = len(eventos)
+        if self.eventos:
+            qtd_bolinhas = len(self.eventos)
             if qtd_bolinhas > 3:
-                for i, (tipo, nome, cor, descricao) in enumerate(eventos[:2]):
-                    canvas.create_oval(5 + i*12, 2, 15 + i*12, 12, fill=cor, outline="black")
+                for i, evento in enumerate(self.eventos[:2]):
+                    if str(evento['Data']) != data:
+                        return
+                    cor = self.obter_cor_evento(evento)
+                    self.desenhar_bolinha(i, canvas, cor)
                 canvas.create_text(3*12 + 44, 7, text=f"+{qtd_bolinhas-2}", 
                                    fill="white", font=font.Font(size=8, weight="bold"))
             else:
-                for i, (tipo, nome, cor, descricao) in enumerate(eventos):
-                    canvas.create_oval(5 + i*12, 2, 15 + i*12, 12, fill=cor, outline="black")
+                for i, evento in enumerate(self.eventos):
+                    if str(evento['Data']) != data:
+                        return
+                    cor = self.obter_cor_evento(evento)
+                    self.desenhar_bolinha(i, canvas, cor)
+
+    def obter_cor_evento(self, evento):
+        cor = evento.get('Cor', '#FFB61E')  # Pegar a cor do evento, se não tiver, usar amarelo
+        if pd.isna(cor):
+            cor = "#FFB61E"
+        return cor
+    
+    def desenhar_bolinha(self, i, canvas, cor):
+        canvas.create_oval(5 + i*12, 2, 15 + i*12, 12, fill=cor, outline="black")
 
     def adicionar_evento(self, ano, mes, dia, tipo, nome, cor, descricao):
         total_dias_do_mes = calendar.monthrange(ano, mes)[1]
