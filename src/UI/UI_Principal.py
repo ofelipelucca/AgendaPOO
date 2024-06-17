@@ -11,12 +11,12 @@
 #                          
 ##########################################################################################
 
-import tkinter as tk
-
 from src.UI.UI_Calendario import Calendario
 from src.UI.UI_Login import Login
 from src.UI.UI_Register import Register
 from src.UI.UI_Evento import Evento
+
+import tkinter as tk
 
 class Principal(tk.Tk):
     def __init__(self):
@@ -45,7 +45,7 @@ class Principal(tk.Tk):
 
             frame.grid(row=0, column=0, sticky="nsew")
 
-        self.mostrar_tela("Login")
+        self.mostrar_tela("Register")
 
     def mostrar_tela(self, pagina_nome):
         frame = self.frames[pagina_nome]

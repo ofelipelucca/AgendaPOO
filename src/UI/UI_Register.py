@@ -1,7 +1,8 @@
+from src.Implementações.Usuario.Usuario import Usuario
+from src.Implementações.Usuario.ListaUsuario import ListaUsuario
+
 import tkinter as tk
 from tkinter import ttk, font
-
-from src.Implementações.Usuario.Usuario import Usuario
 
 class Register(tk.Frame):
     def __init__(self, parent, controller):
@@ -74,6 +75,10 @@ class Register(tk.Frame):
 
         try:
             self.controller.usuario = Usuario(nome, sobrenome, email, senha)
+            lista_usuarios = ListaUsuario()
+
+            lista_usuarios.adicionarUsuario(self.controller.usuario)
+
             self.error_label.configure(text="")
             self.controller.mostrar_tela("Login") # Caso registrado com sucesso (objeto Usuario pôde ser criado), ir para a tela de login
         except ValueError as e:
