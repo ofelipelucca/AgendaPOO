@@ -15,6 +15,7 @@ from src.UI.UI_Calendario import Calendario
 from src.UI.UI_Login import Login
 from src.UI.UI_Register import Register
 from src.UI.UI_Evento import Evento
+from src.UI.UI_Novo_Evento import Novo_Evento
 
 import tkinter as tk
 
@@ -38,7 +39,7 @@ class Principal(tk.Tk):
         self.args = {}
         self.frames = {}
 
-        for F in (Register, Login, Calendario, Evento):
+        for F in (Register, Login, Calendario, Evento, Novo_Evento):
             pagina_nome = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[pagina_nome] = frame

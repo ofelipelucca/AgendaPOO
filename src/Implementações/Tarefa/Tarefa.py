@@ -85,6 +85,12 @@ class Compromisso(Inter_Compromisso, Tarefa):
         self.setCor(cor)
         self.setLocal(local)
         self.setHorario(horario)
+        self.cores_validas = {
+            "laranja": "#FF8C00",
+            "azul": "#0080FF",
+            "roxo": "#9933FF",
+            "rosa": "#FFCCFF"
+        }
 
     def getCor(self) -> str:
         return self._cor
@@ -120,13 +126,7 @@ class Compromisso(Inter_Compromisso, Tarefa):
             raise ValueError("Cor invalida")
 
     def _obter_codigo_cor(self, cor: str) -> str:
-        cores = {
-            "laranja": "#FF8C00",
-            "azul": "#0080FF",
-            "roxo": "#9933FF",
-            "rosa": "#FFCCFF"
-        }
-        return cores[cor]
+        return self.cores_validas[cor]
 
     def _validar_local(self, local: str) -> None:
         if not 1 <= len(local) <= 100:
