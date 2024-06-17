@@ -9,8 +9,14 @@ class Usuario(Inter_Usuario):
         self.setEmail(email)
         self.setSenha(senha)
     
-    def getNome(self) -> str:
+    def getNomeCompleto(self) -> str:
         return f"{self.__nome} {self.__sobrenome}"
+    
+    def getNome(self) -> str:
+        return self.__nome
+    
+    def getSobrenome(self) -> str:
+        return self.__sobrenome
     
     def getEmail(self) -> str:
         return self.__email
@@ -56,7 +62,3 @@ class Usuario(Inter_Usuario):
         if dominio not in dominios_aceitos:
             raise ValueError("Dominio de email invalido.")
         self.__email = novo_email
-
-    def checkSenha(self, senha_informada: str) -> bool:
-        return self.__senha == senha_informada
-    

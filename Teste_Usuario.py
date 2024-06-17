@@ -12,7 +12,7 @@ def main():
     lista_usuarios.adicionarUsuario(user2)
 
     # Testa os métodos getNome, getEmail e getSenha
-    print(f"Nome do user1: {user1.getNome()}")
+    print(f"Nome do user1: {user1.getNomeCompleto()}")
     print(f"Email do user1: {user1.getEmail()}")
     print(f"Senha do user1: {user1.getSenha()}")
 
@@ -26,7 +26,7 @@ def main():
 
     # Testa a mudança de nome, email e senha
     user1.setNome("Carlos", "Souza")
-    print(f"Nome atualizado do user1: {user1.getNome()}")
+    print(f"Nome atualizado do user1: {user1.getNomeCompleto()}")
 
     user1.setEmail("carlos@outlook.com")
     print(f"Email atualizado do user1: {user1.getEmail()}")

@@ -1,12 +1,28 @@
 from abc import ABC, abstractmethod
+import pandas as pd
+from typing import Optional, Dict, Union
 
 class Inter_Usuario(ABC):
     
     @abstractmethod
     # @brief Busca pelo nome do usuario 
     #
+    # @return String do nome completo
+    def getNomeCompleto(self) -> str:
+        pass
+
+    @abstractmethod
+    # @brief Busca pelo nome do usuario 
+    #
     # @return String do nome
     def getNome(self) -> str:
+        pass
+
+    @abstractmethod
+    # @brief Busca pelo sobrenome do usuario 
+    #
+    # @return String do sobrenome
+    def getSobrenome(self) -> str:
         pass
    
     @abstractmethod
@@ -31,13 +47,6 @@ class Inter_Usuario(ABC):
     # @param sobrenome O sobrenome do usuario 
     def setNome(self, novo_nome: str, novo_sobrenome: str) -> None:
         pass
-    
-    @abstractmethod
-    # @brief Muda o email de um usuario
-    #
-    # @param novo_email O email a ser alterado
-    def setEmail(self, novo_email: str) -> None:
-        pass
 
     @abstractmethod
     # @brief Muda a senha de um usuario
@@ -47,13 +56,20 @@ class Inter_Usuario(ABC):
         pass
     
     @abstractmethod
-    # @brief Checa se a senha está correta
+    # @brief Muda o email de um usuario
     #
-    # @param senha_informada senha fornecida pelo usuario
-    def checkSenha(self, senha_informada: str) -> bool:
+    # @param novo_email O email a ser alterado
+    def setEmail(self, novo_email: str) -> None:
         pass
     
 class Inter_ListadeUsuario(ABC):
+    @abstractmethod
+    # @brief Carrega a planilha do arquivo Excel dos usuários salvos
+    #
+    # @return A planilha caso exista, cria uma nova caso nao exista
+    def _carregar_planilha(self) -> pd.DataFrame:
+        pass
+
     @abstractmethod
     # @brief Adiciona um Usuario a lista de Usuarios
     #
@@ -62,20 +78,43 @@ class Inter_ListadeUsuario(ABC):
         pass
         
     @abstractmethod
-    # @brief Remove um Usuario da lista de Usuarios
+    # @brief Remove um usuário do banco de dados
     #
-    # @param usuario O Usuario a ser removido
-    def removerUsuario(self, usuario: Inter_Usuario) -> None:
+    # @param usuario O usuário a ser removido
+    #
+    # @return Retorna True se o usuário foi removido com sucesso
+    def removerUsuario(self, usuario: Inter_Usuario) -> bool:
         pass
     
     @abstractmethod
-    # @brief Verifica se o email e o nome fornecidos correpondem na lista
+    # @brief Verifica se um usuário existe no banco de dados com o email fornecido
+    #
+    # @optional Fazer verificação checkando se o email bate com o nome fornecido
+    #
+    # @param email O email do usuário
+    #
+    # @param nome (Optional) o nome do usuário
+    #
+    # @return True se o usuário existe, False caso contrário
+    def checkUsuario(self, email: str, nome: Optional[str] = None) -> bool:
+        pass
+    
+    @abstractmethod
+    # @brief Verifica se o email e senha fornecidos batem no banco de dados
     #
     # @param email O email fornecido
     #
-    # @param nome O nome fornecido 
+    # @param senha_inserida A senha fornecida
     #
-    # @return True se o nome e o email correpondem, false caso contrario
-    def checkUsuario(self, email: str, nome: str) -> bool:
+    # @return True se o email e senha verificam, False caso contrário
+    def checkLogin(self, email: str, senha_inserida: str) -> bool:
         pass
-    
+
+    @abstractmethod
+    # @brief Retorna um dicionário com todos os dados do usuário baseado no email
+    #
+    # @param email O email do usuário
+    #
+    # @return Um dicionário com 'Nome', 'Sobrenome', 'Email' e 'Senha' se o usuário existir, None caso contrário
+    def obterUsuario(self, email: str) -> Optional[Dict[str, Union[str, int]]]:
+        pass
