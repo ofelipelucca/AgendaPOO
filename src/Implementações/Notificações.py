@@ -2,10 +2,10 @@ from src.Interfaces.Inter_Notificação import Inter_Notificação
 from src.Implementações.Lembrete import Lembrete
 from src.Implementações.Tarefa.Tarefa import Compromisso
 
-from datetime import datetime, timedelta
+from datetime import datetime
 
 class Notificação(Inter_Notificação):
-    def __init__(self, horas, minutos) -> None:
+    def __init__(self, horas:int, minutos:int) -> None:
         if not self._validar_minutos(minutos):
             raise ValueError("Minutos de antecedencia devem estar entre 0 e 59.")
         if not self._validar_horas(horas):
@@ -31,7 +31,7 @@ class Notificação(Inter_Notificação):
             raise ValueError("Horas de antecedencia devem estar entre 0 e 24.")
         self.__horas_Antes = horas
     
-    def notificar(self, item):
+    def notificar(self, item: any) -> None:
         # Obtem a hora atual do sistema
         agora = datetime.now()
         hora_atual = agora.hour
@@ -61,13 +61,13 @@ class Notificação(Inter_Notificação):
         else:
             print("Horario do item está vazio.")
 
-    def ativarNotificacao(self):
+    def ativarNotificacao(self) -> None:
         self.__estado = True
 
-    def desativarNotificacao(self):
+    def desativarNotificacao(self) -> None:
         self.__estado = False
 
-    def checkEstado(self):
+    def checkEstado(self) -> bool:
         return self.__estado
     
     def _validar_horas(self, horas: int) -> bool:

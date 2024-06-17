@@ -5,30 +5,53 @@ import pandas as pd
 
 class ListaUsuario(Inter_ListadeUsuario):
     def __init__(self) -> None:
-        self.__colunas = ['Usuário', 'E-mail']
-        self.__dataframe_usuarios = pd.DataFrame({}, columns=self.__colunas)
+        self.__colunas = ['Email', 'Usuário']
+        self.__nome_do_arquivo = "Planilha_de_usuarios.xlsx"
         
-        self.__dataframe_usuarios.to_excel('Planilha_de_usuarios.xlsx',index=True, engine='openpyxl')
+    def adicionarUsuario(self, usuario: Usuario) -> None:
+        try:
+            planilha = pd.read_excel(self.__nome_do_arquivo)
+        except FileNotFoundError:
+            planilha = pd.DataFrame(columns=self.__colunas)
+            
+        if (self.checkUsuario(usuario.getEmail(), usuario.getNome())):
+            print("O usuário fornecido já está cadastrado")
+        else:
+            novo_usuario = {self.__colunas[0]: usuario.getEmail(), self.__colunas[1]: usuario.getNome()}
+            planilha.loc[planilha.shape[0]] = novo_usuario
+            
+        planilha = planilha.drop_duplicates()
+        planilha.to_excel(self.__nome_do_arquivo, index=False, engine='openpyxl')
 
-    def adicionarUsuario(self, usuario: Usuario):
-        self.__dataframe_usuarios.loc[self.__dataframe_usuarios.shape[0]] = [usuario.getNome(), usuario.getEmail()]
-        self.__dataframe_usuarios.to_excel('Planilha_de_usuarios.xlsx',index=True, engine='openpyxl')
-
-    def removerUsuario(self, usuario: Usuario):
-        planilha = pd.read_excel('Planilha_de_usuarios.xlsx')
-        
-        if usuario.getEmail() in planilha['E-mail'].values:
-            index = planilha[planilha['E-mail'] == usuario.getEmail()].index
-            self.__dataframe_usuarios.drop(index, inplace=True)
-            self.__dataframe_usuarios.to_excel('Planilha_de_usuarios.xlsx',index=True, engine='openpyxl')
+    def removerUsuario(self, usuario: Usuario) -> None:
+        try:
+            planilha = pd.read_excel(self.__nome_do_arquivo)
+        except FileNotFoundError:
+            planilha = pd.DataFrame(columns=self.__colunas)
+            
+        if usuario.getEmail() in planilha[self.__colunas[0]].values:
+            planilha = planilha[planilha[self.__colunas[0]] != usuario.getEmail()]
+            planilha.to_excel(self.__nome_do_arquivo, index=False, engine='openpyxl')
+            
+            print("Usuário removido com sucesso")
+        else:
+            print("Usuário não encontrado")
 
     def checkUsuario(self, email: str, nome: str = None) -> bool:
         try:
-            planilha = pd.read_excel('Planilha_de_usuarios.xlsx')
+            planilha = pd.read_excel(self.__nome_do_arquivo)
         except FileNotFoundError:
-            print("Arquivo não encontrado!")
-            return False
+            planilha = pd.DataFrame(columns=self.__colunas)
             
-        if nome:
-            return not planilha[(planilha['E-mail'] == email) & (planilha['Usuário'] == nome)].empty
-        return not planilha[planilha['E-mail'] == email].empty
+        if (nome == None):
+            if email in planilha[self.__colunas[0]].values:
+                return True
+            else:
+                return False
+            
+        else:
+            if nome in planilha[self.__colunas[1]].values:
+                if planilha[self.__colunas[0]][planilha[self.__colunas[1]] == nome].values[0] == email:
+                    return True
+            else:
+                return False

@@ -26,7 +26,7 @@ def main():
     # Testa o método buscarLembrete
     encontrado = lista_lembretes.buscarLembrete("Almoço de Natal")
     if encontrado:
-        print("Lembrete encontrado: ", encontrado.getMensagem())
+        print("Lembrete encontrado: ", encontrado['Mensagem'][0])
     else:
         print("Lembrete não encontrado")
 

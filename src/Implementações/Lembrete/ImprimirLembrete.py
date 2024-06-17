@@ -21,9 +21,9 @@ class ImprimirLembrete(Inter_ImprimirLembrete):
     def verLembretes(self, user_email: str):
         lembrete = self.__lista_lembrete.obterLembretes(user_email)
         if lembrete:
-            print("Lembrete: ", lembrete.getMensagem())
-            print("Data: ", lembrete.getData())
-            print("Horario: ", lembrete.getHorario())
+            print("Lembrete: ", lembrete['Mensagem'][0])
+            print("Data: ", lembrete['Data'][0])
+            print("Horario: ", lembrete['Horário'][0])
             print("------------------------")
         else:
             print("Nenhum lembrete encontrado para o usuário.")

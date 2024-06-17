@@ -83,7 +83,7 @@ class Inter_Tarefa(ABC):
     # @brief Muda o estado de uma tarefa
     #
     # @param novo_Estado O novo estado
-    def setEstado(self, novo_Estado) -> None:
+    def setEstado(self, novo_Estado: str) -> None:
         pass
 
 class Inter_Compromisso(Inter_Tarefa):
@@ -132,3 +132,4 @@ class Inter_Compromisso(Inter_Tarefa):
     # @attention O horario informado deve estar no formato: HH:MM:SS
     def setHorario(self, novo_Horario: str) -> None:
         pass
+    

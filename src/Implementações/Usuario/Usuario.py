@@ -4,7 +4,7 @@ from src.Implementações.Usuario.ListaUsuario import ListaUsuario
 import re
 
 class Usuario(Inter_Usuario):
-    def __init__(self, nome, sobrenome, email, senha):
+    def __init__(self, nome:str, sobrenome:str, email:str, senha:str) -> None:
         self.setNome(nome, sobrenome)
         self.setEmail(email)
         self.setSenha(senha)
@@ -59,3 +59,4 @@ class Usuario(Inter_Usuario):
 
     def checkSenha(self, senha_informada: str) -> bool:
         return self.__senha == senha_informada
+    

@@ -6,21 +6,21 @@ class Inter_Lembrete(ABC):
     # @brief Busca pela data do lembrete
     #
     # @return String da data
-    def getData(self,) -> str:
+    def getData(self) -> str:
         pass
      
     @abstractmethod
     # @brief Busca pela mensagem do lembrete
     #
     # @return String da mensagem
-    def getMensagem(self,) -> str:
+    def getMensagem(self) -> str:
         pass
      
     @abstractmethod
     # @brief Busca pelo horario do lembrete
     #
     # @return String do horario
-    def getHorario(self,) -> str:
+    def getHorario(self) -> str:
         pass
      
     @abstractmethod
@@ -78,7 +78,7 @@ class Inter_ListaLembrete(ABC):
     # @brief Calcula o tamanho do mapa
     #
     # @return Um unsigned com o tamanho
-    def tamanho(self,) -> int:
+    def tamanho(self) -> int:
         pass
 
 class Inter_ImprimirLembrete(Inter_ListaLembrete):

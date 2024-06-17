@@ -6,21 +6,21 @@ class Inter_Usuario(ABC):
     # @brief Busca pelo nome do usuario 
     #
     # @return String do nome
-    def getNome(self,) -> str:
+    def getNome(self) -> str:
         pass
    
     @abstractmethod
     # @brief Busca pelo email do usuario 
     #
     # @return String do email
-    def getEmail(self,) -> str:
+    def getEmail(self) -> str:
         pass
     
     @abstractmethod
     # @brief Busca pela senha do usuario 
     #
     # @return String da senha
-    def getSenha(self,) -> str:
+    def getSenha(self) -> str:
         pass
 
     @abstractmethod
@@ -29,21 +29,21 @@ class Inter_Usuario(ABC):
     # @param nome O nome do usuario 
     #
     # @param sobrenome O sobrenome do usuario 
-    def setNome(self, novo_nome: str, novo_sobrenome: str):
+    def setNome(self, novo_nome: str, novo_sobrenome: str) -> None:
         pass
     
     @abstractmethod
     # @brief Muda o email de um usuario
     #
     # @param novo_email O email a ser alterado
-    def setEmail(self, novo_email: str):
+    def setEmail(self, novo_email: str) -> None:
         pass
 
     @abstractmethod
     # @brief Muda a senha de um usuario
     #
     # @param nova_senha A senha a ser alterada
-    def setSenha(self, nova_senha: str):
+    def setSenha(self, nova_senha: str) -> None:
         pass
     
     @abstractmethod
@@ -58,14 +58,14 @@ class Inter_ListadeUsuario(ABC):
     # @brief Adiciona um Usuario a lista de Usuarios
     #
     # @param usuario O Usuario a ser adicionado
-    def adicionarUsuario(self, usuario: Inter_Usuario):
+    def adicionarUsuario(self, usuario: Inter_Usuario) -> None:
         pass
         
     @abstractmethod
     # @brief Remove um Usuario da lista de Usuarios
     #
     # @param usuario O Usuario a ser removido
-    def removerUsuario(self, usuario: Inter_Usuario):
+    def removerUsuario(self, usuario: Inter_Usuario) -> None:
         pass
     
     @abstractmethod
@@ -78,3 +78,4 @@ class Inter_ListadeUsuario(ABC):
     # @return True se o nome e o email correpondem, false caso contrario
     def checkUsuario(self, email: str, nome: str) -> bool:
         pass
+    

@@ -21,11 +21,11 @@ def main():
     tarefa_encontrada = lista_tarefas.buscarTarefa("Fazer compras")
     if tarefa_encontrada:
         print("Tarefa encontrada:")
-        print("Título:", tarefa_encontrada.getTitulo())
-        print("Descrição:", tarefa_encontrada.getDescricao())
-        print("Data:", tarefa_encontrada.getData())
-        print("Prioridade:", tarefa_encontrada.getPrioridade())
-        print("Estado:", tarefa_encontrada.getEstado())
+        print("Título:", tarefa_encontrada['Título'][0])
+        print("Descrição:", tarefa_encontrada['Descrição'][0])
+        print("Data:", tarefa_encontrada['Data'][0])
+        print("Prioridade:", tarefa_encontrada['Prioridade'][0])
+        print("Estado:", tarefa_encontrada['Estado'][0])
     else:
         print("Tarefa não encontrada.")
 
@@ -52,14 +52,14 @@ def main():
     compromisso_encontrado = lista_compromissos.buscarTarefa("Reunião de trabalho")
     if compromisso_encontrado:
         print("Compromisso encontrado:")
-        print("Título:", compromisso_encontrado.getTitulo())
-        print("Descrição:", compromisso_encontrado.getDescricao())
-        print("Data:", compromisso_encontrado.getData())
-        print("Prioridade:", compromisso_encontrado.getPrioridade())
-        print("Estado:", compromisso_encontrado.getEstado())
-        print("Cor:", compromisso_encontrado.getCor())
-        print("Local:", compromisso_encontrado.getLocal())
-        print("Horário:", compromisso_encontrado.getHorario())
+        print("Título:", compromisso_encontrado['Título'][0])
+        print("Descrição:", compromisso_encontrado['Descrição'][0])
+        print("Data:", compromisso_encontrado['Data'][0])
+        print("Prioridade:", compromisso_encontrado['Prioridade'][0])
+        print("Estado:", compromisso_encontrado['Estado'][0])
+        print("Cor:", compromisso_encontrado['Cor'][0])
+        print("Local:", compromisso_encontrado['Local'][0])
+        print("Horário:", compromisso_encontrado['Horário'][0])
     else:
         print("Compromisso não encontrado.")
 
