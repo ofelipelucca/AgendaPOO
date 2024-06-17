@@ -18,11 +18,10 @@ class Novo_Evento(tk.Frame):
         
         self.dias_validos = []
         
-        self.fonte = font.Font(family="Tahoma", size=13, weight="normal")
-
         self.criar_elementos()
 
     def criar_elementos(self):
+        self.fonte = font.Font(family="Tahoma", size=13, weight="normal")
         self.header_frame = ttk.Frame(self, style="Background.TFrame")
         self.header_frame.pack(pady=50)
 
