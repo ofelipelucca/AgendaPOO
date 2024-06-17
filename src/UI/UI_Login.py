@@ -20,8 +20,16 @@ class Login(tk.Frame):
                                      background="#141414", foreground="white")
         self.login_label.grid(row=0, column=1, padx=20)
 
+        self.error_frame = ttk.Frame(self, style="Background.TFrame")
+        self.error_frame.pack(pady=5)
+
+        self.error_label = ttk.Label(self.error_frame, text="", 
+                                     font=font.Font(family="Tahoma", size=10, weight="bold"), 
+                                     background="#141414", foreground="white")
+        self.error_label.grid(row=0, column=1, padx=20)
+
         self.input_frame = ttk.Frame(self, style="Background.TFrame")
-        self.input_frame.pack(pady=(50, 10))
+        self.input_frame.pack(pady=5)
 
         self.email_label = ttk.Label(self.input_frame, text="EMAIL:", 
                                      font=font.Font(family="Tahoma", size=12), 
@@ -40,18 +48,15 @@ class Login(tk.Frame):
         self.button_frame = ttk.Frame(self, style="Background.TFrame")
         self.button_frame.pack(pady=20)
                                
-        login_button = tk.Button(self.button_frame, text="LOGIN", command=lambda: self.check_dados(),
+        self.login_button = tk.Button(self.button_frame, text="FAZER LOGIN", command=lambda: self.check_dados(),
                                   background="#1f1f1f", foreground="white", font=font.Font(family="Tahoma", size=12, weight="normal"), 
-                                  width=10, height=2, bd=0, highlightthickness=0)
-        login_button.pack(side=tk.TOP)
+                                  width=25, height=2, bd=0, highlightthickness=0)
+        self.login_button.pack(side=tk.TOP)
 
-        self.error_frame = ttk.Frame(self, style="Background.TFrame")
-        self.error_frame.pack(pady=5)
-
-        self.error_label = ttk.Label(self.error_frame, text="", 
-                                     font=font.Font(family="Tahoma", size=10, weight="bold"), 
-                                     background="#141414", foreground="white")
-        self.error_label.grid(row=0, column=1, padx=20)
+        self.register_button = tk.Button(self.button_frame, text="NAO POSSUO UMA CONTA", command=lambda: self.controller.mostrar_tela("Register"),
+                                    background="#1f1f1f", foreground="white", font=font.Font(family="Tahoma", size=12, weight="normal"), 
+                                    width=25, height=2, bd=0, highlightthickness=0)
+        self.register_button.pack(side=tk.TOP, pady=30)
 
     def check_dados(self):
         email = self.email_entry.get()
