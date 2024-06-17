@@ -2,9 +2,9 @@ from src.Implementações.Usuario.Usuario import Usuario, ListaUsuario
 
 def main():
     # Cria instâncias de Usuario
-    user1 = Usuario("João", "Silva", "joao@gmail.com", "123456")
+    user1 = Usuario("Felipe", "Silva", "exemploF@gmail.com", "123456")
 
-    user2 = Usuario("Maria", "Oliveira", "maria@yahoo.com","654321")
+    user2 = Usuario("Maria", "Ferreira", "mariaF@yahoo.com","654321")
 
     # Cria uma instância de ListaUsuario e adiciona os usuários
     lista_usuarios = ListaUsuario()
@@ -21,8 +21,8 @@ def main():
     print(f"Check senha user1 (000000): {user1.checkSenha('000000')}")
 
     # Testa o método checkUsuario na lista de usuários
-    print(f"Check usuario (joao@gmail.com, João Silva): {lista_usuarios.checkUsuario('joao@gmail.com', 'João Silva')}")
-    print(f"Check usuario (maria@yahoo.com, Maria Oliveira): {lista_usuarios.checkUsuario('maria@yahoo.com', 'Maria Oliveira')}")
+    print(f"Check usuario (exemploF@gmail.com, Felipe Silva): {lista_usuarios.checkUsuario('exemploF@gmail.com', 'Felipe Silva')}")
+    print(f"Check usuario (mariaF@yahoo.com, Maria Ferreira): {lista_usuarios.checkUsuario('mariaF@yahoo.com', 'Maria Ferreira')}")
 
     # Testa a mudança de nome, email e senha
     user1.setNome("Carlos", "Souza")

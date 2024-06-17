@@ -21,11 +21,11 @@ def main():
     tarefa_encontrada = lista_tarefas.buscarTarefa("Fazer compras")
     if tarefa_encontrada:
         print("Tarefa encontrada:")
-        print("Título:", tarefa_encontrada['Título'][0])
-        print("Descrição:", tarefa_encontrada['Descrição'][0])
-        print("Data:", tarefa_encontrada['Data'][0])
-        print("Prioridade:", tarefa_encontrada['Prioridade'][0])
-        print("Estado:", tarefa_encontrada['Estado'][0])
+        print("Título:", tarefa_encontrada['Título'])
+        print("Descrição:", tarefa_encontrada['Descrição'])
+        print("Data:", tarefa_encontrada['Data'])
+        print("Prioridade:", tarefa_encontrada['Prioridade'])
+        print("Estado:", tarefa_encontrada['Estado'])
     else:
         print("Tarefa não encontrada.")
 
@@ -52,14 +52,14 @@ def main():
     compromisso_encontrado = lista_compromissos.buscarTarefa("Reunião de trabalho")
     if compromisso_encontrado:
         print("Compromisso encontrado:")
-        print("Título:", compromisso_encontrado['Título'][0])
-        print("Descrição:", compromisso_encontrado['Descrição'][0])
-        print("Data:", compromisso_encontrado['Data'][0])
-        print("Prioridade:", compromisso_encontrado['Prioridade'][0])
-        print("Estado:", compromisso_encontrado['Estado'][0])
-        print("Cor:", compromisso_encontrado['Cor'][0])
-        print("Local:", compromisso_encontrado['Local'][0])
-        print("Horário:", compromisso_encontrado['Horário'][0])
+        print("Título:", compromisso_encontrado['Título'])
+        print("Descrição:", compromisso_encontrado['Descrição'])
+        print("Data:", compromisso_encontrado['Data'])
+        print("Prioridade:", compromisso_encontrado['Prioridade'])
+        print("Estado:", compromisso_encontrado['Estado'])
+        print("Cor:", compromisso_encontrado['Cor'])
+        print("Local:", compromisso_encontrado['Local'])
+        print("Horário:", compromisso_encontrado['Horário'])
     else:
         print("Compromisso não encontrado.")
 

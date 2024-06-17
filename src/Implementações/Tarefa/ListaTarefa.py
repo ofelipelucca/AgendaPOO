@@ -4,10 +4,18 @@ from src.Interfaces.Inter_ListadeTarefa import Inter_listadeTarefa
 import pandas as pd
 
 class ListaTarefa(Inter_listadeTarefa):
-
     def __init__(self) -> None:
         self.__colunas = ['Email', 'Título', 'Descrição', 'Data', 'Prioridade', 'Estado', 'Cor', 'Local', 'Horário']
         self.__nome_do_arquivo = "Planilha_de_tarefas.xlsx"
+
+    # @brief Carrega a planilha do arquivo Excel das tarefas salvas
+    #
+    # @return A planilha caso exista, cria uma nova caso nao exista
+    def _carregar_planilha(self) -> pd.DataFrame:
+        try:
+            return pd.read_excel(self.__nome_do_arquivo)
+        except FileNotFoundError:
+            return pd.DataFrame(columns=self.__colunas)
 
     # @brief Adiciona uma tarefa no sistema
     #
@@ -15,29 +23,24 @@ class ListaTarefa(Inter_listadeTarefa):
     #
     # @param user_email O email do usuario logado
     def adicionarTarefa(self, tarefa: Tarefa, user_email: str) -> None:
-        try:
-            planilha = pd.read_excel(self.__nome_do_arquivo)
-        except FileNotFoundError:
-            planilha = pd.DataFrame(columns=self.__colunas)
-        
-        tipo_de_tarefa = "compromisso"
-        try:
-            tarefa.getCor()
-        except:
-            tipo_de_tarefa = "tarefa"
-            
-        nova_tarefa = {self.__colunas[0]: user_email, self.__colunas[1]: tarefa.getTitulo(), 
-                        self.__colunas[2]: tarefa.getDescricao(), self.__colunas[3]: tarefa.getData(), 
-                        self.__colunas[4]: tarefa.getPrioridade(), self.__colunas[5]: tarefa.getEstado(),
-                        self.__colunas[6]: '', self.__colunas[7]: '', self.__colunas[8]: ''}
-        
-        if (tipo_de_tarefa == "compromisso"):
-            nova_tarefa[self.__colunas[6]] = tarefa.getCor()
-            nova_tarefa[self.__colunas[7]] = tarefa.getLocal()
-            nova_tarefa[self.__colunas[8]] = tarefa.getHorario()
-            
-        planilha.loc[planilha.shape[0]] = nova_tarefa
-        
+        planilha = self._carregar_planilha()
+
+        nova_tarefa = {
+            'Email': user_email,
+            'Título': tarefa.getTitulo(),
+            'Descrição': tarefa.getDescricao(),
+            'Data': tarefa.getData(),
+            'Prioridade': tarefa.getPrioridade(),
+            'Estado': tarefa.getEstado(),
+            'Cor': getattr(tarefa, 'getCor', lambda: '')(),
+            'Local': getattr(tarefa, 'getLocal', lambda: '')(),
+            'Horário': getattr(tarefa, 'getHorario', lambda: '')()
+        }
+
+        nova_tarefa_df = pd.DataFrame([nova_tarefa])
+
+        planilha = pd.concat([planilha, nova_tarefa_df], ignore_index=True)
+
         planilha = planilha.drop_duplicates()
         planilha.to_excel(self.__nome_do_arquivo, index=False, engine='openpyxl')
             
@@ -47,15 +50,11 @@ class ListaTarefa(Inter_listadeTarefa):
     # @param tarefa A tarefa a ser removida
     #
     # @param user_email O email do usuario logado
-    def removerTarefa(self, tarefa: Tarefa, user_email: str) -> None:
-        try:
-            planilha = pd.read_excel(self.__nome_do_arquivo)
-        except FileNotFoundError:
-            planilha = pd.DataFrame(columns=self.__colunas)
-            
-            
-        if user_email in planilha[self.__colunas[0]].values:
-            planilha = planilha.drop(planilha.query('Email == @user_email and Título == @tarefa.getTitulo()').index)
+    def removerTarefa(self, tarefa: Tarefa, user_email: str) -> None:    
+        planilha = self._carregar_planilha()
+
+        if user_email in planilha['Email'].values:
+            planilha = planilha[~((planilha['Email'] == user_email) & (planilha['Título'] == tarefa.getTitulo()))]
             planilha.to_excel(self.__nome_do_arquivo, index=False, engine='openpyxl')
             
 
@@ -65,13 +64,10 @@ class ListaTarefa(Inter_listadeTarefa):
     #
     # @return A tarefa, se existir. Caso nao exista, retorna None
     def buscarTarefa(self, titulo: str) -> Tarefa:
-        try:
-            planilha = pd.read_excel(self.__nome_do_arquivo)
-        except FileNotFoundError:
-            planilha = pd.DataFrame(columns=self.__colunas)
-            
-        if titulo in planilha[self.__colunas[1]].values:
-            linha = planilha.query('Título == @titulo')
+        planilha = self._carregar_planilha()
 
-            return linha.to_dict(orient='list')
+        if titulo in planilha['Título'].values:
+            linha = planilha[planilha['Título'] == titulo]
+            return linha.to_dict(orient='records')[0]  
+
         return None
