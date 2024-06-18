@@ -1,5 +1,3 @@
-from src.Implementações.Tarefa import Compromisso
-
 import tkinter as tk
 from tkinter import ttk, font
 import calendar
@@ -17,6 +15,11 @@ class Novo_Evento(tk.Frame):
         self.anos_validos = [str(year) for year in range(2020, 2031)]  # Intervalo de anos
         
         self.dias_validos = []
+        
+        # Listas para armazenar elementos
+        self.elementos_tarefa = []
+        self.elementos_compromisso = []
+        self.elementos_lembrete = []
         
         self.criar_elementos()
 
@@ -69,61 +72,62 @@ class Novo_Evento(tk.Frame):
 
     def criar_elementos_tarefa(self):
         ttk.Label(self.frame_tarefa, text="TITULO:", font=self.fonte,
-                  background="#141414", foreground="white").grid(row=0, column=1, padx=5, pady=5)
+                background="#141414", foreground="white").grid(row=0, column=1, padx=5, pady=5)
         ttk.Entry(self.frame_tarefa, width=50).grid(row=0, column=2, padx=10, pady=5)
 
         ttk.Label(self.frame_tarefa, text="DATA:", font=self.fonte,
-                  background="#141414", foreground="white").grid(row=0, column=3, padx=5, pady=5)
+                background="#141414", foreground="white").grid(row=0, column=3, padx=5, pady=5)
         
-        self.combobox_dia = ttk.Combobox(self.frame_tarefa, values=[], width=5, state='readonly')
-        self.combobox_dia.grid(row=0, column=5, padx=2, pady=5)
+        combobox_dia = ttk.Combobox(self.frame_tarefa, values=[], width=5, state='readonly')
+        combobox_dia.grid(row=0, column=5, padx=2, pady=5)
 
-        self.combobox_mes = ttk.Combobox(self.frame_tarefa, values=self.meses, width=10, state='readonly')
-        self.combobox_mes.grid(row=0, column=6, padx=2, pady=5)
-        self.combobox_mes.bind("<<ComboboxSelected>>", self.atualizar_dias_validos)
+        combobox_mes = ttk.Combobox(self.frame_tarefa, values=self.meses, width=10, state='readonly')
+        combobox_mes.grid(row=0, column=6, padx=2, pady=5)
         
-        self.combobox_ano = ttk.Combobox(self.frame_tarefa, values=self.anos_validos, width=7, state='readonly')
-        self.combobox_ano.grid(row=0, column=7, padx=2, pady=5)
-        self.combobox_ano.bind("<<ComboboxSelected>>", self.atualizar_dias_validos)
+        combobox_ano = ttk.Combobox(self.frame_tarefa, values=self.anos_validos, width=7, state='readonly')
+        combobox_ano.grid(row=0, column=7, padx=2, pady=5)
+        
+        combobox_mes.bind("<<ComboboxSelected>>", lambda event: self.atualizar_dias_validos(combobox_dia, combobox_mes, combobox_ano))
+        combobox_ano.bind("<<ComboboxSelected>>", lambda event: self.atualizar_dias_validos(combobox_dia, combobox_mes, combobox_ano))
 
         ttk.Label(self.frame_tarefa, text="DESCRICAO:", font=self.fonte,
-                  background="#141414", foreground="white").grid(row=2, column=1, padx=10, pady=5)
+                background="#141414", foreground="white").grid(row=2, column=1, padx=10, pady=5)
         ttk.Entry(self.frame_tarefa, width=50).grid(row=2, column=2, padx=10, pady=5)
 
         ttk.Label(self.frame_tarefa, text="PRIORIDADE:", font=self.fonte,
-                  background="#141414", foreground="white").grid(row=3, column=1, padx=10, pady=5)
+                background="#141414", foreground="white").grid(row=3, column=1, padx=10, pady=5)
         ttk.Combobox(self.frame_tarefa, values=["MUITO IMPORTANTE", "IMPORTANTE", "MENOS IMPORTANTE"], width=30, state='readonly').grid(row=3, column=2, padx=10, pady=5)
 
         ttk.Label(self.frame_tarefa, text="ESTADO:", font=self.fonte,
-                  background="#141414", foreground="white").grid(row=4, column=1, padx=10, pady=5)
+                background="#141414", foreground="white").grid(row=4, column=1, padx=10, pady=5)
         ttk.Combobox(self.frame_tarefa, values=["NÃO FEITO", "EM PROGRESSO", "FEITO"], width=30, state='readonly').grid(row=4, column=2, padx=10, pady=5)
 
-        self.atualizar_dias_validos()
+        self.atualizar_dias_validos(combobox_dia, combobox_mes, combobox_ano)
 
     def criar_elementos_compromisso(self):
         ttk.Label(self.frame_compromisso, text="TITULO:", font=self.fonte,
-                  background="#141414", foreground="white").grid(row=0, column=1, padx=5, pady=5)
+                background="#141414", foreground="white").grid(row=0, column=1, padx=5, pady=5)
         ttk.Entry(self.frame_compromisso, width=50).grid(row=0, column=2, padx=10, pady=5)
 
         ttk.Label(self.frame_compromisso, text="DESCRICAO:", font=self.fonte,
-                  background="#141414", foreground="white").grid(row=1, column=1, padx=10, pady=5)
+                background="#141414", foreground="white").grid(row=1, column=1, padx=10, pady=5)
         ttk.Entry(self.frame_compromisso, width=50).grid(row=1, column=2, padx=10, pady=5)
 
         ttk.Label(self.frame_compromisso, text="ESTADO:", font=self.fonte,
-                  background="#141414", foreground="white").grid(row=2, column=1, padx=10, pady=5)
+                background="#141414", foreground="white").grid(row=2, column=1, padx=10, pady=5)
         ttk.Combobox(self.frame_compromisso, values=["NÃO FEITO", "EM PROGRESSO", "FEITO"], width=30, state='readonly').grid(row=2, column=2, padx=10, pady=5)
 
         ttk.Label(self.frame_compromisso, text="PRIORIDADE:", font=self.fonte,
-                  background="#141414", foreground="white").grid(row=3, column=1, padx=10, pady=5)
+                background="#141414", foreground="white").grid(row=3, column=1, padx=10, pady=5)
         ttk.Combobox(self.frame_compromisso, values=["MUITO IMPORTANTE", "IMPORTANTE", "MENOS IMPORTANTE"], width=30, state='readonly').grid(row=3, column=2, padx=10, pady=5)
 
         ttk.Label(self.frame_compromisso, text="COR:", font=self.fonte,
-                  background="#141414", foreground="white").grid(row=5, column=1, padx=5, pady=5)
+                background="#141414", foreground="white").grid(row=5, column=1, padx=5, pady=5)
         self.combobox_horas = ttk.Combobox(self.frame_compromisso, values=['LARANJA', 'AZUL', 'ROXO', 'ROSA'], width=15, state='readonly')
         self.combobox_horas.grid(row=5, column=2, padx=2, pady=5)
 
         ttk.Label(self.frame_compromisso, text="HORARIO:", font=self.fonte,
-                  background="#141414", foreground="white").grid(row=1, column=3, padx=5, pady=5)
+                background="#141414", foreground="white").grid(row=1, column=3, padx=5, pady=5)
         
         self.combobox_horas = ttk.Combobox(self.frame_compromisso, values=[str(f"{horas:02d}h") for horas in range(0, 24)], width=5, state='readonly')
         self.combobox_horas.grid(row=1, column=4, padx=2, pady=5)
@@ -136,42 +140,44 @@ class Novo_Evento(tk.Frame):
 
 
         ttk.Label(self.frame_compromisso, text="DATA:", font=self.fonte,
-                  background="#141414", foreground="white").grid(row=0, column=3, padx=5, pady=5)
+                background="#141414", foreground="white").grid(row=0, column=3, padx=5, pady=5)
         
-        self.combobox_dia = ttk.Combobox(self.frame_compromisso, values=[], width=5, state='readonly')
-        self.combobox_dia.grid(row=0, column=4, padx=2, pady=5)
+        combobox_dia = ttk.Combobox(self.frame_compromisso, values=[], width=5, state='readonly')
+        combobox_dia.grid(row=0, column=4, padx=2, pady=5)
 
-        self.combobox_mes = ttk.Combobox(self.frame_compromisso, values=self.meses, width=10, state='readonly')
-        self.combobox_mes.grid(row=0, column=5, padx=2, pady=5)
-        self.combobox_mes.bind("<<ComboboxSelected>>", self.atualizar_dias_validos)
+        combobox_mes = ttk.Combobox(self.frame_compromisso, values=self.meses, width=10, state='readonly')
+        combobox_mes.grid(row=0, column=5, padx=2, pady=5)
         
-        self.combobox_ano = ttk.Combobox(self.frame_compromisso, values=self.anos_validos, width=7, state='readonly')
-        self.combobox_ano.grid(row=0, column=6, padx=2, pady=5)
-        self.combobox_ano.bind("<<ComboboxSelected>>", self.atualizar_dias_validos)
+        combobox_ano = ttk.Combobox(self.frame_compromisso, values=self.anos_validos, width=7, state='readonly')
+        combobox_ano.grid(row=0, column=6, padx=2, pady=5)
+        
+        combobox_mes.bind("<<ComboboxSelected>>", lambda event: self.atualizar_dias_validos(combobox_dia, combobox_mes, combobox_ano))
+        combobox_ano.bind("<<ComboboxSelected>>", lambda event: self.atualizar_dias_validos(combobox_dia, combobox_mes, combobox_ano))
 
-        self.atualizar_dias_validos()
+        self.atualizar_dias_validos(combobox_dia, combobox_mes, combobox_ano)
 
     def criar_elementos_lembrete(self):
         ttk.Label(self.frame_lembrete, text="MENSAGEM:", font=self.fonte,
-                  background="#141414", foreground="white").grid(row=0, column=1, padx=5, pady=5)
+                background="#141414", foreground="white").grid(row=0, column=1, padx=5, pady=5)
         ttk.Entry(self.frame_lembrete, width=50).grid(row=0, column=2, padx=10, pady=5)
 
         ttk.Label(self.frame_lembrete, text="DATA:", font=self.fonte,
-                  background="#141414", foreground="white").grid(row=0, column=3, padx=5, pady=5)
+                background="#141414", foreground="white").grid(row=0, column=3, padx=5, pady=5)
         
-        self.combobox_dia = ttk.Combobox(self.frame_lembrete, values=[], width=5, state='readonly')
-        self.combobox_dia.grid(row=0, column=5, padx=2, pady=5)
+        combobox_dia = ttk.Combobox(self.frame_lembrete, values=[], width=5, state='readonly')
+        combobox_dia.grid(row=0, column=5, padx=2, pady=5)
 
-        self.combobox_mes = ttk.Combobox(self.frame_lembrete, values=self.meses, width=10, state='readonly')
-        self.combobox_mes.grid(row=0, column=6, padx=2, pady=5)
-        self.combobox_mes.bind("<<ComboboxSelected>>", self.atualizar_dias_validos)
+        combobox_mes = ttk.Combobox(self.frame_lembrete, values=self.meses, width=10, state='readonly')
+        combobox_mes.grid(row=0, column=6, padx=2, pady=5)
         
-        self.combobox_ano = ttk.Combobox(self.frame_lembrete, values=self.anos_validos, width=7, state='readonly')
-        self.combobox_ano.grid(row=0, column=7, padx=2, pady=5)
-        self.combobox_ano.bind("<<ComboboxSelected>>", self.atualizar_dias_validos)
+        combobox_ano = ttk.Combobox(self.frame_lembrete, values=self.anos_validos, width=7, state='readonly')
+        combobox_ano.grid(row=0, column=7, padx=2, pady=5)
+        
+        combobox_ano.bind("<<ComboboxSelected>>", lambda event: self.atualizar_dias_validos(combobox_dia, combobox_mes, combobox_ano))
+        combobox_mes.bind("<<ComboboxSelected>>", lambda event: self.atualizar_dias_validos(combobox_dia, combobox_mes, combobox_ano))
 
         ttk.Label(self.frame_lembrete, text="HORARIO:", font=self.fonte,
-                  background="#141414", foreground="white").grid(row=1, column=3, padx=5, pady=5)
+                background="#141414", foreground="white").grid(row=1, column=3, padx=5, pady=5)
         
         self.combobox_horas = ttk.Combobox(self.frame_lembrete, values=[str(f"{horas:02d}h") for horas in range(0, 24)], width=5, state='readonly')
         self.combobox_horas.grid(row=1, column=5, padx=2, pady=5)
@@ -182,25 +188,22 @@ class Novo_Evento(tk.Frame):
         self.combobox_segundos = ttk.Combobox(self.frame_lembrete, values=[str(f"{segundo:02d} seg") for segundo in range(0, 60)], width=7, state='readonly')
         self.combobox_segundos.grid(row=1, column=7, padx=2, pady=5)
 
-        self.atualizar_dias_validos()
+        self.atualizar_dias_validos(combobox_dia, combobox_mes, combobox_ano)
 
     def atualizar_tipo_evento(self):
-        tipo_selecionado = self.tipo_evento.get()
-
-        if tipo_selecionado == "Tarefa":
-            self.frame_tarefa.pack(fill=tk.BOTH, expand=True, padx=50, pady=20)
-            self.frame_compromisso.pack_forget()
-            self.frame_lembrete.pack_forget()
-        elif tipo_selecionado == "Compromisso":
-            self.frame_tarefa.pack_forget()
-            self.frame_compromisso.pack(fill=tk.BOTH, expand=True, padx=50, pady=20)
-            self.frame_lembrete.pack_forget()
-        elif tipo_selecionado == "Lembrete":
-            self.frame_tarefa.pack_forget()
-            self.frame_compromisso.pack_forget()
-            self.frame_lembrete.pack(fill=tk.BOTH, expand=True, padx=50, pady=20)
+        tipo = self.tipo_evento.get()
+        self.frame_tarefa.pack_forget()
+        self.frame_compromisso.pack_forget()
+        self.frame_lembrete.pack_forget()
         
-        self.atualizar_aparencia_radiobuttons()
+        if tipo == "Tarefa":
+            self.frame_tarefa.pack(pady=20)
+        elif tipo == "Compromisso":
+            self.frame_compromisso.pack(pady=20)
+        elif tipo == "Lembrete":
+            self.frame_lembrete.pack(pady=20)
+        else:
+            pass
 
     def atualizar_aparencia_radiobuttons(self):
         if self.tipo_evento.get() == "Tarefa":
@@ -216,20 +219,22 @@ class Novo_Evento(tk.Frame):
             self.radiobutton_compromisso.config(background="#1f1f1f")
             self.radiobutton_lembrete.config(background="#333333")
 
-    def atualizar_dias_validos(self, event=None):
-        mes_selecionado = self.combobox_mes.get()
-        ano_selecionado = self.combobox_ano.get()
-        
-        dia_selecionado = self.combobox_dia.get()
+    def atualizar_dias_validos(self, combobox_dia, combobox_mes, combobox_ano):
+        try:
+            dia = combobox_dia.get()
+            mes = combobox_mes.get()
+            ano = combobox_ano.get()
+        except:
+            return
 
-        if mes_selecionado and ano_selecionado:
-            mes_selecionado = self.meses.index(mes_selecionado) + 1  # Converter o nome dos meses para índice de 1 a 12
-            ano_selecionado = int(ano_selecionado)
+        if mes and ano:
+            mes_selecionado = self.meses.index(mes) + 1  # Converter o nome dos meses para índice de 1 a 12
+            ano_selecionado = int(ano)
 
             self.dias_validos = [str(day) for day in range(1, calendar.monthrange(ano_selecionado, mes_selecionado)[1] + 1)]
 
-            self.combobox_dia.config(values=self.dias_validos)
+            combobox_dia.config(values=self.dias_validos)
 
-            if dia_selecionado not in self.dias_validos:
+            if dia not in self.dias_validos:
                 if self.dias_validos:
-                    self.combobox_dia.set(self.dias_validos[0])
+                    combobox_dia.set(self.dias_validos[0])
