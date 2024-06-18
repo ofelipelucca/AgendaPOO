@@ -1,0 +1,88 @@
+from src.Implementações.Tarefa.Tarefa import Tarefa
+from src.Implementações.Tarefa.ListaTarefa import ListaTarefa
+
+import tkinter as tk
+from tkinter import ttk
+
+class UI_Tarefa(tk.Frame):
+    def __init__(self, parent):
+        tk.Frame.__init__(self, parent, bg="#141414")
+
+        self.parent = parent
+        
+        ttk.Label(self, text="", font=self.parent.fonte,
+                  background="#141414", foreground="white").grid(row=0, column=1, padx=5, pady=5)
+       
+        ttk.Label(self, text="TITULO:", font=self.parent.fonte,
+                  background="#141414", foreground="white").grid(row=1, column=1, padx=5, pady=5)
+        self.titulo = ttk.Entry(self, width=50)
+        self.titulo.grid(row=1, column=2, padx=10, pady=5)
+
+        ttk.Label(self, text="DESCRICAO:", font=self.parent.fonte,
+                  background="#141414", foreground="white").grid(row=2, column=1, padx=10, pady=5)
+        self.descricao = ttk.Entry(self, width=50)
+        self.descricao.grid(row=2, column=2, padx=10, pady=5)
+
+        ttk.Label(self, text="PRIORIDADE:", font=self.parent.fonte,
+                  background="#141414", foreground="white").grid(row=3, column=1, padx=10, pady=5)
+        self.prioridade = ttk.Combobox(self, values=["MUITO IMPORTANTE", "IMPORTANTE", "MENOS IMPORTANTE"], width=30, state='readonly')
+        self.prioridade.grid(row=3, column=2, padx=10, pady=5)
+
+        ttk.Label(self, text="ESTADO:", font=self.parent.fonte,
+                  background="#141414", foreground="white").grid(row=4, column=1, padx=10, pady=5)
+        self.estado = ttk.Combobox(self, values=["NÃO FEITO", "EM PROGRESSO", "FEITO"], width=30, state='readonly')
+        self.estado.grid(row=4, column=2, padx=10, pady=5)
+
+        self.error_label = ttk.Label(self, text="", 
+                                     font=self.parent.fonte, 
+                                     background="#141414", foreground="white")
+        self.error_label.place(relx=0.5, rely=0.15, anchor='s')
+
+    def salvar_evento(self):
+        try:
+            titulo = self.titulo.get()
+
+            if not titulo:
+                ValueError("Insira um titulo.")
+
+            descricao = self.descricao.get()
+
+            if not descricao:
+                ValueError("Insira uma descricao.")
+            
+            data_do_dia = self.parent.controller.obter_dados('data')
+
+            dia = data_do_dia.get('dia', '')
+            mes = data_do_dia.get('mes', '')
+            ano = data_do_dia.get('ano', '')
+
+            data = f"{dia:02d}/{mes:02d}/{ano}"
+
+            prioridades_validas = {
+                "MUITO IMPORTANTE": 1,
+                "IMPORTANTE": 2,
+                "MENOS IMPORTANTE": 3
+            }
+            prioridade = int(prioridades_validas.get(self.prioridade.get(), 3))
+
+            if not prioridade:
+                ValueError("Insira uma prioridade.")
+
+            estado = str(self.estado.get()).lower()
+
+            if not estado:
+                ValueError("Insira um estado.")
+
+            nova_tarefa = Tarefa(titulo, descricao, data, prioridade, estado)
+            lista_de_tarefas = ListaTarefa()
+
+            email_do_usuario = self.parent.controller.usuario['Email']
+
+            lista_de_tarefas.adicionarTarefa(nova_tarefa, email_do_usuario)
+
+            self.error_label.configure(text="")
+
+            self.parent.controller.mostrar_tela("Calendario")
+
+        except ValueError as e:
+            self.error_label.configure(text=str(e)) # Caso ocorra, exibindo o erro na error_label

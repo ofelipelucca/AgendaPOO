@@ -38,15 +38,16 @@ class Principal(tk.Tk):
         self.usuario = None
         self.args = {}
         self.frames = {}
+        self.classes = {Register, Login, Calendario, Evento, Novo_Evento}
 
-        for F in (Register, Login, Calendario, Evento, Novo_Evento):
+        for F in self.classes:
             pagina_nome = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[pagina_nome] = frame
 
             frame.grid(row=0, column=0, sticky="nsew")
 
-        self.mostrar_tela("Register")
+        self.mostrar_tela("Login")
 
     def mostrar_tela(self, pagina_nome):
         frame = self.frames[pagina_nome]

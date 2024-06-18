@@ -108,28 +108,32 @@ class Calendario(tk.Frame):
                 dia += 1
 
     def mostrar_eventos(self, button_frame, dia, mes, ano):
-        data = f"{dia}/{mes:02d}/{ano}"  # Formatar a data para DD-MM-YYYY
+        data = f"{dia:02d}/{mes:02d}/{ano}"  # Formatar a data para DD-MM-YYYY
 
         canvas = tk.Canvas(button_frame, width=100, height=15, bg="#282828", highlightthickness=0)
         canvas.place(x=button_frame.winfo_x() // 2, y=button_frame.winfo_height() - 1)
-        
+
+        eventos_do_dia = self.get_eventos_do_dia(dia, mes, ano)
+
         # Criando uma bolinha para cada evento no dia com sua determinada cor
-        if self.eventos:
-            qtd_bolinhas = len(self.eventos)
+        if eventos_do_dia:
+            qtd_bolinhas = len(eventos_do_dia)
             if qtd_bolinhas > 3:
-                for i, evento in enumerate(self.eventos[:2]):
+                for botao, evento in enumerate(eventos_do_dia[:2]):
                     if str(evento['Data']) != data:
                         return
                     cor = self.obter_cor_evento(evento)
-                    self.desenhar_bolinha(i, canvas, cor)
+                    self.desenhar_bolinha(botao, canvas, cor)
                 canvas.create_text(3*12 + 44, 7, text=f"+{qtd_bolinhas-2}", 
                                    fill="white", font=font.Font(size=8, weight="bold"))
             else:
-                for i, evento in enumerate(self.eventos):
-                    if str(evento['Data']) != data:
+                for indice, botao in enumerate(self.botoes):
+                    for evento in eventos_do_dia:
+                        if str(evento['Data']) != data:
+                            return
+                        cor = self.obter_cor_evento(evento)
+                        self.desenhar_bolinha(indice, canvas, cor)
                         return
-                    cor = self.obter_cor_evento(evento)
-                    self.desenhar_bolinha(i, canvas, cor)
 
     def obter_cor_evento(self, evento):
         cor = evento.get('Cor', '#FFB61E')  # Pegar a cor do evento, se não tiver, usar amarelo
@@ -139,27 +143,26 @@ class Calendario(tk.Frame):
     
     def desenhar_bolinha(self, i, canvas, cor):
         canvas.create_oval(5 + i*12, 2, 15 + i*12, 12, fill=cor, outline="black")
+    
+    def get_eventos_do_dia(self, dia, mes, ano):
+        data = f"{dia:02d}/{mes:02d}/{ano}"
 
-    def adicionar_evento(self, ano, mes, dia, tipo, nome, cor, descricao):
-        total_dias_do_mes = calendar.monthrange(ano, mes)[1]
+        try:
+            email_do_usuario = self.controller.usuario['Email']
+        except:
+            email_do_usuario = ""
+        
+        eventos_do_dia = []
 
-        if mes <= 12 and dia <= total_dias_do_mes:
-            if ano not in self.eventos:
-                self.eventos[ano] = {}
-            if mes not in self.eventos[ano]:
-                self.eventos[ano][mes] = {}
-            if dia not in self.eventos[ano][mes]:
-                self.eventos[ano][mes][dia] = []
+        if self.eventos:
+            for evento in self.eventos:
+                if evento['Data'] == data and evento['Email'] == email_do_usuario:
+                    eventos_do_dia.append(evento)
 
-            self.eventos[ano][mes][dia].append((tipo, nome, cor, descricao))
-        self.mostrar_mes(self.data_atual.year, self.data_atual.month)
+        return eventos_do_dia
 
     def click_callback(self, dia, mes, ano):
-        if ano in self.eventos and mes in self.eventos[ano] and dia in self.eventos[ano][mes]:
-            eventos_do_dia = self.eventos[ano][mes][dia]
-        else:
-            eventos_do_dia = {} # Enviando um array vazio caso não existam eventos para esse dia
-
+        eventos_do_dia = self.get_eventos_do_dia(dia, mes, ano)
         self.controller.passar_dados("eventos_do_dia", eventos_do_dia)
         self.controller.passar_dados("data", {"dia": dia, "mes": mes, "ano": ano})
         self.controller.mostrar_tela("Evento")
@@ -176,4 +179,9 @@ class Calendario(tk.Frame):
             self.data_atual = self.data_atual.replace(year=self.data_atual.year + 1, month=1)
         else:
             self.data_atual = self.data_atual.replace(month=self.data_atual.month + 1)
+        self.mostrar_mes(self.data_atual.year, self.data_atual.month)
+
+    def tkraise(self, *args, **kwargs):
+        super().tkraise(*args, **kwargs)
+
         self.mostrar_mes(self.data_atual.year, self.data_atual.month)

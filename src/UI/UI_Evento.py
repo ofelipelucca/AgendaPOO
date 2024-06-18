@@ -30,6 +30,13 @@ class Evento(tk.Frame):
                                        width=15, height=2, bd=0, highlightthickness=0)
         self.voltar_button.pack(pady=10)
 
+        self.adicionar_button = tk.Button(self, text="ADICIONAR NOVO EVENTO",
+                                       command=lambda: self.controller.mostrar_tela("Novo_Evento"),
+                                       background="#1f1f1f", foreground="white", 
+                                       font=font.Font(family="Tahoma", size=12, weight="bold"), 
+                                       width=25, height=2, bd=0, highlightthickness=0)
+        self.adicionar_button.pack(pady=10)
+
     def tkraise(self, *args, **kwargs):
         super().tkraise(*args, **kwargs)
         
@@ -51,10 +58,12 @@ class Evento(tk.Frame):
         # Exibindo os eventos como uma lista dentro do eventos_frame
         if eventos_do_dia:
             for evento in eventos_do_dia:
-                tipo, nome, cor, descricao = evento
-                evento_texto = f"{nome}: {descricao}"
+                titulo = evento['Título']
+                descricao = evento['Descrição']
+                evento_texto = f"{titulo}: {descricao}"
+                cor = "#FFB61E"
                 eventos_label = tk.Label(self.eventos_frame, text=evento_texto, font=font.Font(family="Tahoma", size=20, weight="bold"), 
-                                         background=cor, foreground="white", padx=10, pady=5)
+                                        background=cor, foreground="white", padx=10, pady=5)
                 eventos_label.pack(fill=tk.X)
                 self.eventos_labels.append(eventos_label)
         

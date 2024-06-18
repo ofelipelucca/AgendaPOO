@@ -1,3 +1,7 @@
+from src.UI.UI_Nova_Tarefa import UI_Tarefa
+from src.UI.UI_Novo_Compromisso import UI_Compromisso
+from src.UI.UI_Novo_Lembrete import UI_Lembrete
+
 import tkinter as tk
 from tkinter import ttk, font
 import calendar
@@ -7,19 +11,16 @@ class Novo_Evento(tk.Frame):
         tk.Frame.__init__(self, parent, bg="#141414")
         self.controller = controller
         
-        self.tipo_evento = tk.StringVar()
+        self.tipo_evento = tk.StringVar(value="Tarefa")
         
         self.meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
                       'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
         
         self.anos_validos = [str(year) for year in range(2020, 2031)]  # Intervalo de anos
+
+        self.fonte = font.Font(family="Tahoma", size=13, weight="normal")
         
-        self.dias_validos = []
-        
-        # Listas para armazenar elementos
-        self.elementos_tarefa = []
-        self.elementos_compromisso = []
-        self.elementos_lembrete = []
+        self.frames = {}
         
         self.criar_elementos()
 
@@ -32,6 +33,20 @@ class Novo_Evento(tk.Frame):
                                         font=font.Font(family="Tahoma", size=35, weight="bold"),
                                         background="#141414", foreground="white")
         self.register_label.grid(row=0, column=1, padx=20)
+
+        self.voltar_button = tk.Button(self.header_frame, text="VOLTAR",
+                                       command=lambda: self.controller.mostrar_tela("Calendario"),
+                                       background="#1f1f1f", foreground="white", 
+                                       font=font.Font(family="Tahoma", size=12, weight="bold"), 
+                                       width=15, height=2, bd=0, highlightthickness=0)
+        self.voltar_button.grid(row=0, column=0, padx=10)
+
+        self.salvar_button = tk.Button(self.header_frame, text="SALVAR",
+                                       command=lambda: self.salvar_evento(),
+                                       background="#1f1f1f", foreground="white", 
+                                       font=font.Font(family="Tahoma", size=12, weight="bold"), 
+                                       width=15, height=2, bd=0, highlightthickness=0)
+        self.salvar_button.grid(row=0, column=3, padx=10)
 
         # Frame para seleção do tipo de evento
         self.tipo_frame = ttk.Frame(self, style="Background.TFrame")
@@ -55,169 +70,25 @@ class Novo_Evento(tk.Frame):
                                                    font=font.Font(family="Tahoma", size=12, weight="normal"), width=15, height=2, bd=0, highlightthickness=0)
         self.radiobutton_lembrete.grid(row=0, column=3, padx=10)
 
-        # Frame para dados específicos de Tarefa
-        self.frame_tarefa = ttk.Frame(self, style="Background.TFrame")
-        self.criar_elementos_tarefa()
-
-        # Frame para dados específicos de Compromisso
-        self.frame_compromisso = ttk.Frame(self, style="Background.TFrame")
-        self.criar_elementos_compromisso()
-
-        # Frame para dados específicos de Lembrete
-        self.frame_lembrete = ttk.Frame(self, style="Background.TFrame")
-        self.criar_elementos_lembrete()
-
-        # Exibição inicial dos elementos de Tarefa
-        self.atualizar_aparencia_radiobuttons()
-
-    def criar_elementos_tarefa(self):
-        ttk.Label(self.frame_tarefa, text="TITULO:", font=self.fonte,
-                background="#141414", foreground="white").grid(row=0, column=1, padx=5, pady=5)
-        ttk.Entry(self.frame_tarefa, width=50).grid(row=0, column=2, padx=10, pady=5)
-
-        ttk.Label(self.frame_tarefa, text="DATA:", font=self.fonte,
-                background="#141414", foreground="white").grid(row=0, column=3, padx=5, pady=5)
+        # Frames para cada tipo de evento
+        self.frame_tarefa = UI_Tarefa(self)
+        self.frame_compromisso = UI_Compromisso(self)
+        self.frame_lembrete = UI_Lembrete(self)
         
-        combobox_dia = ttk.Combobox(self.frame_tarefa, values=[], width=5, state='readonly')
-        combobox_dia.grid(row=0, column=5, padx=2, pady=5)
-
-        combobox_mes = ttk.Combobox(self.frame_tarefa, values=self.meses, width=10, state='readonly')
-        combobox_mes.grid(row=0, column=6, padx=2, pady=5)
+        self.frames["Tarefa"] = self.frame_tarefa
+        self.frames["Compromisso"] = self.frame_compromisso
+        self.frames["Lembrete"] = self.frame_lembrete
         
-        combobox_ano = ttk.Combobox(self.frame_tarefa, values=self.anos_validos, width=7, state='readonly')
-        combobox_ano.grid(row=0, column=7, padx=2, pady=5)
-        
-        combobox_mes.bind("<<ComboboxSelected>>", lambda event: self.atualizar_dias_validos(combobox_dia, combobox_mes, combobox_ano))
-        combobox_ano.bind("<<ComboboxSelected>>", lambda event: self.atualizar_dias_validos(combobox_dia, combobox_mes, combobox_ano))
-
-        ttk.Label(self.frame_tarefa, text="DESCRICAO:", font=self.fonte,
-                background="#141414", foreground="white").grid(row=2, column=1, padx=10, pady=5)
-        ttk.Entry(self.frame_tarefa, width=50).grid(row=2, column=2, padx=10, pady=5)
-
-        ttk.Label(self.frame_tarefa, text="PRIORIDADE:", font=self.fonte,
-                background="#141414", foreground="white").grid(row=3, column=1, padx=10, pady=5)
-        ttk.Combobox(self.frame_tarefa, values=["MUITO IMPORTANTE", "IMPORTANTE", "MENOS IMPORTANTE"], width=30, state='readonly').grid(row=3, column=2, padx=10, pady=5)
-
-        ttk.Label(self.frame_tarefa, text="ESTADO:", font=self.fonte,
-                background="#141414", foreground="white").grid(row=4, column=1, padx=10, pady=5)
-        ttk.Combobox(self.frame_tarefa, values=["NÃO FEITO", "EM PROGRESSO", "FEITO"], width=30, state='readonly').grid(row=4, column=2, padx=10, pady=5)
-
-        self.atualizar_dias_validos(combobox_dia, combobox_mes, combobox_ano)
-
-    def criar_elementos_compromisso(self):
-        ttk.Label(self.frame_compromisso, text="TITULO:", font=self.fonte,
-                background="#141414", foreground="white").grid(row=0, column=1, padx=5, pady=5)
-        ttk.Entry(self.frame_compromisso, width=50).grid(row=0, column=2, padx=10, pady=5)
-
-        ttk.Label(self.frame_compromisso, text="DESCRICAO:", font=self.fonte,
-                background="#141414", foreground="white").grid(row=1, column=1, padx=10, pady=5)
-        ttk.Entry(self.frame_compromisso, width=50).grid(row=1, column=2, padx=10, pady=5)
-
-        ttk.Label(self.frame_compromisso, text="ESTADO:", font=self.fonte,
-                background="#141414", foreground="white").grid(row=2, column=1, padx=10, pady=5)
-        ttk.Combobox(self.frame_compromisso, values=["NÃO FEITO", "EM PROGRESSO", "FEITO"], width=30, state='readonly').grid(row=2, column=2, padx=10, pady=5)
-
-        ttk.Label(self.frame_compromisso, text="PRIORIDADE:", font=self.fonte,
-                background="#141414", foreground="white").grid(row=3, column=1, padx=10, pady=5)
-        ttk.Combobox(self.frame_compromisso, values=["MUITO IMPORTANTE", "IMPORTANTE", "MENOS IMPORTANTE"], width=30, state='readonly').grid(row=3, column=2, padx=10, pady=5)
-
-        ttk.Label(self.frame_compromisso, text="COR:", font=self.fonte,
-                background="#141414", foreground="white").grid(row=5, column=1, padx=5, pady=5)
-        self.combobox_horas = ttk.Combobox(self.frame_compromisso, values=['LARANJA', 'AZUL', 'ROXO', 'ROSA'], width=15, state='readonly')
-        self.combobox_horas.grid(row=5, column=2, padx=2, pady=5)
-
-        ttk.Label(self.frame_compromisso, text="HORARIO:", font=self.fonte,
-                background="#141414", foreground="white").grid(row=1, column=3, padx=5, pady=5)
-        
-        self.combobox_horas = ttk.Combobox(self.frame_compromisso, values=[str(f"{horas:02d}h") for horas in range(0, 24)], width=5, state='readonly')
-        self.combobox_horas.grid(row=1, column=4, padx=2, pady=5)
-
-        self.combobox_minutos = ttk.Combobox(self.frame_compromisso, values=[str(f"{minutos:02d} min") for minutos in range(0, 60)], width=10, state='readonly')
-        self.combobox_minutos.grid(row=1, column=5, padx=2, pady=5)
-
-        self.combobox_segundos = ttk.Combobox(self.frame_compromisso, values=[str(f"{segundo:02d} seg") for segundo in range(0, 60)], width=7, state='readonly')
-        self.combobox_segundos.grid(row=1, column=6, padx=2, pady=5)
-
-
-        ttk.Label(self.frame_compromisso, text="DATA:", font=self.fonte,
-                background="#141414", foreground="white").grid(row=0, column=3, padx=5, pady=5)
-        
-        combobox_dia = ttk.Combobox(self.frame_compromisso, values=[], width=5, state='readonly')
-        combobox_dia.grid(row=0, column=4, padx=2, pady=5)
-
-        combobox_mes = ttk.Combobox(self.frame_compromisso, values=self.meses, width=10, state='readonly')
-        combobox_mes.grid(row=0, column=5, padx=2, pady=5)
-        
-        combobox_ano = ttk.Combobox(self.frame_compromisso, values=self.anos_validos, width=7, state='readonly')
-        combobox_ano.grid(row=0, column=6, padx=2, pady=5)
-        
-        combobox_mes.bind("<<ComboboxSelected>>", lambda event: self.atualizar_dias_validos(combobox_dia, combobox_mes, combobox_ano))
-        combobox_ano.bind("<<ComboboxSelected>>", lambda event: self.atualizar_dias_validos(combobox_dia, combobox_mes, combobox_ano))
-
-        self.atualizar_dias_validos(combobox_dia, combobox_mes, combobox_ano)
-
-    def criar_elementos_lembrete(self):
-        ttk.Label(self.frame_lembrete, text="MENSAGEM:", font=self.fonte,
-                background="#141414", foreground="white").grid(row=0, column=1, padx=5, pady=5)
-        ttk.Entry(self.frame_lembrete, width=50).grid(row=0, column=2, padx=10, pady=5)
-
-        ttk.Label(self.frame_lembrete, text="DATA:", font=self.fonte,
-                background="#141414", foreground="white").grid(row=0, column=3, padx=5, pady=5)
-        
-        combobox_dia = ttk.Combobox(self.frame_lembrete, values=[], width=5, state='readonly')
-        combobox_dia.grid(row=0, column=5, padx=2, pady=5)
-
-        combobox_mes = ttk.Combobox(self.frame_lembrete, values=self.meses, width=10, state='readonly')
-        combobox_mes.grid(row=0, column=6, padx=2, pady=5)
-        
-        combobox_ano = ttk.Combobox(self.frame_lembrete, values=self.anos_validos, width=7, state='readonly')
-        combobox_ano.grid(row=0, column=7, padx=2, pady=5)
-        
-        combobox_ano.bind("<<ComboboxSelected>>", lambda event: self.atualizar_dias_validos(combobox_dia, combobox_mes, combobox_ano))
-        combobox_mes.bind("<<ComboboxSelected>>", lambda event: self.atualizar_dias_validos(combobox_dia, combobox_mes, combobox_ano))
-
-        ttk.Label(self.frame_lembrete, text="HORARIO:", font=self.fonte,
-                background="#141414", foreground="white").grid(row=1, column=3, padx=5, pady=5)
-        
-        self.combobox_horas = ttk.Combobox(self.frame_lembrete, values=[str(f"{horas:02d}h") for horas in range(0, 24)], width=5, state='readonly')
-        self.combobox_horas.grid(row=1, column=5, padx=2, pady=5)
-
-        self.combobox_minutos = ttk.Combobox(self.frame_lembrete, values=[str(f"{minutos:02d} min") for minutos in range(0, 60)], width=10, state='readonly')
-        self.combobox_minutos.grid(row=1, column=6, padx=2, pady=5)
-
-        self.combobox_segundos = ttk.Combobox(self.frame_lembrete, values=[str(f"{segundo:02d} seg") for segundo in range(0, 60)], width=7, state='readonly')
-        self.combobox_segundos.grid(row=1, column=7, padx=2, pady=5)
-
-        self.atualizar_dias_validos(combobox_dia, combobox_mes, combobox_ano)
+        self.frame_tarefa.pack(pady=20)
+        self.frame_compromisso.pack_forget()
+        self.frame_lembrete.pack_forget()
 
     def atualizar_tipo_evento(self):
         tipo = self.tipo_evento.get()
-        self.frame_tarefa.pack_forget()
-        self.frame_compromisso.pack_forget()
-        self.frame_lembrete.pack_forget()
+        for frame in self.frames.values():
+            frame.pack_forget()
         
-        if tipo == "Tarefa":
-            self.frame_tarefa.pack(pady=20)
-        elif tipo == "Compromisso":
-            self.frame_compromisso.pack(pady=20)
-        elif tipo == "Lembrete":
-            self.frame_lembrete.pack(pady=20)
-        else:
-            pass
-
-    def atualizar_aparencia_radiobuttons(self):
-        if self.tipo_evento.get() == "Tarefa":
-            self.radiobutton_tarefa.config(background="#333333")
-            self.radiobutton_compromisso.config(background="#1f1f1f")
-            self.radiobutton_lembrete.config(background="#1f1f1f")
-        elif self.tipo_evento.get() == "Compromisso":
-            self.radiobutton_tarefa.config(background="#1f1f1f")
-            self.radiobutton_compromisso.config(background="#333333")
-            self.radiobutton_lembrete.config(background="#1f1f1f")
-        elif self.tipo_evento.get() == "Lembrete":
-            self.radiobutton_tarefa.config(background="#1f1f1f")
-            self.radiobutton_compromisso.config(background="#1f1f1f")
-            self.radiobutton_lembrete.config(background="#333333")
+        self.frames[tipo].pack(pady=20)
 
     def atualizar_dias_validos(self, combobox_dia, combobox_mes, combobox_ano):
         try:
@@ -238,3 +109,7 @@ class Novo_Evento(tk.Frame):
             if dia not in self.dias_validos:
                 if self.dias_validos:
                     combobox_dia.set(self.dias_validos[0])
+                    
+    def salvar_evento(self):
+        tipo = self.tipo_evento.get()
+        self.frames[tipo].salvar_evento()
