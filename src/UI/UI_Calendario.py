@@ -1,4 +1,5 @@
 from src.Implementações.Tarefa.ListaTarefa import ListaTarefa
+from src.Implementações.Lembrete.ListaLembrete import ListaLembrete
 
 import tkinter as tk
 from tkinter import ttk, font
@@ -25,6 +26,7 @@ class Calendario(tk.Frame):
         self.criar_elementos()
 
         self.lista_de_tarefas = ListaTarefa()
+        self.lista_de_lembretes = ListaLembrete()
 
         self.mostrar_mes(self.data_atual.year, self.data_atual.month)
 
@@ -60,7 +62,13 @@ class Calendario(tk.Frame):
         self.dias_grid_frame.pack()
 
     def mostrar_mes(self, ano, mes):
-        self.eventos = self.lista_de_tarefas.buscarTarefa(mes=mes)
+        tarefas = self.lista_de_tarefas.buscarTarefa(mes=mes)
+        lembretes = self.lista_de_lembretes.buscarLembrete(mes=mes)
+        
+        tarefas = tarefas if tarefas is not None else []
+        lembretes = lembretes if lembretes is not None else []
+
+        self.eventos = tarefas + lembretes
 
         # O Ç não existe na fonte usada
         mes_nome = "MARCO" if mes == 3 else calendar.month_name[mes].upper()

@@ -70,9 +70,11 @@ class UI_Compromisso(tk.Frame):
                 ValueError("Insira uma descricao.")
             
             data_do_dia = self.parent.controller.obter_dados('data')
+            
             dia = data_do_dia.get('dia', '')
             mes = data_do_dia.get('mes', '')
             ano = data_do_dia.get('ano', '')
+            
             data = f"{dia:02d}/{mes:02d}/{ano}"
 
             prioridades_validas = {

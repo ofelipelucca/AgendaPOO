@@ -76,7 +76,6 @@ class ListaTarefa(Inter_listadeTarefa):
             return None
 
         if data:
-            print(f"procurando por {data}")
             tarefas_data = planilha[planilha['Data'] == data]
             if not tarefas_data.empty:
                 return tarefas_data.to_dict(orient='records')

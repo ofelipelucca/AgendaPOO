@@ -2,7 +2,7 @@ from src.Implementações.Lembrete import Lembrete
 from src.Interfaces.Inter_Lembrete import Inter_ListaLembrete
 
 import pandas as pd
-from typing import Optional, List, Dict
+from typing import Optional, Union, List, Dict
 
 class ListaLembrete(Inter_ListaLembrete):
     def __init__(self) -> None:
@@ -51,20 +51,37 @@ class ListaLembrete(Inter_ListaLembrete):
             planilha = planilha[~((planilha['Email'] == user_email) & (planilha['Mensagem'] == lembrete.getMensagem()))]
             planilha.to_excel(self.__nome_do_arquivo, index=False, engine='openpyxl')
     
-    # @brief Busca um lembrete pelo seu conteúdo de mensagem
+    # @brief Busca um Lembrete pela sua Mensagem, Data ou Mês
     #
-    # @param mensagem A mensagem do lembrete a ser procurada
+    # @param mensagem a Mensagem do Lembrete a ser procurado (opcional)
+    # @param data a Data do Lembrete a ser procurado (opcional)
+    # @param mes o Mês do Lembrete a ser procurado (opcional)
     #
-    # @return O lembrete, se existir. Caso não exista, retorna None
-    def buscarLembrete(self, mensagem: str) -> Optional[Dict[str, str]]:
+    # @return O(s) lembrete(s), se existir(em). Caso nao exista(m), retorna None
+    def buscarLembrete(self, mensagem: Optional[str] = None, data: Optional[str] = None, mes: Optional[int] = None) -> Optional[Union[Dict, List[Dict]]]:
         planilha = self._carregar_planilha()
 
-        if mensagem in planilha['Mensagem'].values:
-            linha = planilha[planilha['Mensagem'] == mensagem]
-            return linha.to_dict(orient='records')[0]  
+        if mensagem:
+            if mensagem in planilha['Mensagem'].values:
+                linha = planilha[planilha['Mensagem'] == mensagem]
+                return linha.to_dict(orient='records')[0]
+            return None
+
+        if data:
+            lembretes_data = planilha[planilha['Data'] == data]
+            if not lembretes_data.empty:
+                return lembretes_data.to_dict(orient='records')
+            return None
+
+        if mes:
+            planilha['Mês'] = pd.to_datetime(planilha['Data'], format='%d/%m/%Y', errors='coerce').dt.month
+            lembretes_mes = planilha[planilha['Mês'] == mes]
+            if not lembretes_mes.empty:
+                return lembretes_mes.drop(columns=['Mês']).to_dict(orient='records')
+            return None
 
         return None
-
+    
     # @brief Retorna o número de lembretes na planilha
     #
     # @return O número total de lembretes
