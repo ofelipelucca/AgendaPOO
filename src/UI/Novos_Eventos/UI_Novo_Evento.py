@@ -1,6 +1,6 @@
-from src.UI.UI_Nova_Tarefa import UI_Tarefa
-from src.UI.UI_Novo_Compromisso import UI_Compromisso
-from src.UI.UI_Novo_Lembrete import UI_Lembrete
+from src.UI.Novos_Eventos.UI_Nova_Tarefa import UI_Tarefa
+from src.UI.Novos_Eventos.UI_Novo_Compromisso import UI_Compromisso
+from src.UI.Novos_Eventos.UI_Novo_Lembrete import UI_Lembrete
 
 import tkinter as tk
 from tkinter import ttk, font

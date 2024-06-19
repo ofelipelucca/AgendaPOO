@@ -1,4 +1,5 @@
 from src.Implementações.Tarefa.ListaTarefa import ListaTarefa
+from src.Implementações.Compromisso.ListaCompromisso import ListaCompromisso
 from src.Implementações.Lembrete.ListaLembrete import ListaLembrete
 
 import tkinter as tk
@@ -26,9 +27,8 @@ class Calendario(tk.Frame):
         self.criar_elementos()
 
         self.lista_de_tarefas = ListaTarefa()
+        self.lista_de_compromissos = ListaCompromisso()
         self.lista_de_lembretes = ListaLembrete()
-
-        self.mostrar_mes(self.data_atual.year, self.data_atual.month)
 
     def criar_elementos(self):
         self.header_frame = ttk.Frame(self, style="Background.TFrame") 
@@ -60,15 +60,25 @@ class Calendario(tk.Frame):
 
         self.dias_grid_frame = ttk.Frame(self, style="Background.TFrame") 
         self.dias_grid_frame.pack()
-
-    def mostrar_mes(self, ano, mes):
-        tarefas = self.lista_de_tarefas.buscarTarefa(mes=mes)
-        lembretes = self.lista_de_lembretes.buscarLembrete(mes=mes)
+    
+    def get_eventos(self, mes):
+        try:
+            email_do_usuario = self.controller.usuario['Email']
+        except:
+            return
+        tarefas = self.lista_de_tarefas.buscarTarefa(email_do_usuario, mes=mes)
+        compromissos = self.lista_de_compromissos.buscarCompromisso(email_do_usuario, mes=mes)
+        lembretes = self.lista_de_lembretes.buscarLembrete(email_do_usuario, mes=mes)
         
         tarefas = tarefas if tarefas is not None else []
+        compromissos = compromissos if compromissos is not None else []
         lembretes = lembretes if lembretes is not None else []
 
-        self.eventos = tarefas + lembretes
+        self.eventos = tarefas + compromissos + lembretes
+
+
+    def mostrar_mes(self, ano, mes):
+        self.get_eventos(mes)
 
         # O Ç não existe na fonte usada
         mes_nome = "MARCO" if mes == 3 else calendar.month_name[mes].upper()
@@ -158,16 +168,11 @@ class Calendario(tk.Frame):
     def get_eventos_do_dia(self, dia, mes, ano):
         data = f"{dia:02d}/{mes:02d}/{ano}"
 
-        try:
-            email_do_usuario = self.controller.usuario['Email']
-        except:
-            email_do_usuario = ""
-        
         eventos_do_dia = []
 
         if self.eventos:
             for evento in self.eventos:
-                if evento['Data'] == data and evento['Email'] == email_do_usuario:
+                if evento['Data'] == data:
                     eventos_do_dia.append(evento)
 
         return eventos_do_dia

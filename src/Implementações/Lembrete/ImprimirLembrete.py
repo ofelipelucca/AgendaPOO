@@ -1,5 +1,5 @@
 from src.Implementações.Lembrete.Lembrete import Lembrete
-from src.Interfaces.Inter_Lembrete import Inter_ImprimirLembrete
+from src.Interfaces.Inter_ListadeLembrete import Inter_ImprimirLembrete
 from src.Implementações.Lembrete.ListaLembrete import ListaLembrete
 
 class ImprimirLembrete(Inter_ImprimirLembrete):

@@ -1,12 +1,12 @@
-from src.Implementações.Tarefa.Tarefa import Tarefa, Compromisso
+from src.Implementações.Tarefa.Tarefa import Tarefa
 from src.Interfaces.Inter_ListadeTarefa import Inter_listadeTarefa
 
-import pandas as pd
 from typing import Optional, Union, List, Dict
+import pandas as pd
 
 class ListaTarefa(Inter_listadeTarefa):
     def __init__(self) -> None:
-        self.__colunas = ['Email', 'Título', 'Descrição', 'Data', 'Prioridade', 'Estado', 'Cor', 'Local', 'Horário', 'Tipo']
+        self.__colunas = ['Email', 'Título', 'Descrição', 'Data', 'Prioridade', 'Estado', 'Tipo']
         self.__nome_do_arquivo = "Planilha_de_tarefas.xlsx"
 
     # @brief Carrega a planilha do arquivo Excel das tarefas salvas
@@ -23,10 +23,8 @@ class ListaTarefa(Inter_listadeTarefa):
     # @param tarefa A tarefa a ser adicionada
     #
     # @param user_email O email do usuario logado
-    def adicionarTarefa(self, evento: Union[Tarefa, Compromisso], user_email: str) -> None:
+    def adicionarTarefa(self, evento: Tarefa, user_email: str) -> None:
         planilha = self._carregar_planilha()
-
-        tipo_evento = 'Compromisso' if isinstance(evento, Compromisso) else 'Tarefa'
 
         nova_tarefa = {
             'Email': user_email,
@@ -35,10 +33,7 @@ class ListaTarefa(Inter_listadeTarefa):
             'Data': evento.getData(),
             'Prioridade': evento.getPrioridade(),
             'Estado': evento.getEstado(),
-            'Cor': getattr(evento, 'getCor', lambda: '')(),
-            'Local': getattr(evento, 'getLocal', lambda: '')(),
-            'Horário': getattr(evento, 'getHorario', lambda: '')(),
-            'Tipo': tipo_evento
+            'Tipo': 'Tarefa'
         }
 
         nova_tarefa_df = pd.DataFrame([nova_tarefa])
@@ -53,7 +48,7 @@ class ListaTarefa(Inter_listadeTarefa):
     # @param tarefa A tarefa a ser removida
     #
     # @param user_email O email do usuario logado
-    def removerTarefa(self, evento: Union[Tarefa, Compromisso], user_email: str) -> None:    
+    def removerTarefa(self, evento: Tarefa, user_email: str) -> None:    
         planilha = self._carregar_planilha()
 
         if user_email in planilha['Email'].values:
@@ -67,24 +62,25 @@ class ListaTarefa(Inter_listadeTarefa):
     # @param mes o Mês da Tarefa a ser procurada (opcional)
     #
     # @return A(s) tarefa(s), se existir(em). Caso nao exista(m), retorna None
-    def buscarTarefa(self, titulo: Optional[str] = None, data: Optional[str] = None, mes: Optional[int] = None) -> Optional[Union[Dict, List[Dict]]]:
+    def buscarTarefa(self, user_email, titulo: Optional[str] = None, data: Optional[str] = None, mes: Optional[int] = None) -> Optional[Union[Dict, List[Dict]]]:
         planilha = self._carregar_planilha()
 
         if titulo:
             if titulo in planilha['Título'].values:
-                linha = planilha[planilha['Título'] == titulo]
-                return linha.to_dict(orient='records')[0]
+                linha = planilha[(planilha['Título'] == titulo) & (planilha['Email'] == user_email)]
+                if not linha.empty:
+                    return linha.to_dict(orient='records')[0]
             return None
 
         if data:
-            tarefas_data = planilha[planilha['Data'] == data]
+            tarefas_data = planilha[(planilha['Data'] == data) & (planilha['Email'] == user_email)]
             if not tarefas_data.empty:
                 return tarefas_data.to_dict(orient='records')
             return None
 
         if mes:
             planilha['Mês'] = pd.to_datetime(planilha['Data'], format='%d/%m/%Y', errors='coerce').dt.month
-            tarefas_mes = planilha[planilha['Mês'] == mes]
+            tarefas_mes = planilha[(planilha['Mês'] == mes) & (planilha['Email'] == user_email)]
             if not tarefas_mes.empty:
                 return tarefas_mes.drop(columns=['Mês']).to_dict(orient='records')
             return None

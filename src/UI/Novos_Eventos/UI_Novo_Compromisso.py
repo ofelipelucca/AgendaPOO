@@ -1,5 +1,5 @@
-from src.Implementações.Tarefa.Tarefa import Compromisso
-from src.Implementações.Tarefa.ListaTarefa import ListaTarefa
+from src.Implementações.Compromisso.Compromisso import Compromisso
+from src.Implementações.Compromisso.ListaCompromisso import ListaCompromisso
 
 import tkinter as tk
 from tkinter import ttk
@@ -104,11 +104,11 @@ class UI_Compromisso(tk.Frame):
             horario = f"{horas}:{minutos}:{segundos}"
             
             novo_compromisso = Compromisso(titulo, descricao, data, prioridade, estado, cor, local, horario)
-            lista_de_tarefas = ListaTarefa()
+            lista_de_compromissos = ListaCompromisso()
 
             email_do_usuario = self.parent.controller.usuario['Email']
 
-            lista_de_tarefas.adicionarTarefa(novo_compromisso, email_do_usuario)
+            lista_de_compromissos.adicionarCompromisso(novo_compromisso, email_do_usuario)
 
             self.error_label.configure(text="")
 

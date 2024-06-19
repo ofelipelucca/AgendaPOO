@@ -1,6 +1,6 @@
 from src.Interfaces.Inter_Notificação import Inter_Notificação
 from src.Implementações.Lembrete import Lembrete
-from src.Implementações.Tarefa.Tarefa import Compromisso
+from src.Implementações.Compromisso import Compromisso
 
 from datetime import datetime
 

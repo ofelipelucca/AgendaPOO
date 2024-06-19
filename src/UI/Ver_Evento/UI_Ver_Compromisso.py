@@ -1,5 +1,5 @@
-from src.Implementações.Tarefa.Tarefa import Compromisso
-from src.Implementações.Tarefa.ListaTarefa import ListaTarefa
+from src.Implementações.Compromisso.Compromisso import Compromisso
+from src.Implementações.Compromisso.ListaCompromisso import ListaCompromisso
 
 import tkinter as tk
 from tkinter import ttk, font
@@ -109,6 +109,6 @@ class Ver_Compromisso(tk.Frame):
     def remover_tarefa(self):
         email_do_usuario = self.controller.usuario['Email']
         compromisso = Compromisso(self.evento['Título'], self.evento['Descrição'], self.evento['Data'], self.evento['Prioridade'], self.evento['Estado'], 'laranja', self.evento['Local'], self.evento['Horário'])
-        lista_de_tarefas = ListaTarefa()
-        lista_de_tarefas.removerTarefa(compromisso, email_do_usuario)
+        lista_de_compromissos = ListaCompromisso()
+        lista_de_compromissos.removerCompromisso(compromisso, email_do_usuario)
         self.controller.mostrar_tela("Calendario")

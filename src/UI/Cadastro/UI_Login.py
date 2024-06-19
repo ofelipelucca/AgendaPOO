@@ -1,4 +1,3 @@
-from src.Implementações.Usuario.Usuario import Usuario
 from src.Implementações.Usuario.ListaUsuario import ListaUsuario
 
 import tkinter as tk
