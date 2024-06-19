@@ -82,15 +82,16 @@ class Tarefa(Inter_Tarefa):
 class Compromisso(Inter_Compromisso, Tarefa):
     def __init__(self, titulo, descricao, data, prioridade, estado, cor, local, horario) -> None:
         super().__init__(titulo, descricao, data, prioridade, estado)
-        self.setCor(cor)
-        self.setLocal(local)
-        self.setHorario(horario)
         self.cores_validas = {
             "laranja": "#FF8C00",
             "azul": "#0080FF",
             "roxo": "#9933FF",
             "rosa": "#FFCCFF"
         }
+
+        self.setCor(cor.lower())
+        self.setLocal(local)
+        self.setHorario(horario)
 
     def getCor(self) -> str:
         return self._cor
@@ -122,7 +123,7 @@ class Compromisso(Inter_Compromisso, Tarefa):
             raise ValueError("O horário deve ser real e no formato hh:mm:ss")
 
     def _validar_cor(self, cor: str) -> None:
-        if cor not in {"laranja", "azul", "roxo", "rosa"}:
+        if cor not in self.cores_validas:
             raise ValueError("Cor invalida")
 
     def _obter_codigo_cor(self, cor: str) -> str:

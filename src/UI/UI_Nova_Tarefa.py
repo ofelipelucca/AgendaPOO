@@ -66,12 +66,12 @@ class UI_Tarefa(tk.Frame):
             prioridade = int(prioridades_validas.get(self.prioridade.get(), 3))
 
             if not prioridade:
-                ValueError("Insira uma prioridade.")
+                ValueError("Selecione uma prioridade.")
 
             estado = str(self.estado.get()).lower()
 
             if not estado:
-                ValueError("Insira um estado.")
+                ValueError("Selecione um estado.")
 
             nova_tarefa = Tarefa(titulo, descricao, data, prioridade, estado)
             lista_de_tarefas = ListaTarefa()

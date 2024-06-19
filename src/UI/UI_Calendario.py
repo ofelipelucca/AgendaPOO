@@ -119,22 +119,23 @@ class Calendario(tk.Frame):
         if eventos_do_dia:
             qtd_bolinhas = len(eventos_do_dia)
             if qtd_bolinhas > 3:
-                for botao, evento in enumerate(eventos_do_dia[:2]):
+                # Desenhar bolinhas para os dois primeiros eventos
+                for indice, evento in enumerate(eventos_do_dia[:2]):
                     if str(evento['Data']) != data:
-                        return
+                        continue
                     cor = self.obter_cor_evento(evento)
-                    self.desenhar_bolinha(botao, canvas, cor)
+                    self.desenhar_bolinha(indice, canvas, cor)
+                
+                # Adicionar texto indicando eventos adicionais
                 canvas.create_text(3*12 + 44, 7, text=f"+{qtd_bolinhas-2}", 
                                    fill="white", font=font.Font(size=8, weight="bold"))
             else:
-                for indice, botao in enumerate(self.botoes):
-                    for evento in eventos_do_dia:
-                        if str(evento['Data']) != data:
-                            return
-                        cor = self.obter_cor_evento(evento)
-                        self.desenhar_bolinha(indice, canvas, cor)
-                        return
-
+                for indice, evento in enumerate(eventos_do_dia):
+                    if str(evento['Data']) != data:
+                        continue
+                    cor = self.obter_cor_evento(evento)
+                    self.desenhar_bolinha(indice, canvas, cor)
+    
     def obter_cor_evento(self, evento):
         cor = evento.get('Cor', '#FFB61E')  # Pegar a cor do evento, se não tiver, usar amarelo
         if pd.isna(cor):
@@ -165,7 +166,7 @@ class Calendario(tk.Frame):
         eventos_do_dia = self.get_eventos_do_dia(dia, mes, ano)
         self.controller.passar_dados("eventos_do_dia", eventos_do_dia)
         self.controller.passar_dados("data", {"dia": dia, "mes": mes, "ano": ano})
-        self.controller.mostrar_tela("Evento")
+        self.controller.mostrar_tela("Eventos")
 
     def mes_anterior(self):
         if self.data_atual.month == 1:

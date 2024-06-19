@@ -1,8 +1,9 @@
 import tkinter as tk
 from tkinter import ttk, font
 import calendar
+import math
 
-class Evento(tk.Frame):
+class Eventos(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent, bg="#141414")
         self.controller = controller
@@ -36,7 +37,16 @@ class Evento(tk.Frame):
                                        font=font.Font(family="Tahoma", size=12, weight="bold"), 
                                        width=25, height=2, bd=0, highlightthickness=0)
         self.adicionar_button.pack(pady=10)
-
+    
+    def obter_cor_evento(self, evento):
+        try:
+            cor = evento.get('Cor')
+            if cor is None or (isinstance(cor, float) and math.isnan(cor)):
+                raise ValueError
+        except:
+            cor = "#FFB61E"
+        return cor
+    
     def tkraise(self, *args, **kwargs):
         super().tkraise(*args, **kwargs)
         
@@ -61,9 +71,8 @@ class Evento(tk.Frame):
                 titulo = evento['Título']
                 descricao = evento['Descrição']
                 evento_texto = f"{titulo}: {descricao}"
-                cor = "#FFB61E"
                 eventos_label = tk.Label(self.eventos_frame, text=evento_texto, font=font.Font(family="Tahoma", size=20, weight="bold"), 
-                                        background=cor, foreground="white", padx=10, pady=5)
+                                        background=self.obter_cor_evento(evento), foreground="white", padx=10, pady=5)
                 eventos_label.pack(fill=tk.X)
                 self.eventos_labels.append(eventos_label)
         

@@ -1,4 +1,4 @@
-from src.Implementações.Tarefa.Tarefa import Tarefa
+from src.Implementações.Tarefa.Tarefa import Tarefa, Compromisso
 from src.Interfaces.Inter_ListadeTarefa import Inter_listadeTarefa
 
 import pandas as pd
@@ -23,19 +23,19 @@ class ListaTarefa(Inter_listadeTarefa):
     # @param tarefa A tarefa a ser adicionada
     #
     # @param user_email O email do usuario logado
-    def adicionarTarefa(self, tarefa: Tarefa, user_email: str) -> None:
+    def adicionarTarefa(self, evento: Union[Tarefa, Compromisso], user_email: str) -> None:
         planilha = self._carregar_planilha()
 
         nova_tarefa = {
             'Email': user_email,
-            'Título': tarefa.getTitulo(),
-            'Descrição': tarefa.getDescricao(),
-            'Data': tarefa.getData(),
-            'Prioridade': tarefa.getPrioridade(),
-            'Estado': tarefa.getEstado(),
-            'Cor': getattr(tarefa, 'getCor', lambda: '')(),
-            'Local': getattr(tarefa, 'getLocal', lambda: '')(),
-            'Horário': getattr(tarefa, 'getHorario', lambda: '')()
+            'Título': evento.getTitulo(),
+            'Descrição': evento.getDescricao(),
+            'Data': evento.getData(),
+            'Prioridade': evento.getPrioridade(),
+            'Estado': evento.getEstado(),
+            'Cor': getattr(evento, 'getCor', lambda: '')(),
+            'Local': getattr(evento, 'getLocal', lambda: '')(),
+            'Horário': getattr(evento, 'getHorario', lambda: '')()
         }
 
         nova_tarefa_df = pd.DataFrame([nova_tarefa])
@@ -83,7 +83,7 @@ class ListaTarefa(Inter_listadeTarefa):
             return None
 
         if mes:
-            planilha['Mês'] = pd.to_datetime(planilha['Data'], errors='coerce').dt.month
+            planilha['Mês'] = pd.to_datetime(planilha['Data'], format='%d/%m/%Y', errors='coerce').dt.month
             tarefas_mes = planilha[planilha['Mês'] == mes]
             if not tarefas_mes.empty:
                 return tarefas_mes.drop(columns=['Mês']).to_dict(orient='records')
