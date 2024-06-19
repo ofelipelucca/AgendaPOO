@@ -29,10 +29,12 @@ O objetivo principal desse tipo de projeto é oferecer uma plataforma intuitiva 
 
   - Clonando o Repositório
 Para obter uma cópia local do projeto, você pode clonar o repositório GitHub. No terminal ou prompt de comando, navegue até o diretório onde deseja clonar o repositório e execute:
-git clone https://github.com/felipeluccaTO/AgendaPDS2.git
+
+git clone https://github.com/ofelipelucca/AgendaPOO.git
  
  - Executando o Projeto
 Após ter instalado os módulos necessários e clonado o repositório, você está pronto para executar o projeto. Navegue até o diretório onde o projeto foi clonado e execute o arquivo main.py utilizando o Python. No terminal ou prompt de comando, execute o seguinte:
+
 cd AgendaPOO
 python main.py
 
