@@ -6,7 +6,7 @@ from typing import Optional, Union, List, Dict
 
 class ListaTarefa(Inter_listadeTarefa):
     def __init__(self) -> None:
-        self.__colunas = ['Email', 'Título', 'Descrição', 'Data', 'Prioridade', 'Estado', 'Cor', 'Local', 'Horário']
+        self.__colunas = ['Email', 'Título', 'Descrição', 'Data', 'Prioridade', 'Estado', 'Cor', 'Local', 'Horário', 'Tipo']
         self.__nome_do_arquivo = "Planilha_de_tarefas.xlsx"
 
     # @brief Carrega a planilha do arquivo Excel das tarefas salvas
@@ -26,6 +26,8 @@ class ListaTarefa(Inter_listadeTarefa):
     def adicionarTarefa(self, evento: Union[Tarefa, Compromisso], user_email: str) -> None:
         planilha = self._carregar_planilha()
 
+        tipo_evento = 'Compromisso' if isinstance(evento, Compromisso) else 'Tarefa'
+
         nova_tarefa = {
             'Email': user_email,
             'Título': evento.getTitulo(),
@@ -35,7 +37,8 @@ class ListaTarefa(Inter_listadeTarefa):
             'Estado': evento.getEstado(),
             'Cor': getattr(evento, 'getCor', lambda: '')(),
             'Local': getattr(evento, 'getLocal', lambda: '')(),
-            'Horário': getattr(evento, 'getHorario', lambda: '')()
+            'Horário': getattr(evento, 'getHorario', lambda: '')(),
+            'Tipo': tipo_evento
         }
 
         nova_tarefa_df = pd.DataFrame([nova_tarefa])
@@ -45,7 +48,6 @@ class ListaTarefa(Inter_listadeTarefa):
         planilha = planilha.drop_duplicates()
         planilha.to_excel(self.__nome_do_arquivo, index=False, engine='openpyxl')
             
-
     # @brief Remove uma tarefa no sistema
     #
     # @param tarefa A tarefa a ser removida

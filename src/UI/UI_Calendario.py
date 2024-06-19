@@ -145,10 +145,12 @@ class Calendario(tk.Frame):
                     self.desenhar_bolinha(indice, canvas, cor)
     
     def obter_cor_evento(self, evento):
-        cor = evento.get('Cor', '#FFB61E')  # Pegar a cor do evento, se não tiver, usar amarelo
-        if pd.isna(cor):
-            cor = "#FFB61E"
-        return cor
+        tipo_do_evento = evento['Tipo']
+        if tipo_do_evento == 'Tarefa':
+            return '#FFB61E'
+        if tipo_do_evento == 'Compromisso':
+            return evento['Cor']
+        return '#32a8a4'
     
     def desenhar_bolinha(self, i, canvas, cor):
         canvas.create_oval(5 + i*12, 2, 15 + i*12, 12, fill=cor, outline="black")

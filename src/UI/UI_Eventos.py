@@ -39,13 +39,12 @@ class Eventos(tk.Frame):
         self.adicionar_button.pack(pady=10)
     
     def obter_cor_evento(self, evento):
-        try:
-            cor = evento.get('Cor')
-            if cor is None or (isinstance(cor, float) and math.isnan(cor)):
-                raise ValueError
-        except:
-            cor = "#FFB61E"
-        return cor
+        tipo_do_evento = evento['Tipo']
+        if tipo_do_evento == 'Tarefa':
+            return '#FFB61E'
+        if tipo_do_evento == 'Compromisso':
+            return evento['Cor']
+        return '#32a8a4'
     
     def tkraise(self, *args, **kwargs):
         super().tkraise(*args, **kwargs)
@@ -68,11 +67,20 @@ class Eventos(tk.Frame):
         # Exibindo os eventos como uma lista dentro do eventos_frame
         if eventos_do_dia:
             for evento in eventos_do_dia:
-                titulo = evento['Título']
-                descricao = evento['Descrição']
-                evento_texto = f"{titulo}: {descricao}"
+                tipo_do_evento = evento['Tipo']
+                if tipo_do_evento == 'Tarefa' or tipo_do_evento == 'Compromisso':
+                    titulo = evento['Título']
+                    descricao = evento['Descrição']
+                    evento_texto = f"{titulo}: {descricao}"
+                if tipo_do_evento == 'Lembrete':
+                    mensagem = evento['Mensagem']
+                    horario = evento['Horário']
+                    evento_texto = f"({horario}): {mensagem}"
+
+                cor = self.obter_cor_evento(evento)
+
                 eventos_label = tk.Label(self.eventos_frame, text=evento_texto, font=font.Font(family="Tahoma", size=20, weight="bold"), 
-                                        background=self.obter_cor_evento(evento), foreground="white", padx=10, pady=5)
+                                        background=cor, foreground="white", padx=10, pady=5)
                 eventos_label.pack(fill=tk.X)
                 self.eventos_labels.append(eventos_label)
         

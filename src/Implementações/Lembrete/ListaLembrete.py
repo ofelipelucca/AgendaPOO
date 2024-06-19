@@ -6,7 +6,7 @@ from typing import Optional, Union, List, Dict
 
 class ListaLembrete(Inter_ListaLembrete):
     def __init__(self) -> None:
-        self.__colunas = ['Email', 'Data', 'Mensagem', 'Horário']
+        self.__colunas = ['Email', 'Data', 'Mensagem', 'Horário', 'Tipo']
         self.__nome_do_arquivo = "Planilha_de_lembretes.xlsx"
 
     # @brief Carrega a planilha do arquivo Excel dos lembretes salvos
@@ -30,7 +30,8 @@ class ListaLembrete(Inter_ListaLembrete):
             'Email': user_email,
             'Data': lembrete.getData(),
             'Mensagem': lembrete.getMensagem(),
-            'Horário': lembrete.getHorario()
+            'Horário': lembrete.getHorario(),
+            'Tipo': 'Lembrete'
         }
 
         novo_lembrete_df = pd.DataFrame([novo_lembrete])
