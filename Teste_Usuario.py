@@ -16,9 +16,9 @@ def main():
     print(f"Email do user1: {user1.getEmail()}")
     print(f"Senha do user1: {user1.getSenha()}")
 
-    # Testa o método checkSenha
-    print(f"Check senha user1 (123456): {user1.checkSenha('123456')}")
-    print(f"Check senha user1 (000000): {user1.checkSenha('000000')}")
+    # Testa o método checkLogin
+    print(f"Check senha user1 (123456): {lista_usuarios.checkLogin("exemploF@gmail.com", '123456')}")
+    print(f"Check senha user1 (000000): {lista_usuarios.checkLogin("exemploF@gmail.co", '000000')}")
 
     # Testa o método checkUsuario na lista de usuários
     print(f"Check usuario (exemploF@gmail.com, Felipe Silva): {lista_usuarios.checkUsuario('exemploF@gmail.com', 'Felipe Silva')}")
@@ -33,10 +33,6 @@ def main():
 
     user1.setSenha("111222")
     print(f"Senha atualizada do user1: {user1.getSenha()}")
-
-    # Remove um usuário da lista
-    lista_usuarios.removerUsuario(user1)
-    print(f"Check usuario removido (carlos@outlook.com, Carlos Souza): {lista_usuarios.checkUsuario('carlos@outlook.com', 'Carlos Souza')}")
-
+    
 if __name__ == "__main__":
     main()

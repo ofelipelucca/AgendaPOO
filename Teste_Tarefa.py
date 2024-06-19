@@ -6,18 +6,23 @@ def main():
     lista_tarefas = ListaTarefa()
 
     # Criando uma tarefa
+    print("Criando tarefa 1...")
     tarefa1 = Tarefa("Fazer compras", "Comprar alimentos", "10/06/2024", 2, "não feito")
 
     # Adicionando a tarefa à lista
+    print("Adicionando a tarefa 1 no banco de dados...")
     lista_tarefas.adicionarTarefa(tarefa1, "user1@example.com")
 
     # Criando outra tarefa
+    print("Criando tarefa 2...")
     tarefa2 = Tarefa("Estudar Python", "Estudar programação", "15/06/2024", 1, "em progresso")
 
     # Adicionando a segunda tarefa à lista
+    print("Adicionando a tarefa 2 no banco de dados...")
     lista_tarefas.adicionarTarefa(tarefa2, "user1@example.com")
 
     # Buscando a tarefa pelo título
+    print("Buscando pela tarefa no banco de dados...")
     tarefa_encontrada = lista_tarefas.buscarTarefa("user1@example.com", "Fazer compras")
     if tarefa_encontrada:
         print("Tarefa encontrada:")

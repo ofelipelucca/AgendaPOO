@@ -6,6 +6,7 @@ def main():
     meu_calendario = Calendario()
 
     # Inserindo algumas atividades
+    print("Inserindo atividades no calendario")
     meu_calendario.inserir("10:00", ["Estudar Python", "Fazer exercícios"])
     meu_calendario.inserir("20:00", ["Fazer trabalho de POO"])
     meu_calendario.inserir("13/06/2024")
@@ -24,9 +25,11 @@ def main():
     meu_calendario.inserir("19/06/2024")
 
     # Ordenando a agenda
+    print("Ordenando agenda")
     meu_calendario.ordenarAgenda()
 
     # Imprimindo o calendário para os próximos 7 dias
+    print("Imprimindo agenda da semana...")
     hoje = datetime.now().strftime("%d/%m/%Y")
     meu_calendario._imprimirCalendario(hoje)
 

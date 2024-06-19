@@ -1,5 +1,5 @@
 from src.Implementações.Notificações import Notificação
-from src.Implementações.Tarefa.Tarefa import Compromisso
+from src.Implementações.Compromisso.Compromisso import Compromisso
 from src.Implementações.Lembrete.Lembrete import Lembrete
 
 def main():
@@ -23,7 +23,7 @@ def main():
     assert notificacao.checkEstado() == False, "Erro na desativação de notificação"
     
     # Preparando um compromisso para teste de notificação
-    compromisso = Compromisso("Reunião de trabalho", "Reunião sobre o projeto X", "15/06/2024", 2, "não feito", "laranja", "Escritório", "09:00:00")
+    compromisso = Compromisso("Reunião", "Reunião sobre o projeto X", "15/06/2024", 2, "não feito", "laranja", "Escritório", "09:00:00")
 
 
     # Testando notificar (considerando o tempo atual para fins de demonstração)

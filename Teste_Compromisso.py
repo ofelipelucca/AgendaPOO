@@ -6,12 +6,15 @@ def main():
     lista_compromissos = ListaCompromisso()
 
     # Criando um compromisso
+    print("Criando um compromisso...")
     compromisso1 = Compromisso("Reunião", "Reunião sobre o projeto X", "15/06/2024", 2, "não feito", "laranja", "Escritório", "09:00:00")
 
     # Adicionando o compromisso à lista
+    print("Adicionando um compromisso no banco de dados...")
     lista_compromissos.adicionarCompromisso(compromisso1, "user1@example.com")
 
     # Buscando o compromisso pelo título
+    print("Buscando pelo compromisso no banco de dados...")
     compromisso_encontrado = lista_compromissos.buscarCompromisso("user1@example.com", "Reunião")
     if compromisso_encontrado:
         print("Compromisso encontrado:")
