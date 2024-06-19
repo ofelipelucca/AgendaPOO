@@ -26,13 +26,8 @@ class Lembrete(Inter_Lembrete):
         self.__horario = novo_Horario
     
     def setMensagem(self, nova_mensagem: str) -> None:
-        MAX_CARACTERES = 45
-
-        if len(nova_mensagem) > MAX_CARACTERES:
-            raise ValueError("Mensagem muito longa")
-        if not nova_mensagem:
-            raise ValueError("Mensagem não pode ser vazia")
-
+        if len(nova_mensagem) > 40:
+            raise ValueError("A mensagem deve contar entre 1 e 40 caracteres")
         self.__mensagem = nova_mensagem
 
     def _validar_data(self, data: str) -> None:

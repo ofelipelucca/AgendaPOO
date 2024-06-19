@@ -57,12 +57,12 @@ class Tarefa(Inter_Tarefa):
         self._estado = novo_estado
 
     def _validar_titulo(self, titulo: str) -> None:
-        if not 1 <= len(titulo) <= 60:
-            raise ValueError("O titulo deve possuir entre 1 e 60 caracteres")
+        if not 1 <= len(titulo) <= 15:
+            raise ValueError("O titulo deve possuir entre 1 e 15 caracteres")
 
     def _validar_descricao(self, descricao: str) -> None:
-        if not 1 <= len(descricao) <= 120:
-            raise ValueError("A descricao deve possuir entre 1 e 120 caracteres")
+        if not 1 <= len(descricao) <= 35:
+            raise ValueError("A descricao deve possuir entre 1 e 35 caracteres")
 
     def _validar_data(self, data: str) -> None:
         try:
@@ -92,6 +92,9 @@ class Compromisso(Inter_Compromisso, Tarefa):
         self.setCor(cor.lower())
         self.setLocal(local)
         self.setHorario(horario)
+    
+    def getTitulo(self) -> str:
+        return super().getTitulo()
 
     def getCor(self) -> str:
         return self._cor

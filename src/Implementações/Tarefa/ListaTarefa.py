@@ -53,13 +53,12 @@ class ListaTarefa(Inter_listadeTarefa):
     # @param tarefa A tarefa a ser removida
     #
     # @param user_email O email do usuario logado
-    def removerTarefa(self, tarefa: Tarefa, user_email: str) -> None:    
+    def removerTarefa(self, evento: Union[Tarefa, Compromisso], user_email: str) -> None:    
         planilha = self._carregar_planilha()
 
         if user_email in planilha['Email'].values:
-            planilha = planilha[~((planilha['Email'] == user_email) & (planilha['Título'] == tarefa.getTitulo()))]
+            planilha = planilha[~((planilha['Email'] == user_email) & (planilha['Título'] == evento.getTitulo()))]
             planilha.to_excel(self.__nome_do_arquivo, index=False, engine='openpyxl')
-            
 
     # @brief Busca uma Tarefa pelo seu Título, Data ou Mês
     #
