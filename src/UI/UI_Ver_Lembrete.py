@@ -73,4 +73,4 @@ class Ver_Lembrete(tk.Frame):
         lembrete = Lembrete(self.evento['Data'], self.evento['Horário'], self.evento['Mensagem'])
         lista_de_lembretes = ListaLembrete()
         lista_de_lembretes.removerLembrete(lembrete, email_do_usuario)
-        self.controller.mostrar_tela("Eventos")
+        self.controller.mostrar_tela("Calendario")

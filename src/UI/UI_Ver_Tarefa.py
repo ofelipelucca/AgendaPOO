@@ -92,4 +92,4 @@ class Ver_Tarefa(tk.Frame):
         tarefa = Tarefa(self.evento['Título'], self.evento['Descrição'], self.evento['Data'], self.evento['Prioridade'], self.evento['Estado'])
         lista_de_tarefas = ListaTarefa()
         lista_de_tarefas.removerTarefa(tarefa, email_do_usuario)
-        self.controller.mostrar_tela("Eventos")
+        self.controller.mostrar_tela("Calendario")

@@ -111,4 +111,4 @@ class Ver_Compromisso(tk.Frame):
         compromisso = Compromisso(self.evento['Título'], self.evento['Descrição'], self.evento['Data'], self.evento['Prioridade'], self.evento['Estado'], 'laranja', self.evento['Local'], self.evento['Horário'])
         lista_de_tarefas = ListaTarefa()
         lista_de_tarefas.removerTarefa(compromisso, email_do_usuario)
-        self.controller.mostrar_tela("Eventos")
+        self.controller.mostrar_tela("Calendario")
