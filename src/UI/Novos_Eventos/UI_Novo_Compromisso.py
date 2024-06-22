@@ -110,6 +110,16 @@ class UI_Compromisso(tk.Frame):
 
             lista_de_compromissos.adicionarCompromisso(novo_compromisso, email_do_usuario)
 
+            self.titulo.delete(0, tk.END)
+            self.descricao.delete(0, tk.END)
+            self.local.delete(0, tk.END)
+            self.estado.set('')
+            self.prioridade.set('')
+            self.cor.set('')
+            self.horas.set('')
+            self.minutos.set('')
+            self.segundos.set('')
+            
             self.error_label.configure(text="")
 
             self.parent.controller.mostrar_tela("Calendario")

@@ -37,15 +37,12 @@ class Lembrete(Inter_Lembrete):
             raise ValueError("O dia deve estar no formato dd/mm/aaaa")
 
     def _validar_horario(self, horario: str) -> bool:
-        if not self._validar_formato_horario(horario):
-            raise ValueError(f"Formato de horário inválido")
+        padrao_horario = re.compile(r'^\d{2}:\d{2}:\d{2}$')
+        if not padrao_horario.match(horario):
+            raise ValueError("O horário deve ser real e no formato hh:mm:ss")
         horas, minutos, segundos = map(int, horario.split(':'))
-        if not self._validar_horas(horas):
-            raise ValueError(f"Hora inválida")
-        if not self._validar_minutos(minutos):
-            raise ValueError(f"Minutos inválidos")
-        if segundos < 0 or segundos > 59:
-            raise ValueError(f"Segundos inválidos")
+        if not (0 <= horas < 24 and 0 <= minutos < 60 and 0 <= segundos < 60):
+            raise ValueError("O horário deve ser real e no formato hh:mm:ss")
     
     def _validar_formato_horario(self, horario: str) -> bool:
         padrao_horario = re.compile(r'^\d{2}:\d{2}:\d{2}$')

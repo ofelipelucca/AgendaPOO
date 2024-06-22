@@ -41,10 +41,10 @@ class UI_Lembrete(tk.Frame):
             if not mensagem:
                 ValueError("Insira uma mensagem.")
 
-            horas = int(self.horas.get().replace('h', ''))
-            minutos = int(self.minutos.get().replace(' min', ''))
-            segundos = int(self.segundos.get().replace(' seg', ''))
-            horario = f"{horas:02d}:{minutos:02d}:{segundos:02d}"
+            horas = self.horas.get().replace('h', '')
+            minutos = self.minutos.get().replace(' min', '')
+            segundos = self.segundos.get().replace(' seg', '')
+            horario = f"{horas}:{minutos}:{segundos}"
 
             data_do_dia = self.parent.controller.obter_dados('data')
             
@@ -60,6 +60,11 @@ class UI_Lembrete(tk.Frame):
             email_do_usuario = self.parent.controller.usuario['Email']
 
             lista_de_tarefas.adicionarLembrete(novo_compromisso, email_do_usuario)
+
+            self.mensagem.delete(0, tk.END)
+            self.horas.set('')
+            self.minutos.set('')
+            self.segundos.set('')
 
             self.error_label.configure(text="")
 

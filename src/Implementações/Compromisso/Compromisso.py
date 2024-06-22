@@ -30,8 +30,8 @@ class Compromisso(Inter_Compromisso, Tarefa):
         return self._horario
 
     def setCor(self, nova_cor: str) -> None:
-        self._validar_cor(nova_cor)
-        self._cor = self._obter_codigo_cor(nova_cor)
+        self._validar_cor(nova_cor.lower())
+        self._cor = self._obter_codigo_cor(nova_cor.lower())
 
     def setLocal(self, novo_local: str) -> None:
         self._validar_local(novo_local)

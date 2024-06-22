@@ -1,6 +1,8 @@
 from src.Implementações.Tarefa.Tarefa import Tarefa
 from src.Implementações.Lembrete.Lembrete import Lembrete
+from src.Implementações.Compromisso.Compromisso import Compromisso
 from src.Implementações.Tarefa.ListaTarefa import ListaTarefa
+from src.Implementações.Compromisso.ListaCompromisso import ListaCompromisso
 from src.Implementações.Lembrete.ListaLembrete import ListaLembrete
 
 import tkinter as tk
@@ -131,9 +133,12 @@ class Eventos(tk.Frame):
             lista_de_lembretes = ListaLembrete()
             lembrete = Lembrete(evento['Data'], evento['Horário'], evento['Mensagem'])
             lista_de_lembretes.removerLembrete(lembrete, email_do_usuario)
-            return 
-        lista_de_tarefas = ListaTarefa()
-        tarefa = Tarefa(evento['Título'], evento['Descrição'], evento['Data'], evento['Prioridade'], evento['Estado'])
-        lista_de_tarefas.removerTarefa(tarefa, email_do_usuario)
-
+        if tipo_do_evento == 'Compromisso':
+            lista_de_compromissos = ListaCompromisso()
+            compromisso = Compromisso(evento['Título'], evento['Descrição'], evento['Data'], evento['Prioridade'], evento['Estado'], 'laranja', evento['Local'], evento['Horário'])
+            lista_de_compromissos.removerCompromisso(compromisso, email_do_usuario)
+        if tipo_do_evento == 'Tarefa':
+            lista_de_tarefas = ListaTarefa()
+            tarefa = Tarefa(evento['Título'], evento['Descrição'], evento['Data'], evento['Prioridade'], evento['Estado'])
+            lista_de_tarefas.removerTarefa(tarefa, email_do_usuario)
         frame.pack_forget()

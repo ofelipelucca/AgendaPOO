@@ -89,26 +89,6 @@ class Novo_Evento(tk.Frame):
             frame.pack_forget()
         
         self.frames[tipo].pack(pady=20)
-
-    def atualizar_dias_validos(self, combobox_dia, combobox_mes, combobox_ano):
-        try:
-            dia = combobox_dia.get()
-            mes = combobox_mes.get()
-            ano = combobox_ano.get()
-        except:
-            return
-
-        if mes and ano:
-            mes_selecionado = self.meses.index(mes) + 1  # Converter o nome dos meses para índice de 1 a 12
-            ano_selecionado = int(ano)
-
-            self.dias_validos = [str(day) for day in range(1, calendar.monthrange(ano_selecionado, mes_selecionado)[1] + 1)]
-
-            combobox_dia.config(values=self.dias_validos)
-
-            if dia not in self.dias_validos:
-                if self.dias_validos:
-                    combobox_dia.set(self.dias_validos[0])
                     
     def salvar_evento(self):
         tipo = self.tipo_evento.get()
