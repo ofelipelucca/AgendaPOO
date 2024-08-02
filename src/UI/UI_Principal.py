@@ -1,16 +1,3 @@
-##########################################################################################
-#
-#                       TO DO:
-#                          - Sistema de login para o usuário acessar seus eventos *
-#                          - Carregar os eventos direto do banco de dados, importando e salvando todos os campos necessários, 
-#                            incluindo a cor de cada tipo de evento (Tarefa, Compromisso, Lembrete) *
-#                          - Sistema e janela para o usuário adicionar seus próprios eventos
-#                          - Organizar e modularizar o código
-#           
-#                           * depende da implementação do banco de dados
-#                          
-##########################################################################################
-
 from src.UI.Calendario.UI_Calendario import Calendario
 from src.UI.Cadastro.UI_Login import Login
 from src.UI.Cadastro.UI_Register import Register
