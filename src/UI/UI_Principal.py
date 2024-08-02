@@ -26,6 +26,15 @@ class Principal(tk.Tk):
     def __init__(self):
         super().__init__()
 
+        def ativar_high_dpi_awareness():
+            import ctypes
+            try:
+                ctypes.windll.shcore.SetProcessDpiAwareness(1)
+            except Exception:
+                ctypes.windll.user32.SetProcessDPIAware()
+
+        ativar_high_dpi_awareness()
+
         self.title("Agenda")
         self.geometry("950x625")
         self.minsize(950, 625)
